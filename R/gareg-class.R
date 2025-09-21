@@ -14,8 +14,32 @@ setClassUnion("listOrNULL", members = c("list", "NULL"))
 setClassUnion("functionOrNULL", c("function","NULL"))
 setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
 
-#' @rdname gareg-class
-#' @export
+#' GAReg result container
+#'
+#' @description
+#' S4 container for GA-based regression/changepoint tasks. Holds the GA
+#' backend fit and a normalized summary of the best solution.
+#'
+#' @slot call language. The original call.
+#' @slot method character. One of "varyknots", "fixknots", "subset", "cptdetect".
+#' @slot regMethod character. Modeling backend label (e.g., "unspecified").
+#' @slot family character. Model family used (e.g., "gaussian") or "unspecified".
+#' @slot N numeric. Length of the response vector.
+#' @slot objFunc functionOrNULL. Objective function used.
+#' @slot gaMethod character. GA engine name ("cptga" or "cptgaisl").
+#' @slot gaFit cptgaORcptgaislORNULL. Backend GA fit object or NULL.
+#' @slot ctrl listOrNULL. Control list used to run the GA.
+#' @slot fixedknots numericOrNULL. Fixed knot locations (NULL or numeric()).
+#' @slot minDist numeric. Minimum distance between adjacent changepoints.
+#' @slot polydegree numericOrNULL. Spline degree for default objectives.
+#' @slot subsetSpec listOrNULL. Constraints for subset selection (unused for knots).
+#' @slot featureNames character. Candidate feature names (subset tasks).
+#' @slot bestFitness numeric. Best fitness value found.
+#' @slot bestChrom numeric. Raw best chromosome returned by the backend.
+#' @slot bestsol listOrNULL. Normalized best solution (e.g., list(type="changepoint", m=..., knots=...) or type="subset").
+#'
+#' @seealso \link{gareg_knots}, \link{cptgaControl}
+#' @exportClass gareg
 setClass(
   Class = "gareg",
   slots = c(
@@ -51,7 +75,7 @@ setClass(
     ctrl         = NULL,
     bestFitness  = NA_real_,
     bestChrom    = numeric(),
-    bestsol      = NULL
+    bestsol      = numeric()
   ),
   package = "GAReg"
 )
@@ -67,8 +91,8 @@ setMethod("print", "gareg", function(x, ...) str(x))
 )
 
 .s <- function(x, nm, default = NA) {
-  if (is.null(x)) return(default)
-  if (methods::hasSlot(x, nm)) slot(x, nm) else default
+  if (is.null(x) || !methods::is(x, "S4")) return(default)
+  if (nm %in% methods::slotNames(x)) methods::slot(x, nm) else default
 }
 
 setMethod("show", "gareg", function(object) {

@@ -7,6 +7,9 @@
 #'}
 \description{
 S4 Class for Genetic Algorithm-Based Regression
+
+S4 container for GA-based regression/changepoint tasks. Holds the GA
+backend fit and a normalized summary of the best solution.
 }
 \section{Slots}{
 
@@ -14,5 +17,42 @@ S4 Class for Genetic Algorithm-Based Regression
 \item{\code{call}}{The matched call that created the object.}
 
 \item{\code{N}}{The sample size of the time series.}
+
+\item{\code{call}}{language. The original call.}
+
+\item{\code{method}}{character. One of "varyknots", "fixknots", "subset", "cptdetect".}
+
+\item{\code{regMethod}}{character. Modeling backend label (e.g., "unspecified").}
+
+\item{\code{family}}{character. Model family used (e.g., "gaussian") or "unspecified".}
+
+\item{\code{N}}{numeric. Length of the response vector.}
+
+\item{\code{objFunc}}{functionOrNULL. Objective function used.}
+
+\item{\code{gaMethod}}{character. GA engine name ("cptga" or "cptgaisl").}
+
+\item{\code{gaFit}}{cptgaORcptgaislORNULL. Backend GA fit object or NULL.}
+
+\item{\code{ctrl}}{listOrNULL. Control list used to run the GA.}
+
+\item{\code{fixedknots}}{numericOrNULL. Fixed knot locations (NULL or numeric()).}
+
+\item{\code{minDist}}{numeric. Minimum distance between adjacent changepoints.}
+
+\item{\code{polydegree}}{numericOrNULL. Spline degree for default objectives.}
+
+\item{\code{subsetSpec}}{listOrNULL. Constraints for subset selection (unused for knots).}
+
+\item{\code{featureNames}}{character. Candidate feature names (subset tasks).}
+
+\item{\code{bestFitness}}{numeric. Best fitness value found.}
+
+\item{\code{bestChrom}}{numeric. Raw best chromosome returned by the backend.}
+
+\item{\code{bestsol}}{listOrNULL. Normalized best solution (e.g., list(type="changepoint", m=..., knots=...) or type="subset").}
 }}
 
+\seealso{
+\link{gareg_knots}, \link{cptgaControl}
+}
