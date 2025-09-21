@@ -1,6 +1,6 @@
 
-gareg_subset = function(data, ){
+gareg_subset = function(data){
 
-
+  # tbd
 
 }

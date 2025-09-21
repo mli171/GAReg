@@ -1,16 +1,44 @@
 Package: GAReg
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Genetic Algorithms in Regression
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
-      role = c("aut", "cre")
-    )
+    given = "Mo",
+    family = "Li",
+    role = c("aut", "cre"),
+    email = "mo.li@louisiana.edu"),
+    person(
+    given = "QiQi", 
+    family = "Lu", 
+    role = "aut", 
+    email = "qlu2@vcu.edu"),
+    person(
+    given = "Robert", 
+    family = "Lund", 
+    role = "aut", 
+    email = "rolund@ucsc.edu"),
+    person(
+    given = "Xueheng", 
+    family = "Shi", 
+    role = "aut", 
+    email = "shixueheng@gmail.com")
   )
 Description: More about what it does (maybe more than one line).
     Continuation lines should be indented.
-License: What license is it under?
+License: file LICENSE
+RoxygenNote: 7.3.2
+Depends: R (>= 4.3.0)
+Imports: 
+    stats,
+    utils,
+    methods, 
+    changepointGA
+URL: https://github.com/mli171/GAReg
+BugReports: https://github.com/mli171/GAReg/issues
+Suggests: 
+    knitr,
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr

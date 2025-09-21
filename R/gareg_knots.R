@@ -257,7 +257,7 @@ varyknotsBIC <- function(knot.bin,
 
   ## Fastter fit: a thin wrapper to the "innermost" C code performing the
   ##              QR decomposition
-  fit <- .lm.fit(x, y)
+  fit <- stats::.lm.fit(x, y)
   SSRes <- sum(fit$residuals^2)
   BIC.val <- n*log(SSRes/n) + (polydegree + 1L + m)*log(n)
 
@@ -296,7 +296,7 @@ fixknotsBIC <- function(knot.bin, plen=0, y, x_base=NULL, fixedknots, polydegree
 
   ## Fastter fit: a thin wrapper to the "innermost" C code performing the
   ##              QR decomposition
-  fit <- .lm.fit(x, y)
+  fit <- stats::.lm.fit(x, y)
   SSRes <- sum(fit$residuals^2)
   BIC.val <- n*log(SSRes/n) + (polydegree + 1L + fixedknots)*log(n)
 

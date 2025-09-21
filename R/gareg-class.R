@@ -6,8 +6,8 @@
 #' @slot call The matched call that created the object.
 #'
 #' @slot N The sample size of the time series.
-#'
-#'
+#' @importClassesFrom changepointGA cptga cptgaisl
+NULL
 
 setClassUnion("numericOrNULL", members = c("numeric", "NULL"))
 setClassUnion("listOrNULL", members = c("list", "NULL"))
@@ -26,15 +26,18 @@ setClass(
     N           = "numeric",
     objFunc     = "functionOrNULL",
     gaMethod    = "character",
-    gaFit       = "cptgaORcptgaisl",
+    gaFit       = "cptgaORcptgaislORNULL",
     ctrl        = "listOrNULL",
-    fixedknots  = "numeric",
+    # knots
+    fixedknots  = "numericOrNULL",
     minDist     = "numeric",
-    polydegree  = "numeric",
+    polydegree  = "numericOrNULL",
+    # best subset
     subsetSpec  = "listOrNULL",
     featureNames= "character",
     bestFitness = "numeric",
     bestChrom   = "numeric",
+    bestsol     = "numeric"
   ),
   prototype = list(
     method       = "varyknots",
@@ -48,7 +51,7 @@ setClass(
     ctrl         = NULL,
     bestFitness  = NA_real_,
     bestChrom    = numeric(),
-    best         = NULL
+    bestsol      = NULL
   ),
   package = "GAReg"
 )
@@ -58,7 +61,6 @@ setMethod("print", "gareg", function(x, ...) str(x))
 .header_from_method <- function(m) switch(
   m,
   subset    = "# Best Subset Variable Selection via GA       #",
-  cptdetect = "# Changepoint Detection via GA                #",
   varyknots = "# Varying Knots Detection via GA              #",
   fixknots  = "# Fixed Knots Detection via GA                #",
   "# GAReg Result                                      #"
@@ -81,6 +83,8 @@ setMethod("show", "gareg", function(object) {
   if (!is.null(object@gaFit)) cat("\nUse summary() for GA settings and best solution.\n")
 })
 
+
+#' @export
 print.summary.gareg <- function(x, digits = getOption("digits"), max_display = 5, ...) {
   gf <- x@gaFit
   cat("###############################################\n")
