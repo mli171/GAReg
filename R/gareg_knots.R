@@ -228,11 +228,11 @@ gareg_knots = function(y,
 #' @description
 #' Computes a BIC-style objective for a chromosome encoding \emph{varying}
 #' changepoints/knots. The chromosome stores the number of knots \eqn{m} in
-#' \code{knot.bin[1]} and the ordered knot locations in \code{knot.bin[2:(m+1)]}.
+#' \code{knot_bin[1]} and the ordered knot locations in \code{knot_bin[2:(m+1)]}.
 #' A spline basis of degree \code{polydegree} is built on \code{1:n}, with an
 #' intercept and optional \code{x_base}, and the BIC is returned.
 #'
-#' @param knot.bin Numeric vector; GA chromosome with \eqn{m} and ordered knots.
+#' @param knot_bin Numeric vector; GA chromosome with \eqn{m} and ordered knots.
 #' @param plen Unused placeholder (kept for compatibility).
 #' @param y Numeric response vector.
 #' @param x_base Optional matrix of additional covariates (will be column-bound).
@@ -242,21 +242,21 @@ gareg_knots = function(y,
 #'
 #' @seealso \link{fixknotsBIC}, \link{gareg_knots}
 #' @export
-varyknotsBIC <- function(knot.bin,
+varyknotsBIC <- function(knot_bin,
                          plen=0,
                          y,
                          x_base=NULL,
                          polydegree=3L){
 
   n <- as.integer(length(y))
-  m <- as.integer(knot.bin[1])
+  m <- as.integer(knot_bin[1])
   ones <- rep(1, n)
   if (!is.null(x_base)) x_base <- as.matrix(x_base)
 
   if(m == 0L){
     x <- cbind(ones, x_base)
   }else{
-    knot.vec <- knot.bin[2:(m+1)]
+    knot.vec <- knot_bin[2:(m+1)]
     x <- splines::bs(1:n, degree=polydegree, knots = knot.vec)
     x <- cbind(ones, x_base, x)
   }
@@ -265,9 +265,9 @@ varyknotsBIC <- function(knot.bin,
   ##              QR decomposition
   fit <- stats::.lm.fit(x, y)
   SSRes <- sum(fit$residuals^2)
-  BIC.val <- n*log(SSRes/n) + (polydegree + 1L + m)*log(n)
+  BIC_val <- n*log(SSRes/n) + (polydegree + 1L + m)*log(n)
 
-  return(BIC.val)
+  return(BIC_val)
 }
 
 #' BIC Objective for Fixed-Knots GA
@@ -275,11 +275,11 @@ varyknotsBIC <- function(knot.bin,
 #' @description
 #' Computes a BIC-style objective for a chromosome when the number of knots
 #' is \emph{fixed} at \code{fixedknots}. The chromosome places those many
-#' ordered knot locations in \code{knot.bin[2:(fixedknots+1)]}. A spline basis
+#' ordered knot locations in \code{knot_bin[2:(fixedknots+1)]}. A spline basis
 #' of degree \code{polydegree} is built on \code{1:n}, with an intercept and
 #' optional \code{x_base}, and the BIC is returned.
 #'
-#' @param knot.bin Numeric vector; GA chromosome with ordered knots.
+#' @param knot_bin Numeric vector; GA chromosome with ordered knots.
 #' @param plen Unused placeholder (kept for compatibility).
 #' @param y Numeric response vector.
 #' @param x_base Optional matrix of additional covariates (will be column-bound).
@@ -290,13 +290,13 @@ varyknotsBIC <- function(knot.bin,
 #'
 #' @seealso \link{varyknotsBIC}, \link{gareg_knots}
 #' @export
-fixknotsBIC <- function(knot.bin, plen=0, y, x_base=NULL, fixedknots, polydegree=3L){
+fixknotsBIC <- function(knot_bin, plen=0, y, x_base=NULL, fixedknots, polydegree=3L){
 
   n <- as.integer(length(y))
   ones <- rep(1, n)
   if (!is.null(x_base)) x_base <- as.matrix(x_base)
 
-  knot.vec <- knot.bin[2:(fixedknots+1)]
+  knot.vec <- knot_bin[2:(fixedknots+1)]
   x <- splines::bs(1:n, degree=polydegree, knots = knot.vec)
   x <- cbind(ones, x_base, x)
 
@@ -304,9 +304,9 @@ fixknotsBIC <- function(knot.bin, plen=0, y, x_base=NULL, fixedknots, polydegree
   ##              QR decomposition
   fit <- stats::.lm.fit(x, y)
   SSRes <- sum(fit$residuals^2)
-  BIC.val <- n*log(SSRes/n) + (polydegree + 1L + fixedknots)*log(n)
+  BIC_val <- n*log(SSRes/n) + (polydegree + 1L + fixedknots)*log(n)
 
-  return(BIC.val)
+  return(BIC_val)
 }
 
 
