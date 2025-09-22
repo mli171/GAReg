@@ -280,7 +280,7 @@ varyknotsBIC <- function(knot_bin,
 #' optional \code{x_base}, and the BIC is returned.
 #'
 #' @param knot_bin Numeric vector; GA chromosome with ordered knots.
-#' @param plen Unused placeholder (kept for compatibility).
+#' @param plen Unused placeholder (kept for \code{changepointGA} compatibility).
 #' @param y Numeric response vector.
 #' @param x_base Optional matrix of additional covariates (will be column-bound).
 #' @param fixedknots Integer; number of knots encoded in the chromosome.
