@@ -10,8 +10,6 @@
 #'   kept for API symmetry; not directly used by the backend.
 #' @param X Optional matrix of additional covariates (ignored by the default
 #'   objectives, but available to custom objectives).
-#' @param family Character string describing the model family used upstream
-#'   (e.g., \code{"gaussian"}). Stored for bookkeeping/printing.
 #' @param ObjFunc Objective function or its name. If \code{NULL}, a default
 #'   is chosen:
 #'   \itemize{
@@ -62,7 +60,7 @@
 #' @return An object of class \code{"gareg"} with (key slots):
 #' \itemize{
 #'   \item \code{call}, \code{method} (\code{"varyknots"} or \code{"fixknots"}),
-#'         \code{regMethod}, \code{family}, \code{N}.
+#'         \code{regMethod}, \code{N}.
 #'   \item \code{objFunc}, \code{gaMethod}, \code{gaFit} (the GA result of
 #'         class \code{"cptga"} or \code{"cptgaisl"}), \code{ctrl}.
 #'   \item \code{fixedknots}, \code{minDist}, \code{polydegree}.
@@ -89,7 +87,7 @@
 #'
 #' # 1) Varying-knots with single-pop GA
 #' g1 <- gareg_knots(
-#'   y, t, family = "gaussian",
+#'   y, t,
 #'   minDist = 5,
 #'   gaMethod = "cptga",
 #'   cptgactrl = cptgaControl(popSize = 150, pcrossover = 0.9, maxgen = 500)
@@ -98,15 +96,15 @@
 #'
 #' # 2) Fixed knots (operators auto-injected unless overridden)
 #' g2 <- gareg_knots(
-#'   y, t, family = "gaussian",
-#'   fixedknots = c(40, 80),
+#'   y, t,
+#'   fixedknots = 5,
 #'   minDist = 5
 #' )
 #' summary(g2)
 #'
 #' # 3) Island GA with island-specific controls
 #' g3 <- gareg_knots(
-#'   y, t, family = "gaussian",
+#'   y, t,
 #'   gaMethod = "cptgaisl",
 #'   minDist = 6,
 #'   cptgactrl = cptgaControl(engine = "cptgaisl",
@@ -120,7 +118,6 @@
 gareg_knots = function(y,
                        t,
                        X=NULL,
-                       family,
                        ObjFunc=NULL,
                        fixedknots=NULL,
                        minDist=3,
@@ -199,21 +196,26 @@ gareg_knots = function(y,
 
   GA.res <- do.call(ga_fun, ga_args)
 
-  regMethod_str <- if (missing(family)) "unspecified" else as.character(substitute(family))
-
   object <- new("gareg",
                 call        = call,
-                regMethod   = regMethod_str,
                 N           = n,
                 objFunc     = ObjFunc,
                 gaMethod    = ga_name,
                 gaFit       = GA.res,
-                fixedknots  = if (is.null(fixedknots)) numeric() else as.numeric(fixedknots),
-                minDist     = as.numeric(minDist),
-                polydegree  = as.numeric(polydegree))
+                fixedknots  = fixedknots,
+                minDist     = minDist,
+                polydegree  = polydegree,
+                bestFitness = GA.res@overbestfit,
+                bestChrom   = GA.res@overbestchrom)
+
+  mhat <- object@bestnumbsol <- object@bestChrom[1]
+  if(mhat == 0){
+    object@bestsol <- NULL
+  }else{
+    object@bestsol <- object@bestChrom[2:(1+mhat)]
+  }
 
   return(object)
-
 }
 
 

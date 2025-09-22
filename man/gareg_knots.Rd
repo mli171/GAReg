@@ -8,7 +8,6 @@ gareg_knots(
   y,
   t,
   X = NULL,
-  family,
   ObjFunc = NULL,
   fixedknots = NULL,
   minDist = 3,
@@ -28,9 +27,6 @@ kept for API symmetry; not directly used by the backend.}
 
 \item{X}{Optional matrix of additional covariates (ignored by the default
 objectives, but available to custom objectives).}
-
-\item{family}{Character string describing the model family used upstream
-(e.g., \code{"gaussian"}). Stored for bookkeeping/printing.}
 
 \item{ObjFunc}{Objective function or its name. If \code{NULL}, a default
 is chosen:
@@ -73,7 +69,7 @@ does not accept \code{...}, unknown arguments are silently dropped
 An object of class \code{"gareg"} with (key slots):
 \itemize{
   \item \code{call}, \code{method} (\code{"varyknots"} or \code{"fixknots"}),
-        \code{regMethod}, \code{family}, \code{N}.
+        \code{regMethod}, \code{N}.
   \item \code{objFunc}, \code{gaMethod}, \code{gaFit} (the GA result of
         class \code{"cptga"} or \code{"cptgaisl"}), \code{ctrl}.
   \item \code{fixedknots}, \code{minDist}, \code{polydegree}.
@@ -121,7 +117,7 @@ t <- seq_len(N)
 
 # 1) Varying-knots with single-pop GA
 g1 <- gareg_knots(
-  y, t, family = "gaussian",
+  y, t,
   minDist = 5,
   gaMethod = "cptga",
   cptgactrl = cptgaControl(popSize = 150, pcrossover = 0.9, maxgen = 500)
@@ -130,15 +126,15 @@ summary(g1)
 
 # 2) Fixed knots (operators auto-injected unless overridden)
 g2 <- gareg_knots(
-  y, t, family = "gaussian",
-  fixedknots = c(40, 80),
+  y, t,
+  fixedknots = 5,
   minDist = 5
 )
 summary(g2)
 
 # 3) Island GA with island-specific controls
 g3 <- gareg_knots(
-  y, t, family = "gaussian",
+  y, t,
   gaMethod = "cptgaisl",
   minDist = 6,
   cptgactrl = cptgaControl(engine = "cptgaisl",

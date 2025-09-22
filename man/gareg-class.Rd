@@ -22,10 +22,6 @@ backend fit and a normalized summary of the best solution.
 
 \item{\code{method}}{character. One of "varyknots", "fixknots", "subset", "cptdetect".}
 
-\item{\code{regMethod}}{character. Modeling backend label (e.g., "unspecified").}
-
-\item{\code{family}}{character. Model family used (e.g., "gaussian") or "unspecified".}
-
 \item{\code{N}}{numeric. Length of the response vector.}
 
 \item{\code{objFunc}}{functionOrNULL. Objective function used.}
@@ -50,7 +46,9 @@ backend fit and a normalized summary of the best solution.
 
 \item{\code{bestChrom}}{numeric. Raw best chromosome returned by the backend.}
 
-\item{\code{bestsol}}{listOrNULL. Normalized best solution (e.g., list(type="changepoint", m=..., knots=...) or type="subset").}
+\item{\code{bestnumbsol}}{numeric. Count of selected elements (e.g., m for knots).}
+
+\item{\code{bestsol}}{numericOrCharacter. For knots: the m knot locations; for subset: mask/indices/names.}
 }}
 
 \seealso{

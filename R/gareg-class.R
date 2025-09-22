@@ -10,6 +10,7 @@
 NULL
 
 setClassUnion("numericOrNULL", members = c("numeric", "NULL"))
+setClassUnion("numericOrChara", members = c("numeric", "character"))
 setClassUnion("listOrNULL", members = c("list", "NULL"))
 setClassUnion("functionOrNULL", c("function","NULL"))
 setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
@@ -22,8 +23,6 @@ setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
 #'
 #' @slot call language. The original call.
 #' @slot method character. One of "varyknots", "fixknots", "subset", "cptdetect".
-#' @slot regMethod character. Modeling backend label (e.g., "unspecified").
-#' @slot family character. Model family used (e.g., "gaussian") or "unspecified".
 #' @slot N numeric. Length of the response vector.
 #' @slot objFunc functionOrNULL. Objective function used.
 #' @slot gaMethod character. GA engine name ("cptga" or "cptgaisl").
@@ -36,8 +35,8 @@ setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
 #' @slot featureNames character. Candidate feature names (subset tasks).
 #' @slot bestFitness numeric. Best fitness value found.
 #' @slot bestChrom numeric. Raw best chromosome returned by the backend.
-#' @slot bestsol listOrNULL. Normalized best solution (e.g., list(type="changepoint", m=..., knots=...) or type="subset").
-#'
+#' @slot bestnumbsol numeric. Count of selected elements (e.g., m for knots).
+#' @slot bestsol numericOrCharacter. For knots: the m knot locations; for subset: mask/indices/names.
 #' @seealso \link{gareg_knots}, \link{cptgaControl}
 #' @exportClass gareg
 setClass(
@@ -45,8 +44,6 @@ setClass(
   slots = c(
     call        = "language",
     method      = "character",
-    regMethod   = "character",
-    family      = "character",
     N           = "numeric",
     objFunc     = "functionOrNULL",
     gaMethod    = "character",
@@ -59,22 +56,23 @@ setClass(
     # best subset
     subsetSpec  = "listOrNULL",
     featureNames= "character",
+    # general results
     bestFitness = "numeric",
     bestChrom   = "numeric",
-    bestsol     = "numeric"
+    bestnumbsol = "numeric",
+    bestsol     = "numericOrChara"
   ),
   prototype = list(
     method       = "varyknots",
-    regMethod    = "unspecified",
-    family       = "unspecified",
-    fixedknots   = numeric(),
-    minDist      = NA_real_,
+    fixedknots   = NA_real_,
+    minDist      = numeric(),
     polydegree   = NA_real_,
     subsetSpec   = NULL,
     featureNames = character(),
     ctrl         = NULL,
-    bestFitness  = NA_real_,
+    bestFitness  = numeric(),
     bestChrom    = numeric(),
+    bestnumbsol  = numeric(),
     bestsol      = numeric()
   ),
   package = "GAReg"
@@ -91,7 +89,6 @@ setMethod("print", "gareg", function(x, ...) str(x))
 )
 
 .s <- function(x, nm, default = NA) {
-  if (is.null(x) || !methods::is(x, "S4")) return(default)
   if (nm %in% methods::slotNames(x)) methods::slot(x, nm) else default
 }
 
@@ -100,16 +97,15 @@ setMethod("show", "gareg", function(object) {
   cat(.header_from_method(object@method), "\n", sep = "")
   cat("###############################################\n")
   cat("Call: "); print(object@call)
-  cat("regMethod: ", object@regMethod,
-      "   family: ", object@family,
-      "   gaMethod: ", object@gaMethod, "\n", sep = "")
+  cat("   gaMethod: ", object@gaMethod, "\n", sep = "")
   cat("N: ", object@N, "\n", sep = "")
   if (!is.null(object@gaFit)) cat("\nUse summary() for GA settings and best solution.\n")
 })
 
 
-#' @export
-print.summary.gareg <- function(x, digits = getOption("digits"), max_display = 5, ...) {
+#' @keywords internal
+#' @noRd
+print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5, ...) {
   gf <- x@gaFit
   cat("###############################################\n")
   cat(.header_from_method(x@method), "\n", sep = "")
@@ -118,6 +114,7 @@ print.summary.gareg <- function(x, digits = getOption("digits"), max_display = 5
   cat("   Settings: \n")
   cat("   Population size         = ", .s(gf, "popSize", "NA"), "\n", sep = "")
   cat("   Number of generations   = ", .s(gf, "count", "NA"), "\n", sep = "")
+  cat("   GA convergence          = ", .s(gf, "convg", FALSE), "\n", sep = "")
   cat("   Crossover probability   = ", format(.s(gf, "pcrossover", NA), digits=digits), "\n", sep = "")
   cat("   Mutation probability    = ", format(.s(gf, "pmutation",  NA), digits=digits), "\n", sep = "")
   cat("   Changepoint probability = ", format(.s(gf, "pchangepoint",NA), digits=digits), "\n", sep = "")
@@ -134,25 +131,66 @@ print.summary.gareg <- function(x, digits = getOption("digits"), max_display = 5
     }
   }
 
-  cat("\n##### Best (normalized) ##### \n")
-  if (is.null(x@best)) {
-    cat("   <no normalized best stored>\n")
-  } else if (identical(x@best$type, "changepoint")) {
-    m <- x@best$m; tau <- x@best$knots
-    cat("   Fitness =", format(x@bestFitness, digits=digits), "\n")
-    cat("   m =", m, "\n")
-    cat("   knots =", if (length(tau)) paste(tau, collapse=" ") else "<none>", "\n")
-  } else if (identical(x@best$type, "subset")) {
-    vv <- x@best$vars; k <- x@best$k
-    cat("   Fitness =", format(x@bestFitness, digits=digits), "\n")
-    cat("   k =", k, "\n")
-    cat("   subset =", if (length(vv)) paste(vv, collapse=", ") else "<none>", "\n")
+  cat("\n##### Best ##### \n")
+  m  <- x@bestnumbsol
+  bs <- x@bestsol
+
+  if (length(bs) == 0L || all(is.na(bs))) {
+    cat("   <no best solution stored>\n")
+
+  } else if (x@method %in% c("varyknots","fixknots","cptdetect")) {
+    ## Knots-style: bestnumbsol = m, bestsol = tau vector
+    m_int <- as.integer(if (length(m)) m[1] else NA_integer_)
+    tau   <- as.integer(bs)
+    if (!is.na(m_int) && length(tau) >= m_int) {
+      tau <- tau[seq_len(m_int)]
+    }
+    cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
+    cat("   m =", if (is.na(m_int)) 0L else m_int, "\n")
+    cat("   knots =", if (length(tau)) paste(tau, collapse = " ") else "<none>", "\n")
+
+  } else if (identical(x@method, "subset")) {
+    ## Subset-style: bestsol is either a 0/1 mask, indices, or names
+    fn <- x@featureNames
+
+    if (is.numeric(bs) && length(fn) > 0L && length(bs) == length(fn) && all(bs %in% c(0,1))) {
+      # 0/1 mask
+      idx <- which(bs != 0)
+      k   <- length(idx)
+      nm  <- if (k) fn[idx] else character(0)
+      cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
+      cat("   k =", k, "\n")
+      cat("   subset =", if (k) paste(nm, collapse = ", ") else "<none>", "\n")
+
+    } else if (is.numeric(bs)) {
+      # integer indices
+      idx <- sort(unique(as.integer(bs[is.finite(bs) & bs > 0])))
+      k   <- length(idx)
+      nm  <- if (length(fn) >= max(c(idx, 0))) fn[idx] else as.character(idx)
+      cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
+      cat("   k =", k, "\n")
+      cat("   subset =", if (k) paste(nm, collapse = ", ") else "<none>", "\n")
+
+    } else if (is.character(bs)) {
+      # feature names directly
+      nm <- unique(bs[nzchar(bs)])
+      k  <- length(nm)
+      cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
+      cat("   k =", k, "\n")
+      cat("   subset =", if (k) paste(nm, collapse = ", ") else "<none>", "\n")
+
+    } else {
+      cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
+      cat("   bestsol =", paste(bs, collapse = " "), "\n")
+    }
+
   } else {
-    cat("   type =", x@best$type, " (custom)\n")
-    cat("   Fitness =", format(x@bestFitness, digits=digits), "\n")
+    ## Fallback: just show the vector
+    cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
+    cat("   bestsol =", paste(bs, collapse = " "), "\n")
   }
 
   invisible(x)
 }
 
-setMethod("summary", "gareg", function(object, ...) print.summary.gareg(object, ...))
+setMethod("summary", "gareg", function(object, ...) print_summary_gareg(object, ...))
