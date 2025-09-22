@@ -139,10 +139,12 @@ gareg_knots = function(y,
   cptgactrl <- if (is.null(cptgactrl)) {
     cptgaControl(engine = engine)
   } else if (inherits(cptgactrl, "cptgaControl")) {
-    cptgactrl
+    cptgaControl(.list = unclass(cptgactrl), engine = engine)
   } else if (is.list(cptgactrl)) {
     cptgaControl(.list = cptgactrl, engine = engine)
-  } else stop("'cptgactrl' must be cptgaControl() or a named list.")
+  } else {
+    stop("'cptgactrl' must be cptgaControl() or a named list.")
+  }
 
   if (!missing(monitoring) && !is.null(monitoring)) cptgactrl$monitoring <- monitoring
   if (!missing(seed)       && !is.null(seed))       cptgactrl$seed       <- seed
@@ -367,12 +369,7 @@ fixknotsBIC <- function(knot.bin, plen=0, y, x_base=NULL, fixedknots, polydegree
 #' @export
 cptgaControl <- function(..., .list = NULL, .persist = FALSE,
                          .env = parent.frame(), .validate = TRUE,
-                         engine = c("cptga","cptgaisl")) {
-  engine <- match.arg(engine)
-  defaults_name <- if (engine=="cptga") ".cptga.default" else ".cptgaisl.default"
-  if (!exists(defaults_name, envir = .env, inherits = TRUE))
-    stop(sprintf("`%s` not found in target environment.", defaults_name))
-  current <- get(defaults_name, envir = .env, inherits = TRUE)
+                         engine = NULL) {
 
   overrides <- list(...)
   if (!is.null(.list)) {
@@ -382,9 +379,21 @@ cptgaControl <- function(..., .list = NULL, .persist = FALSE,
   if (length(overrides) == 1L && is.list(overrides[[1]]) && !length(names(overrides)))
     overrides <- overrides[[1]]
 
-  if (!length(overrides)) return(structure(current, class=c("cptgaControl","list")))
+  if (!is.null(engine)) {
+    engine <- match.arg(engine, c("cptga","cptgaisl"))
+  } else {
+    nm <- names(overrides)
+    engine <- if (length(nm) && any(c("numIslands","maxMig") %in% nm)) "cptgaisl" else "cptga"
+  }
 
-  if (is.null(names(overrides)) || any(names(overrides)==""))
+  defaults_name <- if (engine == "cptga") ".cptga.default" else ".cptgaisl.default"
+  if (!exists(defaults_name, envir = .env, inherits = TRUE))
+    stop(sprintf("`%s` not found in target environment.", defaults_name))
+  current <- get(defaults_name, envir = .env, inherits = TRUE)
+
+  if (!length(overrides)) return(structure(current, class = c("cptgaControl","list")))
+
+  if (is.null(names(overrides)) || any(names(overrides) == ""))
     stop("All control overrides must be *named*.")
 
   unknown <- setdiff(names(overrides), names(current))
@@ -397,9 +406,9 @@ cptgaControl <- function(..., .list = NULL, .persist = FALSE,
 
   if (.persist) {
     assign(defaults_name, updated, envir = .env)
-    invisible(structure(updated, class=c("cptgaControl","list")))
+    invisible(structure(updated, class = c("cptgaControl","list")))
   } else {
-    structure(updated, class=c("cptgaControl","list"))
+    structure(updated, class = c("cptgaControl","list"))
   }
 }
 

@@ -10,7 +10,7 @@ cptgaControl(
   .persist = FALSE,
   .env = parent.frame(),
   .validate = TRUE,
-  engine = c("cptga", "cptgaisl")
+  engine = NULL
 )
 }
 \arguments{

@@ -20,7 +20,7 @@ backend fit and a normalized summary of the best solution.
 
 \item{\code{call}}{language. The original call.}
 
-\item{\code{method}}{character. One of "varyknots", "fixknots", "subset", "cptdetect".}
+\item{\code{method}}{character. One of "varyknots", "fixknots", "subset".}
 
 \item{\code{N}}{numeric. Length of the response vector.}
 

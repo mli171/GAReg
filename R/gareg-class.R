@@ -22,7 +22,7 @@ setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
 #' backend fit and a normalized summary of the best solution.
 #'
 #' @slot call language. The original call.
-#' @slot method character. One of "varyknots", "fixknots", "subset", "cptdetect".
+#' @slot method character. One of "varyknots", "fixknots", "subset".
 #' @slot N numeric. Length of the response vector.
 #' @slot objFunc functionOrNULL. Objective function used.
 #' @slot gaMethod character. GA engine name ("cptga" or "cptgaisl").
