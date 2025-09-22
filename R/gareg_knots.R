@@ -132,6 +132,7 @@ gareg_knots = function(y,
   dots <- list(...)
   n <- length(y)
 
+  gareg_method <- if (is.null(fixedknots)) "varyknots" else "fixknots"
   ga_name <- if (is.function(gaMethod)) deparse(substitute(gaMethod)) else as.character(gaMethod)
   ga_fun  <- if (is.function(gaMethod)) gaMethod else get(gaMethod, mode = "function")
   engine  <- if (tolower(ga_name) == "cptgaisl") "cptgaisl" else "cptga"
@@ -200,6 +201,7 @@ gareg_knots = function(y,
 
   object <- new("gareg",
                 call        = call,
+                method      = gareg_method,
                 N           = n,
                 objFunc     = ObjFunc,
                 gaMethod    = ga_name,

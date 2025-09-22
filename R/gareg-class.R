@@ -63,7 +63,7 @@ setClass(
     bestsol     = "numericOrChara"
   ),
   prototype = list(
-    method       = "varyknots",
+    method       = character(),
     fixedknots   = NA_real_,
     minDist      = numeric(),
     polydegree   = NA_real_,
