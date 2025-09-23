@@ -26,9 +26,9 @@ backend fit and a normalized summary of the best solution.
 
 \item{\code{objFunc}}{functionOrNULL. Objective function used.}
 
-\item{\code{gaMethod}}{character. GA engine name ("cptga" or "cptgaisl").}
+\item{\code{gaMethod}}{character. GA engine name ("cptga","cptgaisl","ga","gaisl").}
 
-\item{\code{gaFit}}{cptgaORcptgaislORNULL. Backend GA fit object or NULL.}
+\item{\code{gaFit}}{Backend GA fit object (union of classes from GA and changepointGA).}
 
 \item{\code{ctrl}}{listOrNULL. Control list used to run the GA.}
 

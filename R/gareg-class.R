@@ -13,7 +13,7 @@ setClassUnion("numericOrNULL", members = c("numeric", "NULL"))
 setClassUnion("numericOrChara", members = c("numeric", "character"))
 setClassUnion("listOrNULL", members = c("list", "NULL"))
 setClassUnion("functionOrNULL", c("function","NULL"))
-setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
+setClassUnion("gaBackendORNULL", c("cptga","cptgaisl","ga","gaisl","NULL"))
 
 #' GAReg result container
 #'
@@ -25,8 +25,8 @@ setClassUnion("cptgaORcptgaislORNULL", c("cptga", "cptgaisl", "NULL"))
 #' @slot method character. One of "varyknots", "fixknots", "subset".
 #' @slot N numeric. Length of the response vector.
 #' @slot objFunc functionOrNULL. Objective function used.
-#' @slot gaMethod character. GA engine name ("cptga" or "cptgaisl").
-#' @slot gaFit cptgaORcptgaislORNULL. Backend GA fit object or NULL.
+#' @slot gaMethod character. GA engine name ("cptga","cptgaisl","ga","gaisl").
+#' @slot gaFit Backend GA fit object (union of classes from GA and changepointGA).
 #' @slot ctrl listOrNULL. Control list used to run the GA.
 #' @slot fixedknots numericOrNULL. Fixed knot locations (NULL or numeric()).
 #' @slot minDist numeric. Minimum distance between adjacent changepoints.
@@ -47,7 +47,7 @@ setClass(
     N           = "numeric",
     objFunc     = "functionOrNULL",
     gaMethod    = "character",
-    gaFit       = "cptgaORcptgaislORNULL",
+    gaFit       = "gaBackendORNULL",
     ctrl        = "listOrNULL",
     # knots
     fixedknots  = "numericOrNULL",
@@ -82,10 +82,10 @@ setMethod("print", "gareg", function(x, ...) str(x))
 
 .header_from_method <- function(m) switch(
   m,
-  subset    = "# Best Subset Variable Selection via GA       #",
-  varyknots = "# Varying Knots Detection via GA              #",
-  fixknots  = "# Fixed Knots Detection via GA                #",
-  "# GAReg Result                                      #"
+  subset    = "# Best Subset Variable Selection via changepointGA       #",
+  varyknots = "# Varying Knots Detection via changepointGA              #",
+  fixknots  = "# Fixed Knots Detection via GA                           #",
+  "# GAReg Result                                                 #"
 )
 
 .s <- function(x, nm, default = NA) {
@@ -107,9 +107,9 @@ setMethod("show", "gareg", function(object) {
 #' @noRd
 print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5, ...) {
   gf <- x@gaFit
-  cat("###############################################\n")
+  cat("##########################################################\n")
   cat(.header_from_method(x@method), "\n", sep = "")
-  cat("###############################################\n")
+  cat("##########################################################\n")
 
   cat("   Settings: \n")
   cat("   Population size         = ", .s(gf, "popSize", "NA"), "\n", sep = "")
@@ -169,7 +169,8 @@ print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5
       nm  <- if (length(fn) >= max(c(idx, 0))) fn[idx] else as.character(idx)
       cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
       cat("   k =", k, "\n")
-      cat("   subset =", if (k) paste(nm, collapse = ", ") else "<none>", "\n")
+      cat("   Subset Id =", format(x@bestsol, digits = digits), "\n")
+      cat("   Best subset =", if (k) paste(nm, collapse = ", ") else "<none>", "\n")
 
     } else if (is.character(bs)) {
       # feature names directly

@@ -33,7 +33,8 @@ Imports:
     stats,
     utils,
     methods, 
-    changepointGA
+    changepointGA,
+    GA
 URL: https://github.com/mli171/GAReg
 BugReports: https://github.com/mli171/GAReg/issues
 Suggests: 

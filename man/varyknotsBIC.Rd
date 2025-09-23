@@ -4,10 +4,10 @@
 \alias{varyknotsBIC}
 \title{BIC Objective for Varying-Knots GA}
 \usage{
-varyknotsBIC(knot.bin, plen = 0, y, x_base = NULL, polydegree = 3L)
+varyknotsBIC(knot_bin, plen = 0, y, x_base = NULL, polydegree = 3L)
 }
 \arguments{
-\item{knot.bin}{Numeric vector; GA chromosome with \eqn{m} and ordered knots.}
+\item{knot_bin}{Numeric vector; GA chromosome with \eqn{m} and ordered knots.}
 
 \item{plen}{Unused placeholder (kept for compatibility).}
 
@@ -23,7 +23,7 @@ Numeric scalar: BIC value (lower is better).
 \description{
 Computes a BIC-style objective for a chromosome encoding \emph{varying}
 changepoints/knots. The chromosome stores the number of knots \eqn{m} in
-\code{knot.bin[1]} and the ordered knot locations in \code{knot.bin[2:(m+1)]}.
+\code{knot_bin[1]} and the ordered knot locations in \code{knot_bin[2:(m+1)]}.
 A spline basis of degree \code{polydegree} is built on \code{1:n}, with an
 intercept and optional \code{x_base}, and the BIC is returned.
 }

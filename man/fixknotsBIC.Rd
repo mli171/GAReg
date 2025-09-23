@@ -4,12 +4,12 @@
 \alias{fixknotsBIC}
 \title{BIC Objective for Fixed-Knots GA}
 \usage{
-fixknotsBIC(knot.bin, plen = 0, y, x_base = NULL, fixedknots, polydegree = 3L)
+fixknotsBIC(knot_bin, plen = 0, y, x_base = NULL, fixedknots, polydegree = 3L)
 }
 \arguments{
-\item{knot.bin}{Numeric vector; GA chromosome with ordered knots.}
+\item{knot_bin}{Numeric vector; GA chromosome with ordered knots.}
 
-\item{plen}{Unused placeholder (kept for compatibility).}
+\item{plen}{Unused placeholder (kept for \code{changepointGA} compatibility).}
 
 \item{y}{Numeric response vector.}
 
@@ -25,7 +25,7 @@ Numeric scalar: BIC value (lower is better).
 \description{
 Computes a BIC-style objective for a chromosome when the number of knots
 is \emph{fixed} at \code{fixedknots}. The chromosome places those many
-ordered knot locations in \code{knot.bin[2:(fixedknots+1)]}. A spline basis
+ordered knot locations in \code{knot_bin[2:(fixedknots+1)]}. A spline basis
 of degree \code{polydegree} is built on \code{1:n}, with an intercept and
 optional \code{x_base}, and the BIC is returned.
 }
