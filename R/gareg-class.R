@@ -82,9 +82,9 @@ setMethod("print", "gareg", function(x, ...) str(x))
 
 .header_from_method <- function(m) switch(
   m,
-  subset    = "# Best Subset Variable Selection via changepointGA       #",
+  subset    = "# Best Subset Variable Selection via GA                  #",
   varyknots = "# Varying Knots Detection via changepointGA              #",
-  fixknots  = "# Fixed Knots Detection via GA                           #",
+  fixknots  = "# Fixed Knots Detection via changepointGA                #",
   "# GAReg Result                                                 #"
 )
 
