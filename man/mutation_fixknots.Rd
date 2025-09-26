@@ -25,5 +25,5 @@ Replaces a child with a fresh feasible sample having the same \eqn{m},
 drawn by \link{selectTau_uniform_exact}.
 }
 \seealso{
-\link{crossover_fixknots}, \link{crossover_fixknots_2}
+\link{crossover_fixknots_2}
 }

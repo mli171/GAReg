@@ -444,61 +444,62 @@ Popinitial_fixknots <- function(popSize, prange=NULL, N, minDist, Pb, mmax, lmax
   return(pop)
 }
 
-#' Crossover Operator (Fixed-Knots, Local Swap)
+#' Crossover Operator (Fixed-\eqn{m}) with Feasibility-First Restarts
 #'
 #' @description
-#' Attempts to inject mom-only knot locations into the child's vector while
-#' preserving feasibility (\code{diff(child) >= minDist}) and using only parent
-#' knots. Operates on fixed-\eqn{m} chromosomes.
+#' Produces a child chromosome from two fixed-\eqn{m} parents (same number of
+#' knots) by alternately sampling candidate knot locations from the parents and
+#' enforcing the spacing constraint \code{diff(child) > minDist}. If a conflict
+#' is encountered, the routine restarts the construction up to a small cap.
 #'
-#' @param mom,dad Parent chromosomes (integer vectors).
-#' @param prange Optional hyperparameter range (unused here).
-#' @param minDist Integer minimum spacing constraint.
-#' @param lmax Chromosome length.
-#' @param N Series length (used to place \code{N+1} sentinel).
+#' @details
+#' Let \code{mom} and \code{dad} be chromosomes of the form
+#' \code{c(m, tau_1, ..., tau_m, ...)}. This operator:
+#' \enumerate{
+#'   \item Initializes an empty child of size \eqn{m}.
+#'   \item Picks the first knot at random from \code{mom} or \code{dad}.
+#'   \item For each subsequent position \eqn{i=2,\dots,m}, considers the
+#'         pair \code{(mom[i], dad[i])} and chooses the first value that
+#'         maintains the spacing constraint relative to the previously chosen
+#'         knot (\code{> minDist}); if both work, one is chosen at random.
+#'   \item If no feasible choice exists at some step, the construction restarts
+#'         from the first position (up to a small cap governed internally by
+#'         \code{up_tol}).
+#' }
+#' The result is written back as a full-length chromosome with the sentinel
+#' \code{N+1} in position \code{m+2}, and zeros elsewhere.
 #'
-#' @return Child chromosome vector (length \code{lmax}).
+#' @param mom,dad Integer vectors encoding parent chromosomes:
+#'   first entry \eqn{m} (number of changepoints), followed by \eqn{m} ordered
+#'   knot locations.
+#' @param prange Unused placeholder (kept for compatibility with other GA
+#'   operators). Default \code{NULL}.
+#' @param minDist Integer; minimum spacing between adjacent knots in the child.
+#' @param lmax Integer; chromosome length (number of rows in the population
+#'   matrix).
+#' @param N Integer; series length. Used to place the sentinel \code{N+1} at
+#'   position \code{m+2}.
 #'
-#' @seealso \link{crossover_fixknots_2}, \link{mutation_fixknots}
+#' @return
+#' An integer vector of length \code{lmax} encoding the child chromosome:
+#' \code{c(m, child_knots, N+1, 0, 0, ...)}.
+#'
+#' @seealso
+#' \link{crossover_fixknots_2}, \link{mutation_fixknots},
+#' \link{selectTau_uniform_exact}, \link{Popinitial_fixknots},
+#' \link{gareg_knots}
+#'
+#' @examples
+#' \dontrun{
+#' N <- 120; lmax <- 30; minDist <- 5
+#' m <- 3
+#' mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m)); mom[m+2] <- N + 1
+#' dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m)); dad[m+2] <- N + 1
+#' child <- crossover_fixknots_2(mom, dad, minDist = minDist, lmax = lmax, N = N)
+#' child
+#' }
+#'
 #' @export
-crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
-
-  output <- rep(0, lmax)
-
-  m.child <- as.integer(dad[1])
-
-  child <- dad[2:(m.child+1)]
-  mom_only <- setdiff(mom[2:(m.child+1)], dad[2:(m.child+1)])
-
-  if (length(mom_only) > 0L) {
-    mom_only <- sample(mom_only, length(mom_only))
-    for (v in mom_only) {
-      if (runif(1) >= 0.5) next
-      diffs <- abs(child - v)
-      order_j <- sample(order(diffs),
-                        size=sample(1:length(diffs), size=1) # number of swap from mom
-      )
-      placed <- FALSE
-      for (j in order_j) {
-        cand <- child
-        cand[j] <- v
-        cand <- sort(cand)
-        # cat("\n cand=", cand)
-        if (!all(diff(cand) >= minDist)) next
-        ok <- TRUE
-        if (ok) { child <- cand; placed <- TRUE; break }
-        # cat("\n final child=", child)
-      }
-    }
-  }
-
-  output[1] <- m.child
-  output[2:(m.child+1)] <- child
-  output[m.child+2] <- N+1
-
-  return(output)
-}
-
 crossover_fixknots_2 <- function(mom, dad, prange=NULL, minDist, lmax, N){
 
   up_tol <- 30
@@ -605,7 +606,7 @@ selectTau_uniform_exact <- function(N, m, minDist, lmax){
 #'
 #' @return New feasible chromosome with the same \eqn{m}.
 #'
-#' @seealso \link{crossover_fixknots}, \link{crossover_fixknots_2}
+#' @seealso \link{crossover_fixknots_2}
 #' @export
 mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N) {
 
@@ -627,7 +628,6 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
 #'
 #' @seealso \link{cptgaControl}, \link{.cptgaisl.default}
 #' @keywords internal
-#' @noRd
 .cptga.default <- list(
   popSize = 200,
   pcrossover = 0.95,
@@ -661,7 +661,6 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
 #'
 #' @seealso \link{cptgaControl}, \link{.cptga.default}
 #' @keywords internal
-#' @noRd
 .cptgaisl.default <- list(
   popSize = 200,
   numIslands = 5,
