@@ -145,9 +145,9 @@ print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5
     if (!is.na(m_int) && length(tau) >= m_int) {
       tau <- tau[seq_len(m_int)]
     }
-    cat("   Fitness =", format(x@bestFitness, digits = digits), "\n")
-    cat("   m =", if (is.na(m_int)) 0L else m_int, "\n")
-    cat("   knots =", if (length(tau)) paste(tau, collapse = " ") else "<none>", "\n")
+    cat("   Fitness   =", format(x@bestFitness, digits = digits), "\n")
+    cat("   m         =", if (is.na(m_int)) 0L else m_int, "\n")
+    cat("   knots     =", if (length(tau)) paste(tau, collapse = " ") else "<none>", "\n")
 
   } else if (identical(x@method, "subset")) {
     ## Subset-style: bestsol is either a 0/1 mask, indices, or names

@@ -38,6 +38,7 @@ Imports:
 URL: https://github.com/mli171/GAReg
 BugReports: https://github.com/mli171/GAReg/issues
 Suggests: 
+    MASS,
     knitr,
     rmarkdown
 Encoding: UTF-8

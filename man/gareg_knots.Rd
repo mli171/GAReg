@@ -6,12 +6,11 @@
 \usage{
 gareg_knots(
   y,
-  t,
-  X = NULL,
+  x,
   ObjFunc = NULL,
   fixedknots = NULL,
-  minDist = 3,
-  polydegree = 3,
+  minDist = 3L,
+  polydegree = 3L,
   gaMethod = "cptga",
   cptgactrl = NULL,
   monitoring = FALSE,
@@ -22,11 +21,8 @@ gareg_knots(
 \arguments{
 \item{y}{Numeric vector of responses (length \code{N}).}
 
-\item{t}{Optional index or time vector aligned with \code{y}. Currently
+\item{x}{Optional index or time vector aligned with \code{y}. Currently
 kept for API symmetry; not directly used by the backend.}
-
-\item{X}{Optional matrix of additional covariates (ignored by the default
-objectives, but available to custom objectives).}
 
 \item{ObjFunc}{Objective function or its name. If \code{NULL}, a default
 is chosen:
@@ -147,6 +143,6 @@ summary(g3)
 }
 \seealso{
 \code{\link{cptgaControl}}, \code{changepointGA::cptga},
-  \code{changepointGA::cptgaisl}, \code{\link{fixknotsBIC}},
-  \code{\link{varyknotsBIC}}
+  \code{changepointGA::cptgaisl}, \code{\link{fixknotsIC}},
+  \code{\link{varyknotsIC}}
 }
