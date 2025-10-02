@@ -1,19 +1,69 @@
 ---
-title: "vignette"
-output: rmarkdown::html_vignette
+title: "A brief guide to GAReg"
+author: "Mo Li, QiQi Lu, Robert Lund, Xueheng Shi"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output: 
+  rmarkdown::html_vignette:
+    number_sections: false
+    toc: true
 vignette: >
-  %\VignetteIndexEntry{vignette}
+  %\VignetteIndexEntry{A brief guide to changepointGA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
 )
 ```
+
+
+## Overview
+
+**GAreg** implements genetic algorithm (GA) optimization for three core statistical workflows where discrete model structure must be learned from data:
+
+1. Best subset variable selection – choose a parsimonious set of predictors under information or validation criteria.
+
+2. Changepoint detection – estimate the number and locations of structural breaks (a.k.a. knots) in regression or time series.
+
+3. Optimal spline knot selection – place interior knots for splines or piecewise polynomials to balance fit and smoothness.
+
+The package provides a consistent GA interface, unified S4 results (gareg), and penalty-aware objectives (e.g., MDL, BIC/AIC, cross‑validation). It supports both varying‑knot and fixed‑knot modes, minimum spacing constraints, and unbalanced designs.
 
 ```{r setup}
 library(GAReg)
 ```
+
+
+## Best subset variable selection
+
+
+## Changepoint detection
+
+
+## Optimal spline knot selection
+
+### Example data set
+
+```{r}
+library(MASS)
+
+data(mcycle)
+head(mcycle)
+
+y = mcycle$accel
+x = mcycle$times
+x_unique = unique(x)
+```
+
+## Reproducibility
+
+```{r}
+sessionInfo()
+```
+
+## References
