@@ -2,7 +2,7 @@
 
 export(Popinitial_fixknots)
 export(cptgaControl)
-export(crossover_fixknots_2)
+export(crossover_fixknots)
 export(fixknotsIC)
 export(gareg_knots)
 export(gareg_subset)

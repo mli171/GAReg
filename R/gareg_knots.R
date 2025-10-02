@@ -52,7 +52,7 @@
 #' \strong{Fix-knots operators.}
 #' When \code{fixedknots} is provided and the control does not already
 #' override them, the following operators are injected:
-#' \code{Popinitial_fixknots}, \code{crossover_fixknots_2},
+#' \code{Popinitial_fixknots}, \code{crossover_fixknots},
 #' \code{mutation_fixknots}.
 #'
 #' @return An object of class \code{"gareg"} with (key slots):
@@ -174,7 +174,7 @@ gareg_knots = function(y,
     if (is.null(cptgactrl$popInitialize) || identical(cptgactrl$popInitialize, .cptga.default$popInitialize))
       cptgactrl$popInitialize <- "Popinitial_fixknots"
     if (is.null(cptgactrl$crossover) || identical(cptgactrl$crossover, .cptga.default$crossover))
-      cptgactrl$crossover <- "crossover_fixknots_2"
+      cptgactrl$crossover <- "crossover_fixknots"
     if (is.null(cptgactrl$mutation) || identical(cptgactrl$mutation, .cptga.default$mutation))
       cptgactrl$mutation <- "mutation_fixknots"
   }
@@ -685,7 +685,7 @@ Popinitial_fixknots <- function(popSize, prange=NULL, N, minDist, Pb, mmax, lmax
 #' \code{c(m, child_knots, N+1, 0, 0, ...)}.
 #'
 #' @seealso
-#' \link{crossover_fixknots_2}, \link{mutation_fixknots},
+#' \link{crossover_fixknots}, \link{mutation_fixknots},
 #' \link{selectTau_uniform_exact}, \link{Popinitial_fixknots},
 #' \link{gareg_knots}
 #'
@@ -695,18 +695,22 @@ Popinitial_fixknots <- function(popSize, prange=NULL, N, minDist, Pb, mmax, lmax
 #' m <- 3
 #' mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m)); mom[m+2] <- N + 1
 #' dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m)); dad[m+2] <- N + 1
-#' child <- crossover_fixknots_2(mom, dad, minDist = minDist, lmax = lmax, N = N)
+#' child <- crossover_fixknots(mom, dad, minDist = minDist, lmax = lmax, N = N)
 #' child
 #' }
 #'
 #' @export
-crossover_fixknots_2 <- function(mom, dad, prange=NULL, minDist, lmax, N){
+crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
 
   up_tol <- 30
   output <- rep(0, lmax)
 
   m_child <- as.integer(dad[1])
   child <- rep(NA, m_child)
+
+  if (all(mom[2:(m_child+1)] == dad[2:(m_child+1)])) {
+    mom <- selectTau_uniform_exact(N, m_child, minDist, lmax)
+  }
 
   mom_tau <- mom[2:(m_child+1)]
   dad_tau <- dad[2:(m_child+1)]
@@ -723,10 +727,10 @@ crossover_fixknots_2 <- function(mom, dad, prange=NULL, minDist, lmax, N){
       tmp_co_tab <- co_tab[((i-1)*2+1):(i*2)]
       tmp_diff <- which(tmp_co_tab - tmppick > minDist)
       if(length(tmp_diff) > 1){
-        tmppick <- sample(tmp_co_tab,1)
+        tmppick <- sample(tmp_co_tab[tmp_diff],1)
         child[i] <- tmppick
       }else if(length(tmp_diff) == 1){
-        tmppick <- tmp_co_tab[tmp_diff[1]]
+        tmppick <- tmp_co_tab[tmp_diff]
         child[i] <- tmppick
       }else{
         i <- 1
@@ -806,7 +810,7 @@ selectTau_uniform_exact <- function(N, m, minDist, lmax){
 #'
 #' @return New feasible chromosome with the same \eqn{m}.
 #'
-#' @seealso \link{crossover_fixknots_2}
+#' @seealso \link{crossover_fixknots}
 #' @export
 mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N) {
 

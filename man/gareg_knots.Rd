@@ -93,7 +93,7 @@ Top-level \code{monitoring}, \code{seed}, and \code{minDist} given to
 \strong{Fix-knots operators.}
 When \code{fixedknots} is provided and the control does not already
 override them, the following operators are injected:
-\code{Popinitial_fixknots}, \code{crossover_fixknots_2},
+\code{Popinitial_fixknots}, \code{crossover_fixknots},
 \code{mutation_fixknots}.
 }
 \section{Argument precedence}{
