@@ -8,7 +8,7 @@ cptgaControl(
   ...,
   .list = NULL,
   .persist = FALSE,
-  .env = parent.frame(),
+  .env = asNamespace("GAReg"),
   .validate = TRUE,
   engine = NULL
 )

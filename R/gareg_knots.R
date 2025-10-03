@@ -45,6 +45,8 @@
 #'   \item \code{"cptga"} uses \code{.cptga.default}.
 #'   \item \code{"cptgaisl"} uses \code{.cptgaisl.default} (supports
 #'         \code{numIslands}, \code{maxMig}, etc.).
+#'   \item see other details in \link[changepointGA:cptga]{cptga} and
+#'         \link[changepointGA:cptgaisl]{cptgaisl}.
 #' }
 #' Top-level \code{monitoring}, \code{seed}, and \code{minDist} given to
 #' \code{gareg_knots()} take precedence over the control list.
@@ -81,11 +83,11 @@
 #' set.seed(1)
 #' N <- 120
 #' y <- c(rnorm(40, 0), rnorm(40, 3), rnorm(40, 0))
-#' t <- seq_len(N)
+#' x <- seq_len(N)
 #'
 #' # 1) Varying-knots with single-pop GA
 #' g1 <- gareg_knots(
-#'   y, t,
+#'   y, x,
 #'   minDist = 5,
 #'   gaMethod = "cptga",
 #'   cptgactrl = cptgaControl(popSize = 150, pcrossover = 0.9, maxgen = 500)
@@ -94,7 +96,7 @@
 #'
 #' # 2) Fixed knots (operators auto-injected unless overridden)
 #' g2 <- gareg_knots(
-#'   y, t,
+#'   y, x,
 #'   fixedknots = 5,
 #'   minDist = 5
 #' )
@@ -102,7 +104,7 @@
 #'
 #' # 3) Island GA with island-specific controls
 #' g3 <- gareg_knots(
-#'   y, t,
+#'   y, x,
 #'   gaMethod = "cptgaisl",
 #'   minDist = 6,
 #'   cptgactrl = cptgaControl(engine = "cptgaisl",
@@ -570,7 +572,7 @@ fixknotsIC <- function(knot_bin,
 #' @seealso \link{gareg_knots}, \link{.cptga.default}, \link{.cptgaisl.default}
 #' @export
 cptgaControl <- function(..., .list = NULL, .persist = FALSE,
-                         .env = parent.frame(), .validate = TRUE,
+                         .env = asNamespace("GAReg"), .validate = TRUE,
                          engine = NULL) {
 
   overrides <- list(...)
@@ -702,55 +704,61 @@ Popinitial_fixknots <- function(popSize, prange=NULL, N, minDist, Pb, mmax, lmax
 #' @export
 crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
 
-  up_tol <- 30
-  output <- rep(0, lmax)
+  up_tol <- 30L
+  max_restarts <- 50L
 
-  m_child <- as.integer(dad[1])
-  child <- rep(NA, m_child)
+  output <- rep.int(0L, lmax)
+
+  m_child <- as.integer(dad[1L])
+  child <- rep.int(NA_integer_, m_child)
 
   if (all(mom[2:(m_child+1)] == dad[2:(m_child+1)])) {
     mom <- selectTau_uniform_exact(N, m_child, minDist, lmax)
   }
 
-  mom_tau <- mom[2:(m_child+1)]
-  dad_tau <- dad[2:(m_child+1)]
-  co_tab <- as.vector(rbind(mom_tau, dad_tau))
+  mom_tau <- as.integer(mom[2L:(m_child + 1L)])
+  dad_tau <- as.integer(dad[2L:(m_child + 1L)])
+  co_tab  <- as.integer(as.vector(rbind(mom_tau, dad_tau)))
 
-  i <- 1
-  ii <- 0
+  i <- 1L
+  ii <- 0L
+  restarts <- 0L
+  tmppick <- NA_integer_
   while (i <= m_child) {
-    if(i == 1){
-      # first pick random
-      tmppick <- sample(co_tab[1:2], size=1)
-      child[1] <- tmppick
-    }else{
-      tmp_co_tab <- co_tab[((i-1)*2+1):(i*2)]
-      tmp_diff <- which(tmp_co_tab - tmppick > minDist)
-      if(length(tmp_diff) > 1){
-        tmppick <- sample(tmp_co_tab[tmp_diff],1)
+    if (i == 1L) {
+      # first pick random from first pair of mom and dad
+      tmppick   <- sample(co_tab[1:2], size = 1L)
+      child[1L] <- tmppick
+      i <- i + 1L
+    } else {
+      # pick from the i^th pair of mom and dad (many cases)
+      tmp_co_tab <- co_tab[((i - 1L) * 2L + 1L):(i * 2L)]
+      ok <- which(tmp_co_tab - tmppick > minDist)
+      if (length(ok) >= 1L) {
+        tmppick <- if (length(ok) == 2L) sample(tmp_co_tab[ok], 1L) else tmp_co_tab[ok]
         child[i] <- tmppick
-      }else if(length(tmp_diff) == 1){
-        tmppick <- tmp_co_tab[tmp_diff]
-        child[i] <- tmppick
-      }else{
-        i <- 1
-        child <- rep(NA, m_child)
-        ii <- ii + 1
-        next
+
+        if (i == m_child) {
+          if (all(child == dad_tau) || all(child == mom_tau)) {
+            if (ii > up_tol) break
+            i <- 1L; child[] <- NA_integer_; restarts <- restarts + 1L
+          } else {
+            i <- i + 1L
+          }
+        } else {
+          i <- i + 1L
+        }
+      } else {
+        i <- 1L; child[] <- NA_integer_; restarts <- restarts + 1L
       }
     }
-    if(i==m_child){
-      if(all(child - dad_tau == 0) | all(child - mom_tau == 0)){
-        if(ii > up_tol){break}
-        i <- 1
-        child <- rep(NA, m_child)
-      }else{
-        i <- i + 1
-      }
-    }else{
-      i <- i + 1
+
+    ii <- ii + 1L
+    if (restarts > max_restarts) {
+      # select a new one to guaranteed progress
+      child <- selectTau_uniform_exact(N, m_child, minDist, lmax)[2L:(m_child + 1L)]
+      break
     }
-    ii <- ii + 1
   }
 
   output[1] <- m_child

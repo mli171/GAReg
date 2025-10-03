@@ -86,6 +86,8 @@ matching control via \code{\link{cptgaControl}()}:
   \item \code{"cptga"} uses \code{.cptga.default}.
   \item \code{"cptgaisl"} uses \code{.cptgaisl.default} (supports
         \code{numIslands}, \code{maxMig}, etc.).
+  \item see other details in \link[changepointGA:cptga]{cptga} and
+        \link[changepointGA:cptgaisl]{cptgaisl}.
 }
 Top-level \code{monitoring}, \code{seed}, and \code{minDist} given to
 \code{gareg_knots()} take precedence over the control list.
@@ -109,11 +111,11 @@ Values are combined as \emph{control < core < \code{...}}. That is,
 set.seed(1)
 N <- 120
 y <- c(rnorm(40, 0), rnorm(40, 3), rnorm(40, 0))
-t <- seq_len(N)
+x <- seq_len(N)
 
 # 1) Varying-knots with single-pop GA
 g1 <- gareg_knots(
-  y, t,
+  y, x,
   minDist = 5,
   gaMethod = "cptga",
   cptgactrl = cptgaControl(popSize = 150, pcrossover = 0.9, maxgen = 500)
@@ -122,7 +124,7 @@ summary(g1)
 
 # 2) Fixed knots (operators auto-injected unless overridden)
 g2 <- gareg_knots(
-  y, t,
+  y, x,
   fixedknots = 5,
   minDist = 5
 )
@@ -130,7 +132,7 @@ summary(g2)
 
 # 3) Island GA with island-specific controls
 g3 <- gareg_knots(
-  y, t,
+  y, x,
   gaMethod = "cptgaisl",
   minDist = 6,
   cptgactrl = cptgaControl(engine = "cptgaisl",
