@@ -259,3 +259,87 @@ subsetBIC <- function(subset_bin,
   return(-BIC_val) # GA::ga or GA::gaisl maximizing
 
 }
+
+
+
+#' False Discovery Rate (FDR) and True Positive Rate (TPR) from index labels
+#'
+#' @description
+#' Computes the False Discovery Rate (FDR) and True Positive Rate (TPR, a.k.a. recall)
+#' by comparing a set of \emph{true} labels to a set of \emph{predicted} labels.
+#' Labels are treated as positive integer indices in \eqn{\{1, \dots, N\}}. Duplicates
+#' are ignored (unique indices are used).
+#'
+#' @details
+#' Let \code{truelabel} and \code{predlabel} be sets of indices. The function
+#' derives the confusion-matrix counts:
+#' \itemize{
+#'   \item \code{tp} = \eqn{|truelabel \cap predlabel|}
+#'   \item \code{fp} = \eqn{|predlabel \setminus truelabel|}
+#'   \item \code{fn} = \eqn{|truelabel \setminus predlabel|}
+#'   \item \code{tn} = \eqn{N - tp - fp - fn}
+#' }
+#' and returns
+#' \deqn{FDR = fp / (fp + tp), \qquad TPR = tp / (tp + fn).}
+#'
+#' Inputs are coerced to integer and uniqued. A warning is emitted if any label
+#' is < 1, and an error is thrown if any label exceeds \code{N}. If \code{tn < 0},
+#' a warning is issued indicating that \code{N} may not reflect the full universe.
+#'
+#' @param truelabel Integer vector of ground-truth positive indices (values in \code{1..N}).
+#' @param predlabel Integer vector of predicted positive indices (values in \code{1..N}).
+#' @param N Integer scalar; size of the full index universe (total number of candidates).
+#'
+#' @return A named list with components:
+#' \itemize{
+#'   \item \code{fdr} False Discovery Rate, \eqn{fp/(fp+tp)} (NaN if \code{fp+tp == 0}).
+#'   \item \code{tpr} True Positive Rate (recall), \eqn{tp/(tp+fn)} (NaN if \code{tp+fn == 0}).
+#'   \item \code{fp}, \code{fn}, \code{tp}, \code{tn} Confusion-matrix counts.
+#' }
+#'
+#' @section Edge cases:
+#' If \code{predlabel} is empty, \code{fdr} is \code{NaN} and \code{tpr} is 0 (unless
+#' \code{truelabel} is also empty, in which case both \code{fdr} and \code{tpr} are \code{NaN}).
+#' If \code{truelabel} is empty and \code{predlabel} non-empty, \code{tpr} is \code{NaN}
+#' and \code{fdr} is 1.
+#'
+#' @examples
+#' # Simple example
+#' N <- 10
+#' true <- c(2, 4, 7)
+#' pred <- c(4, 5, 7, 7)  # duplicates are ignored
+#' FDRCalc(true, pred, N)
+#'
+#' # Empty predictions
+#' FDRCalc(true, integer(0), N)
+#'
+#' # All correct predictions
+#' FDRCalc(true, true, N)
+#'
+#' @export
+FDRCalc <- function(truelabel, predlabel, N){
+
+  truelabel <- unique(as.integer(truelabel))
+  predlabel <- unique(as.integer(predlabel))
+
+  tp <- length(intersect(truelabel, predlabel))
+  fp <- length(setdiff(predlabel, truelabel))
+  fn <- length(setdiff(truelabel, predlabel))
+
+  if (any(truelabel < 1L) | any(predlabel < 1L)){
+    warning("Labels are expected to be positive indices (>= 1).")
+  }
+  if (any(truelabel > N) | any(predlabel > N)){
+    stop("Found labels greater than N. Increase N or correct labels.")
+  }
+
+
+  tn <- N - tp - fp - fn
+  if (tn < 0) warning("Computed TN < 0; check that N reflects the full universe.")
+
+  fdr <- fp/(fp+tp)
+  tpr <- tp/(tp+fn)
+
+  return(list(fdr=fdr, tpr=tpr, fp = fp, fn = fn, tp = tp, tn = tn))
+
+}
