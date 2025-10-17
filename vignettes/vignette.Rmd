@@ -42,7 +42,7 @@ library(GAReg)
 
 ## Best subset variable selection
 
-We use the simulation function below for subset selection illustration. Here, $n$ is the number of observations and $p$ is the number of predictors. For the covairates, $s0$ represent number of truly active predictors, valued range from $0$ to $p$. `magnitudes_range` specifies the range of significantly expressed coefficients that corresponding to the truly active predictors. If `rho` is specified with some values, the autoregressive structure is introduced into the error terms. If `rho=NULL`, we will have independent and identically distributed (IID) errors. We can also specify `sigma` for the error standard deviation.
+We use the simulation function below for subset selection illustration. Here, `n` is the number of observations and `p` is the number of predictors. For the covairates, `s0` represent number of truly active predictors, valued range from `0` to `p`. `magnitudes_range` specifies the range of significantly expressed coefficients that corresponding to the truly active predictors. If `rho` is specified with some values, the autoregressive structure is introduced into the error terms. If `rho=NULL`, we will have independent and identically distributed (IID) errors. We can also specify `sigma` for the error standard deviation.
 
 ```{r}
 sim_subset_data <- function(n = 60, p = 50, s0 = 25, sigma = 1.5,
