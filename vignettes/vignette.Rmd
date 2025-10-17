@@ -7,7 +7,7 @@ output:
     number_sections: false
     toc: true
 vignette: >
-  %\VignetteIndexEntry{A brief guide to changepointGA}
+  %\VignetteIndexEntry{A brief guide to GAReg}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

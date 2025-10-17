@@ -8,14 +8,14 @@ Genetic Algorithm Applications in Regression
 You can install the version of changepointGA from CRAN:
 
 ```{r}
-install.packages("GAreg") # TBD
+install.packages("GAReg") # TBD
 ```
 
 or the development version from Github:
 
 ```{r}
 # install.packages("remotes")
-remotes::install_github("mli171/GAreg", build_vignettes = TRUE, dependencies = TRUE)
+remotes::install_github("mli171/GAReg", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
 ## Open the Vignette in R for more details
