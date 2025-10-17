@@ -210,4 +210,5 @@ print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5
   invisible(x)
 }
 
+#' @export
 setMethod("summary", "gareg", function(object, ...) print_summary_gareg(object, ...))
