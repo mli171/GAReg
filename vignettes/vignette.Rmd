@@ -129,7 +129,6 @@ bsfit.vary.ga     = lm(y ~ bs(x, knots=x_unique[g1@bestsol], Boundary.knots = ra
 bsfit.vary.gaisl  = lm(y ~ bs(x, knots=x_unique[g2@bestsol], Boundary.knots = range(x)))
 bsfit.fix.3.ga    = lm(y ~ bs(x, knots=x_unique[g3@bestsol], Boundary.knots = range(x)))
 bsfit.fix.4.gaisl = lm(y ~ bs(x, knots=x_unique[g4@bestsol], Boundary.knots = range(x)))
-loess_model       = loess(y ~ x, span = 0.25)
 
 plot(x, y, xlab = "Time (ms)", ylab = "Acceleration (g)")
 ht = seq(min(x), max(x), length.out = 200)
@@ -137,15 +136,13 @@ lines(ht, predict(bsfit.vary.ga, data.frame(x = ht)), col="blue", lty = 5, lwd =
 lines(ht, predict(bsfit.vary.gaisl, data.frame(x = ht)), col="orange", lty = 4, lwd = 2)
 lines(ht, predict(bsfit.fix.3.ga, data.frame(x = ht)), col="purple", lty = 3, lwd = 2)
 lines(ht, predict(bsfit.fix.4.gaisl, data.frame(x = ht)), col="#D55E00", lty = 2, lwd = 2)
-lines(ht, predict(loess_model, data.frame(x = ht)), col = "red", lty = 1, lwd = 2)
 legend("bottomright", 
        legend = c("Varying knots GA", 
                   "Varying knots island model GA", 
                   "Fixed 3 knots GA", 
-                  "Fixed 4 knots island model GA",
-                  "LOESS fit"),
-       lty = 5:1, lwd = 2,
-       col = c("blue", "orange", "purple", "#D55E00", "red"), bty = "n")
+                  "Fixed 4 knots island model GA"),
+       lty = 5:2, lwd = 2,
+       col = c("blue", "orange", "purple", "#D55E00"), bty = "n")
 ```
 
 
