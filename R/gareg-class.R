@@ -80,21 +80,30 @@ setClass(
 
 setMethod("print", "gareg", function(x, ...) str(x))
 
-.header_from_method <- function(m) switch(
-  m,
-  subset    = "# Best Subset Variable Selection via GA                  #",
-  varyknots = "# Varying Knots Detection via changepointGA              #",
-  fixknots  = "# Fixed Knots Detection via changepointGA                #",
-  "# GAReg Result                                                 #"
-)
+# .header_from_method <- function(m) switch(
+#   m,
+#   subset    = "# Best Subset Variable Selection via GA                  #",
+#   varyknots = "# Varying Knots Detection via changepointGA              #",
+#   fixknots  = "# Fixed Knots Detection via changepointGA                #",
+#   "# GAReg Result                                                 #"
+# )
 
 .s <- function(x, nm, default = NA) {
   if (nm %in% methods::slotNames(x)) methods::slot(x, nm) else default
 }
 
 setMethod("show", "gareg", function(object) {
+  hdr <- switch(
+    object@method,
+    subset    = "# Best Subset Variable Selection via GA                  #",
+    varyknots = "# Varying Knots Detection via changepointGA              #",
+    fixknots  = "# Fixed Knots Detection via changepointGA                #",
+    "# GAReg Result                                                 #"
+  )
+
   cat("###############################################\n")
-  cat(.header_from_method(object@method), "\n", sep = "")
+  # cat(.header_from_method(object@method), "\n", sep = "")
+  cat(hdr, "\n", sep = "")
   cat("###############################################\n")
   cat("Call: "); print(object@call)
   cat("   gaMethod: ", object@gaMethod, "\n", sep = "")
@@ -108,7 +117,14 @@ setMethod("show", "gareg", function(object) {
 print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5, ...) {
   gf <- x@gaFit
   cat("##########################################################\n")
-  cat(.header_from_method(x@method), "\n", sep = "")
+  hdr <- switch(
+    x@method,
+    subset    = "# Best Subset Variable Selection via GA                  #",
+    varyknots = "# Varying Knots Detection via changepointGA              #",
+    fixknots  = "# Fixed Knots Detection via changepointGA                #",
+    "# GAReg Result                                                 #"
+  )
+  cat(hdr, "\n", sep = "")
   cat("##########################################################\n")
 
   cat("   Settings: \n")
