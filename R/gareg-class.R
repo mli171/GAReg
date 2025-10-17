@@ -80,14 +80,6 @@ setClass(
 
 setMethod("print", "gareg", function(x, ...) str(x))
 
-# .header_from_method <- function(m) switch(
-#   m,
-#   subset    = "# Best Subset Variable Selection via GA                  #",
-#   varyknots = "# Varying Knots Detection via changepointGA              #",
-#   fixknots  = "# Fixed Knots Detection via changepointGA                #",
-#   "# GAReg Result                                                 #"
-# )
-
 .s <- function(x, nm, default = NA) {
   if (nm %in% methods::slotNames(x)) methods::slot(x, nm) else default
 }
@@ -101,10 +93,10 @@ setMethod("show", "gareg", function(object) {
     "# GAReg Result                                                 #"
   )
 
-  cat("###############################################\n")
+  cat("##########################################################\n")
   # cat(.header_from_method(object@method), "\n", sep = "")
   cat(hdr, "\n", sep = "")
-  cat("###############################################\n")
+  cat("##########################################################\n")
   cat("Call: "); print(object@call)
   cat("   gaMethod: ", object@gaMethod, "\n", sep = "")
   cat("N: ", object@N, "\n", sep = "")
