@@ -182,7 +182,7 @@ g4 <- gareg_knots(
 summary(g4)
 ```
 
-```{r}
+```{r, fig.width=7, fig.height=5, out.width="80%", fig.align='center'}
 y = mcycle$accel
 x = mcycle$times
 x_unique = unique(x)
