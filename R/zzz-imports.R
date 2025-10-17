@@ -2,7 +2,7 @@
 #' @importClassesFrom changepointGA cptga cptgaisl
 #' @importFrom GA ga gaisl
 #' @importClassesFrom GA ga gaisl
-#' @importFrom methods new slot slotNames is
+#' @importFrom methods show setGeneric setMethod slot slotNames new
 #' @importFrom stats runif lm.fit
 #' @importFrom utils str
 NULL

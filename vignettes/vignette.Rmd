@@ -103,7 +103,7 @@ ga <- gareg_subset(y=y, X=X, gaMethod = "GA", monitor = FALSE,
                                   pmutation=0.02))
 summary(ga)
 
-res <- FDRCalc(truelabel=sim$true_idx, predlabel=ga@bestsol, N=p)
+res <- FDRCalc(truelabel=sim$true_idx, predlabel=ga@bestsol, N=50)
 # FALSE Discover Rate
 res$fdr
 # TRUE Positive Rate
