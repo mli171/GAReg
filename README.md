@@ -21,7 +21,7 @@ remotes::install_github("mli171/GAReg", build_vignettes = TRUE, dependencies = T
 ## Open the Vignette in R for more details
 
 ```{r}
-browseVignettes("GAreg")
+browseVignettes("GAReg")
 ```
 
 ## GAReg: Genetic Algorithm Applications in Regression
