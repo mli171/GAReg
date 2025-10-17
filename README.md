@@ -1,7 +1,10 @@
 # GAReg
 Genetic Algorithm Applications in Regression
 
-## Installation
+## Overview
+
+## Package download and installation
+
 You can install the version of changepointGA from CRAN:
 
 ```{r}
@@ -12,15 +15,21 @@ or the development version from Github:
 
 ```{r}
 # install.packages("remotes")
-remotes::install_github("mli171/GAreg", build_vignettes = FALSE, force = TRUE)
+remotes::install_github("mli171/GAreg", build_vignettes = TRUE, dependencies = TRUE)
 ```
 
-## Best Subset Variable Selection
+## Open the Vignette in R for more details
 
+```{r}
+browseVignettes("GAreg")
+```
 
-## Changepoint Detection
+## GAReg: Genetic Algorithm Applications in Regression
 
+### Best Subset Variable Selection
 
-## Optimal Knot Selection for Splines
+### Changepoint Detection
+
+### Optimal Knot Selection for Splines
 
 Optimal Fixed and varying number of knots placement
