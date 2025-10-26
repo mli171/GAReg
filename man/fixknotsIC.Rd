@@ -2,7 +2,7 @@
 % Please edit documentation in R/gareg_knots.R
 \name{fixknotsIC}
 \alias{fixknotsIC}
-\title{Information criterion for a fixed–knot B-spline regression}
+\title{Information criterion for a fixed–knot spline regression}
 \usage{
 fixknotsIC(
   knot_bin,
@@ -12,17 +12,19 @@ fixknotsIC(
   x_unique,
   x_base = NULL,
   fixedknots,
-  polydegree = 3L,
+  degree = 3L,
+  type = c("ppolys", "ns", "bs"),
+  intercept = TRUE,
   ic_method = "BIC"
 )
 }
 \arguments{
-\item{knot_bin}{Integer vector (chromosome). The first element may be ignored
-in a fixed-\eqn{m} setup; the next \eqn{m} elements are **indices into**
-\code{x_unique} selecting the interior knots:
-\code{knot_bin[2L:(1L + m)]}. Indices must refer to interior candidates
-\code{2:(length(x_unique)-1)}. Non-finite, duplicate, out-of-range, or
-boundary indices cause the function to return \code{Inf}.}
+\item{knot_bin}{Integer vector (chromosome). Gene 1 stores m, the number of
+interior knots. Genes 2:(1+m) are indices into \code{x_unique} selecting the m
+interior knots, followed by a sentinel equal to \code{length(x_unique)+1}.
+Only genes strictly before the first occurrence of \code{length(x_unique)+1}
+are treated as interior indices; genes after the sentinel are ignored. Interior
+indices must be in \code{2:(length(x_unique)-1)}, finite, and non-duplicated.}
 
 \item{plen}{Unused placeholder kept for API compatibility with other
 objective functions. Ignored.}
@@ -37,14 +39,21 @@ If \code{NULL} or missing, it defaults to \code{sort(unique(x))}. Must
 contain at least \eqn{m + 2} values (interior + two boundaries).}
 
 \item{x_base}{Optional matrix (or vector) of additional covariates to include
-linearly alongside the spline basis. If supplied, it is coerced to a
-matrix and column-bound to the design.}
+linearly alongside the spline basis. If supplied, it is coerced to a matrix
+and column-bound to the design.}
 
-\item{fixedknots}{Integer \eqn{m}: the number of **interior** knots to use.
+\item{fixedknots}{Integer \eqn{m}: the number of interior knots to use.
 Internally this determines how many indices are read from \code{knot_bin}.}
 
-\item{polydegree}{Integer polynomial degree of the B-spline segments
-(default \code{3L}).}
+\item{degree}{Integer polynomial degree for \code{type="ppolys"} and
+\code{type="bs"} (default \code{3L}). Ignored for \code{type="ns"} (cubic).}
+
+\item{type}{One of \code{c("ppolys","ns","bs")}; forwarded to [splineX()].}
+
+\item{intercept}{Logical; forwarded to [splineX()]. For \eqn{m>0}, the spline
+block is \code{splineX(..., intercept=intercept)} and no explicit 1-column is
+added here. If you add your own intercept in \code{X}, call
+\code{splineX(..., intercept=FALSE)}.}
 
 \item{ic_method}{Character; which information criterion to return:
 \code{"BIC"}, \code{"AIC"}, or \code{"AICc"}.}
@@ -55,40 +64,26 @@ A single numeric value: the requested information criterion. Lower is
 }
 \description{
 Computes an information criterion (BIC, AIC, or AICc) for a regression of
-\code{y} on a B-spline basis of \code{x} when the number of interior knots is
+\code{y} on a spline basis of \code{x} when the number of interior knots is
 fixed. This is designed to be used as a fitness/objective function inside a
-GA search where the chromosome encodes the **indices** of the interior knots.
+GA search where the chromosome encodes the indices of the interior knots.
 }
 \details{
-The function:
-\enumerate{
-\item Derives \eqn{m <- as.integer(fixedknots)} and reads indices
-  \code{idx <- knot_bin[2L:(1L + m)]}.
-\item Validates that \code{idx} are finite, interior, unique, and sorted; the
-  corresponding knot locations \code{x_unique[idx]} must lie strictly inside
-  \code{range(x)}. Any violation returns \code{Inf} (useful for GA pruning).
-\item Builds the design matrix
-  \code{cbind(1, x_base, splines::bs(x, degree = polydegree,
-  knots = x_unique[idx], Boundary.knots = range(x)))}.
-\item Fits OLS via \code{stats::.lm.fit} and computes the selected criterion
-  with parameter count \code{p = NCOL(X)} (intercept + \code{x_base} columns
-  + spline basis columns).
-}
-}
-\note{
-Earlier drafts mistakenly referenced an undefined/global \code{m}.
-Always set \code{m <- as.integer(fixedknots)} inside the function to ensure
-that exactly \code{fixedknots} interior knots are evaluated.
+We decode the interior indices up to the sentinel \code{length(x_unique)+1},
+validate them (finite, interior, non-duplicated), sort the resulting knot
+locations internally, and build the design as
+\code{X <- cbind(splineX(..., intercept=intercept), x_base)}.
+Invalid chromosomes/inputs return \code{Inf}.
 }
 \examples{
 library(MASS)
 y <- mcycle$accel; x <- mcycle$times
 x_unique <- sort(unique(x))
-# chromosome encoding 5 interior knot indices:
-chrom <- c(5, 24, 30, 46, 49, 69, 95)
+# chromosome encoding 5 interior knot indices with sentinel:
+chrom <- c(5, 24, 30, 46, 49, 69, length(x_unique) + 1)
 fixknotsIC(chrom, y = y, x = x, x_unique = x_unique,
            fixedknots = 5, ic_method = "BIC")
 }
 \seealso{
-[varyknotsIC()], [splines::bs()]
+[varyknotsIC()], [splineX()], \code{\link[splines]{bs}}, \code{\link[splines]{ns}}
 }

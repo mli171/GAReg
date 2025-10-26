@@ -2,7 +2,7 @@
 % Please edit documentation in R/gareg_knots.R
 \name{varyknotsIC}
 \alias{varyknotsIC}
-\title{Information criterion for B-spline regression with a **variable** number of knots}
+\title{Information criterion for spline regression with a variable number of knots}
 \usage{
 varyknotsIC(
   knot_bin,
@@ -11,17 +11,19 @@ varyknotsIC(
   x,
   x_unique,
   x_base = NULL,
-  polydegree = 3L,
+  degree = 3L,
+  type = c("ppolys", "ns", "bs"),
+  intercept = TRUE,
   ic_method = "BIC"
 )
 }
 \arguments{
-\item{knot_bin}{Integer vector (chromosome). The first element is
-\eqn{m}, the number of interior knots (\eqn{m \ge 0}). The next
-\eqn{m} elements are **indices into** \code{x_unique} selecting interior
-knot locations: \code{knot_bin[2L:(1L + m)]}. Indices must be interior,
-i.e., in \code{2:(length(x_unique) - 1)}. Any non-finite, duplicate, or
-out-of-range index causes the function to return \code{Inf}.}
+\item{knot_bin}{Integer vector (chromosome). Gene 1 stores m, the number of
+interior knots. Genes 2:(1+m) are indices into \code{x_unique} selecting the m
+interior knots, followed by a sentinel equal to \code{length(x_unique)+1}.
+Only genes strictly before the first occurrence of \code{length(x_unique)+1}
+are treated as interior indices; genes after the sentinel are ignored. Interior
+indices must be in \code{2:(length(x_unique)-1)}, finite, and non-duplicated.}
 
 \item{plen}{Unused placeholder kept for API compatibility; ignored.}
 
@@ -37,8 +39,15 @@ at least three values (two boundaries + one interior) to allow any knots.}
 \item{x_base}{Optional matrix (or vector) of additional covariates to include
 linearly alongside the spline basis; coerced to a matrix if supplied.}
 
-\item{polydegree}{Integer polynomial degree of the B-spline segments
-(default \code{3L}).}
+\item{degree}{Integer polynomial degree for \code{type="ppolys"} and
+\code{type="bs"} (default \code{3L}). Ignored for \code{type="ns"} (always cubic).}
+
+\item{type}{One of \code{c("ppolys","ns","bs")}; forwarded to [splineX()].}
+
+\item{intercept}{Logical; forwarded to [splineX()]. For \eqn{m>0}, the spline
+block is \code{splineX(..., intercept=intercept)} and \emph{no explicit 1-column}
+is added here; for \eqn{m=0}, an explicit intercept is added via
+\code{cbind(1, x_base)}. Set \code{intercept=FALSE} if you plan to add your own 1-column.}
 
 \item{ic_method}{Which information criterion to return: \code{"BIC"},
 \code{"AIC"}, or \code{"AICc"}.}
@@ -49,28 +58,15 @@ A single numeric value: the requested information criterion (lower is
 }
 \description{
 Evaluates an information criterion (BIC, AIC, or AICc) for a regression of
-\code{y} on a B-spline basis of \code{x} where the **number and locations of
-interior knots are encoded in the chromosome**. Designed for use as a GA
-objective/fitness function.
+\code{y} on a spline basis of \code{x} where the number and locations of
+interior knots are encoded in the chromosome. Designed for use as a GA
+objective/fitness function. The spline basis is constructed via [splineX()].
 }
 \details{
-The function:
-\enumerate{
-\item Reads \eqn{m <- knot_bin[1]} and the \eqn{m} interior indices
-  \code{idx <- knot_bin[2L:(1L + m)]}.
-\item Validates that \code{idx} are finite, interior, and that the resulting
-  knot locations \code{x_unique[idx]} lie strictly inside \code{range(x)}.
-  Violations return \code{Inf} (useful for GA pruning).
-\item Builds the design matrix:
-  \itemize{
-    \item If \eqn{m = 0}: \code{X <- cbind(1, x_base)} (no spline terms).
-    \item Else: \code{X <- cbind(1, x_base, splines::bs(
-            x, degree = polydegree, knots = x_unique[idx],
-            Boundary.knots = range(x)))}.
-  }
-\item Fits OLS via \code{stats::.lm.fit} and computes the selected criterion
-  with parameter count \code{p <- NCOL(X)}.
-}
+If \eqn{m = 0}, the model is a pure-linear baseline using only an intercept
+and \code{x_base}: \code{X <- cbind(1, x_base)} (no spline terms).
+For \eqn{m > 0}, the spline block is built with [splineX()] using the selected
+interior knots, with \code{X <- cbind(splineX(..., intercept=intercept), x_base)}.
 
 The criteria are computed as:
 \deqn{\mathrm{BIC} = n \log(\mathrm{SSRes}/n) + p \log n,}
@@ -78,7 +74,7 @@ The criteria are computed as:
 \deqn{\mathrm{AICc} = n \log(\mathrm{SSRes}/n) + 2p +
       \frac{2p(p+1)}{n-p-1},}
 where \eqn{\mathrm{SSRes}} is the residual sum of squares and \eqn{p} is the
-number of columns in \code{X}.
+number of columns in the design matrix \code{X}.
 }
 \note{
 This function allows \eqn{m=0} (no spline terms) so that the GA can
@@ -90,10 +86,10 @@ This function allows \eqn{m=0} (no spline terms) so that the GA can
 ## Example with 'mcycle' data (MASS)
 # y <- mcycle$accel; x <- mcycle$times
 # x_unique <- sort(unique(x))
-# # chromosome encoding m=4 and four interior indices:
-# chrom <- c(4, 25, 40, 52, 77)
-# varyknotsIC(chrom, y = y, x = x, x_unique = x_unique, ic_method = "BIC")
+# chrom <- c(5, 24, 30, 46, 49, 69, length(x_unique) + 1)
+# varyknotsIC(chrom, y=y, x=x, x_unique=x_unique,
+#             type="ppolys", degree=3, ic_method="BIC")
 }
 \seealso{
-[fixknotsIC()], [splines::bs()]
+[fixknotsIC()], [splineX()], \code{\link[splines]{bs}}, \code{\link[splines]{ns}}
 }

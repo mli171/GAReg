@@ -3,8 +3,7 @@
 \docType{class}
 \name{gareg-class}
 \alias{gareg-class}
-\title{S4 Class Definition for `gareg`
-#'}
+\title{S4 Class Definition for `gareg`}
 \description{
 S4 Class for Genetic Algorithm-Based Regression
 
@@ -16,13 +15,14 @@ backend fit and a normalized summary of the best solution.
 \describe{
 \item{\code{call}}{The matched call that created the object.}
 
-\item{\code{N}}{The sample size of the time series.}
+\item{\code{N}}{The effective size of the x grid used for knot search
+(i.e., `length(x_unique)`), typically the number of unique `x`.}
 
 \item{\code{call}}{language. The original call.}
 
 \item{\code{method}}{character. One of "varyknots", "fixknots", "subset".}
 
-\item{\code{N}}{numeric. Length of the response vector.}
+\item{\code{N}}{numeric. Length of `x_unique` used by the GA (also `sentinel-1`).}
 
 \item{\code{objFunc}}{functionOrNULL. Objective function used.}
 
@@ -30,13 +30,18 @@ backend fit and a normalized summary of the best solution.
 
 \item{\code{gaFit}}{Backend GA fit object (union of classes from GA and changepointGA).}
 
-\item{\code{ctrl}}{listOrNULL. Control list used to run the GA.}
+\item{\code{ctrl}}{listOrNULL. Control list used to run the GA (if stored by caller).}
 
-\item{\code{fixedknots}}{numericOrNULL. Fixed knot locations (NULL or numeric()).}
+\item{\code{fixedknots}}{numericOrNULL. Fixed number of interior knots (`m`) for fixed-knots mode, or NULL.}
 
 \item{\code{minDist}}{numeric. Minimum distance between adjacent changepoints.}
 
 \item{\code{polydegree}}{numericOrNULL. Spline degree for default objectives.}
+
+\item{\code{type}}{character. One of `c("ppolys", "ns", "bs")` indicating piecewise
+polynomials, natural cubic, or B-spline.}
+
+\item{\code{intercept}}{logical. Whether the spline basis included an intercept column.}
 
 \item{\code{subsetSpec}}{listOrNULL. Constraints for subset selection (unused for knots).}
 
@@ -44,13 +49,15 @@ backend fit and a normalized summary of the best solution.
 
 \item{\code{bestFitness}}{numeric. Best fitness value found.}
 
-\item{\code{bestChrom}}{numeric. Raw best chromosome returned by the backend.}
+\item{\code{bestChrom}}{numeric. Raw best chromosome returned by the backend
+(may include a sentinel equal to `N+1` and optional padding).}
 
-\item{\code{bestnumbsol}}{numeric. Count of selected elements (e.g., m for knots).}
+\item{\code{bestnumbsol}}{numeric. Count of selected elements (e.g., `m` for knots).}
 
-\item{\code{bestsol}}{numericOrCharacter. For knots: the m knot locations; for subset: mask/indices/names.}
+\item{\code{bestsol}}{numericOrChara. For knots: the `m` interior indices (pre-sentinel);
+for subset: mask/indices/names.}
 }}
 
 \seealso{
-\link{gareg_knots}, \link{cptgaControl}
+[gareg_knots], [cptgaControl]
 }

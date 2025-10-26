@@ -116,7 +116,7 @@ res$tpr
 
 ### Example data set
 
-This section will illustrate optimal spline knot placement on the classic motocycle impact dataset from Package \code{MASS}.\code{MASS::mcycle} contains 133 observations from a simulated motorcycle crash test, recording head acceleration (in g) of a helmeted test subject over time (milliseconds). The series is non-linear with sharp transients and heteroskedastic noise, which makes it a canonical benchmark for smoothing and spline-based regression. We use function \code{} choose interior spline knots subject to a minimum separation in indices to avoid clustering.
+This section will illustrate optimal spline knot placement on the classic motocycle impact dataset from Package \code{MASS}.\code{MASS::mcycle} contains 133 observations from a simulated motorcycle crash test, recording head acceleration (in g) of a helmeted test subject over time (milliseconds). The series is non-linear with sharp transients and heteroskedastic noise, which makes it a canonical benchmark for smoothing and spline-based regression. We use function \code{gareg_knots} choose interior spline knots subject to a minimum separation in indices to avoid clustering. Here the `truncated-power piecewise polynomials` with polynomial degree of 3 is the used default.
 
 
 ```{r}
@@ -126,6 +126,8 @@ library(splines)
 data(mcycle)
 head(mcycle)
 ```
+
+### Different GA model set-up
 
 - Varying knots with single population GA;
 ```{r}
@@ -210,6 +212,57 @@ legend("bottomright",
                   "Fixed 4 knots island model GA"),
        lty = 5:2, lwd = 2,
        col = c("blue", "orange", "purple", "#D55E00"), bty = "n")
+```
+
+### Spline options: piecewise polynomials, natural cubic, and B-splines
+
+This section illustrates how to build spline design matrices via \code{splineX()} for three common options:
+
+- \code{type="ppolys"}: degree-$d$ truncated power piecewise polynomials;
+- \code{type="ns"}: degree-3 natural cubic spline (degree will be ignored);
+- \code{type="bs"}: degree-$d$ B-spline basis;
+
+We’ll use the motorcycle acceleration data \code{MASS::mcycle}, create interior knots at quantiles of \code{times}, and compare how different spline types/degrees behave. Here, we only illustrate through `Varying number and locations of knots` set-up (Let GA choose both **how many** knots and **where** they go). 
+
+```{r vary-ppolys}
+g_pp3 <- gareg_knots(
+  y = y, x = x,
+  minDist   = 5,
+  gaMethod  = "cptga",
+  ObjFunc   = NULL,          # use default varyknotsIC
+  type      = "ppolys",
+  degree    = 3,             # degree-3 piecewise polynomial
+  intercept = TRUE,
+  ic_method = "BIC"
+)
+summary(g_pp3)
+```
+
+```{r vary-ns}
+g_ns <- gareg_knots(
+  y = y, x = x,
+  minDist   = 5,
+  gaMethod  = "cptga",
+  type      = "ns",          # natural cubic (degree ignored)
+  degree    = 3,             # ignored for "ns"
+  intercept = TRUE,
+  ic_method = "BIC"
+)
+summary(g_ns)
+```
+
+
+```{r vary-bs}
+g_bs1 <- gareg_knots(
+  y = y, x = x,
+  minDist   = 5,
+  gaMethod  = "cptga",
+  type      = "bs",
+  degree    = 1,             # linear B-splines
+  intercept = TRUE,
+  ic_method = "BIC"
+)
+summary(g_bs1)
 ```
 
 

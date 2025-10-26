@@ -1,4 +1,4 @@
-#' Genetic-Algorithm based Optimal Knots Selection
+#' Genetic-Algorithm–based Optimal Knot Selection
 #'
 #' @description
 #' Runs a GA-based search for changepoints/knots and returns a compact
@@ -6,24 +6,33 @@
 #' (\code{"cptga"} or \code{"cptgaisl"}) plus the essential run settings.
 #'
 #' @param y Numeric vector of responses (length \code{N}).
-#' @param x Optional index or time vector aligned with \code{y}. Currently
-#'   kept for API symmetry; not directly used by the backend.
+#' @param x Optional index/time vector aligned with \code{y}. If missing, it
+#'   defaults to \code{seq_along(y)}. Used to derive \code{x_unique} (candidate
+#'   knot positions) and passed to the objective function; the GA backend itself
+#'   does not use \code{x} directly.
 #' @param ObjFunc Objective function or its name. If \code{NULL}, a default
 #'   is chosen:
 #'   \itemize{
-#'     \item \code{fixknotsBIC} when \code{fixedknots} is supplied;
-#'     \item \code{varyknotsBIC} otherwise.
+#'     \item \code{fixknotsIC} when \code{fixedknots} is supplied;
+#'     \item \code{varyknotsIC} otherwise.
 #'   }
 #'   A custom function must accept the chromosome and needed data via
-#'   named arguments (see the defaults for a template).
-#' @param fixedknots \code{NULL} (varying-knots search) or an integer vector
-#'   of fixed changepoint locations. If non-\code{NULL}, the method is
-#'   \code{"fixknots"} and specialized operators are injected unless
+#'   named arguments (see the defaults for a template function).
+#' @param fixedknots \code{NULL} (varying-knots search) or an integer giving the
+#'   number of interior knots for a fixed-\eqn{m} search. If non-\code{NULL}, the
+#'   method is \code{"fixknots"} and specialized operators are injected unless
 #'   overridden in \code{cptgactrl}.
 #' @param minDist Integer minimum distance between adjacent changepoints.
 #'   If omitted (\code{missing()} or \code{NULL}), the value in \code{cptgactrl}
 #'   is used. If supplied here, it overrides the control value.
-#' @param polydegree Spline degree for the default BIC objectives.
+#' @param degree Integer polynomial degree for \code{"ppolys"} and \code{"bs"}.
+#'   Ignored for \code{"ns"} (always cubic). Must be provided for \code{"ppolys"}
+#'   and \code{"bs"}.
+#' @param type One of \code{c("ppolys", "ns", "bs")}:
+#'   piecewise polynomials, natural cubic, or B-spline. See \code{\link{splineX}}.
+#'   The first option of `ppolys` is taken by default.
+#' @param intercept Logical; include intercept column where applicable.
+#'   Default: \code{TRUE}.
 #' @param gaMethod GA backend to call: function or name. Supports
 #'   \code{"cptga"} (single population) and \code{"cptgaisl"} (islands).
 #' @param cptgactrl Control list built with \code{\link{cptgaControl}()}
@@ -54,16 +63,22 @@
 #' \strong{Fix-knots operators.}
 #' When \code{fixedknots} is provided and the control does not already
 #' override them, the following operators are injected:
-#' \code{Popinitial_fixknots}, \code{crossover_fixknots},
-#' \code{mutation_fixknots}.
+#' \code{Popinitial_fixknots}, \code{crossover_fixknots}, \code{mutation_fixknots}.
 #'
-#' @return An object of class \code{"gareg"} with (key slots):
+#' \strong{Spline basis options.}
+#' To build spline design matrices (via \code{\link{splineX}}):
 #' \itemize{
-#'   \item \code{call}, \code{method} (\code{"varyknots"} or \code{"fixknots"}),
-#'         \code{regMethod}, \code{N}.
-#'   \item \code{objFunc}, \code{gaMethod}, \code{gaFit} (the GA result of
-#'         class \code{"cptga"} or \code{"cptgaisl"}), \code{ctrl}.
-#'   \item \code{fixedknots}, \code{minDist}, \code{polydegree}.
+#'   \item \code{type = "ppolys"}: Degree-\eqn{d} regression spline via truncated-power piecewise polynomials.
+#'   \item \code{type = "ns"}: Degree-3 natural cubic spline with zero second-derivative at boundaries.
+#'   \item \code{type = "bs"}: Degree-\eqn{d} B-spline basis (unconstrained).
+#' }
+#'
+#' @return An object of class \code{"gareg"} with key slots:
+#' \itemize{
+#'   \item \code{call}, \code{method} (\code{"varyknots"} or \code{"fixknots"}), \code{N}.
+#'   \item \code{objFunc}, \code{gaMethod}, \code{gaFit} (class \code{"cptga"} or \code{"cptgaisl"}), \code{ctrl}.
+#'   \item \code{fixedknots}, \code{minDist}, \code{polydegree}, \code{type}, \code{intercept}.
+#'   \item \code{bestFitness}, \code{bestChrom}, \code{bestnumbsol}, \code{bestsol}.
 #' }
 #' Use \code{summary(g)} to print GA settings and the best solution (extracted
 #' from \code{g@gaFit}); \code{show(g)} prints a compact header.
@@ -75,8 +90,7 @@
 #' \code{...} override both.
 #'
 #' @seealso \code{\link{cptgaControl}}, \code{changepointGA::cptga},
-#'   \code{changepointGA::cptgaisl}, \code{\link{fixknotsIC}},
-#'   \code{\link{varyknotsIC}}
+#'   \code{changepointGA::cptgaisl}, \code{\link{fixknotsIC}}, \code{\link{varyknotsIC}}
 #'
 #' @examples
 #' \dontrun{
@@ -120,7 +134,9 @@ gareg_knots = function(y,
                        ObjFunc=NULL,
                        fixedknots=NULL,
                        minDist=3L,
-                       polydegree=3L,
+                       degree=3L,
+                       type = c("ppolys", "ns", "bs"),
+                       intercept=TRUE,
                        gaMethod="cptga",
                        cptgactrl=NULL,
                        monitoring=FALSE,
@@ -128,8 +144,10 @@ gareg_knots = function(y,
                        ...) {
 
   call <- match.call()
+  type <- match.arg(type)
   dots <- list(...)
 
+  if (missing(x) || is.null(x)) x <- seq_along(y)
   x_unique <- sort(unique(x))
   n <- length(x_unique)
 
@@ -188,7 +206,9 @@ gareg_knots = function(y,
     y           = y,
     x           = x,
     x_unique    = x_unique,
-    polydegree  = polydegree
+    degree      = degree,
+    type        = type,
+    intercept   = intercept
   )
   if (!is.null(fixedknots)) core_args$fixedknots <- fixedknots
 
@@ -219,7 +239,9 @@ gareg_knots = function(y,
                 gaFit       = GA.res,
                 fixedknots  = fixedknots,
                 minDist     = minDist,
-                polydegree  = polydegree,
+                polydegree  = degree,
+                type        = type,
+                intercept   = intercept,
                 bestFitness = GA.res@overbestfit,
                 bestChrom   = GA.res@overbestchrom)
 
@@ -234,19 +256,19 @@ gareg_knots = function(y,
 }
 
 
-#' Information criterion for B-spline regression with a **variable** number of knots
+#' Information criterion for spline regression with a variable number of knots
 #'
 #' Evaluates an information criterion (BIC, AIC, or AICc) for a regression of
-#' \code{y} on a B-spline basis of \code{x} where the **number and locations of
-#' interior knots are encoded in the chromosome**. Designed for use as a GA
-#' objective/fitness function.
+#' \code{y} on a spline basis of \code{x} where the number and locations of
+#' interior knots are encoded in the chromosome. Designed for use as a GA
+#' objective/fitness function. The spline basis is constructed via [splineX()].
 #'
-#' @param knot_bin Integer vector (chromosome). The first element is
-#'   \eqn{m}, the number of interior knots (\eqn{m \ge 0}). The next
-#'   \eqn{m} elements are **indices into** \code{x_unique} selecting interior
-#'   knot locations: \code{knot_bin[2L:(1L + m)]}. Indices must be interior,
-#'   i.e., in \code{2:(length(x_unique) - 1)}. Any non-finite, duplicate, or
-#'   out-of-range index causes the function to return \code{Inf}.
+#' @param knot_bin Integer vector (chromosome). Gene 1 stores m, the number of
+#'   interior knots. Genes 2:(1+m) are indices into \code{x_unique} selecting the m
+#'   interior knots, followed by a sentinel equal to \code{length(x_unique)+1}.
+#'   Only genes strictly before the first occurrence of \code{length(x_unique)+1}
+#'   are treated as interior indices; genes after the sentinel are ignored. Interior
+#'   indices must be in \code{2:(length(x_unique)-1)}, finite, and non-duplicated.
 #' @param plen Unused placeholder kept for API compatibility; ignored.
 #' @param y Numeric response vector of length \eqn{n}.
 #' @param x Numeric predictor (same length as \code{y}) on which the spline
@@ -256,29 +278,21 @@ gareg_knots = function(y,
 #'   at least three values (two boundaries + one interior) to allow any knots.
 #' @param x_base Optional matrix (or vector) of additional covariates to include
 #'   linearly alongside the spline basis; coerced to a matrix if supplied.
-#' @param polydegree Integer polynomial degree of the B-spline segments
-#'   (default \code{3L}).
+#' @param degree Integer polynomial degree for \code{type="ppolys"} and
+#'   \code{type="bs"} (default \code{3L}). Ignored for \code{type="ns"} (always cubic).
+#' @param type One of \code{c("ppolys","ns","bs")}; forwarded to [splineX()].
+#' @param intercept Logical; forwarded to [splineX()]. For \eqn{m>0}, the spline
+#'   block is \code{splineX(..., intercept=intercept)} and \emph{no explicit 1-column}
+#'   is added here; for \eqn{m=0}, an explicit intercept is added via
+#'   \code{cbind(1, x_base)}. Set \code{intercept=FALSE} if you plan to add your own 1-column.
 #' @param ic_method Which information criterion to return: \code{"BIC"},
 #'   \code{"AIC"}, or \code{"AICc"}.
 #'
 #' @details
-#' The function:
-#' \enumerate{
-#' \item Reads \eqn{m <- knot_bin[1]} and the \eqn{m} interior indices
-#'   \code{idx <- knot_bin[2L:(1L + m)]}.
-#' \item Validates that \code{idx} are finite, interior, and that the resulting
-#'   knot locations \code{x_unique[idx]} lie strictly inside \code{range(x)}.
-#'   Violations return \code{Inf} (useful for GA pruning).
-#' \item Builds the design matrix:
-#'   \itemize{
-#'     \item If \eqn{m = 0}: \code{X <- cbind(1, x_base)} (no spline terms).
-#'     \item Else: \code{X <- cbind(1, x_base, splines::bs(
-#'             x, degree = polydegree, knots = x_unique[idx],
-#'             Boundary.knots = range(x)))}.
-#'   }
-#' \item Fits OLS via \code{stats::.lm.fit} and computes the selected criterion
-#'   with parameter count \code{p <- NCOL(X)}.
-#' }
+#' If \eqn{m = 0}, the model is a pure-linear baseline using only an intercept
+#' and \code{x_base}: \code{X <- cbind(1, x_base)} (no spline terms).
+#' For \eqn{m > 0}, the spline block is built with [splineX()] using the selected
+#' interior knots, with \code{X <- cbind(splineX(..., intercept=intercept), x_base)}.
 #'
 #' The criteria are computed as:
 #' \deqn{\mathrm{BIC} = n \log(\mathrm{SSRes}/n) + p \log n,}
@@ -286,7 +300,7 @@ gareg_knots = function(y,
 #' \deqn{\mathrm{AICc} = n \log(\mathrm{SSRes}/n) + 2p +
 #'       \frac{2p(p+1)}{n-p-1},}
 #' where \eqn{\mathrm{SSRes}} is the residual sum of squares and \eqn{p} is the
-#' number of columns in \code{X}.
+#' number of columns in the design matrix \code{X}.
 #'
 #' @return A single numeric value: the requested information criterion (lower is
 #'   better). Returns \code{Inf} for invalid chromosomes/inputs.
@@ -296,15 +310,15 @@ gareg_knots = function(y,
 #'   Spacing constraints (e.g., minimum distance between indices) should be
 #'   enforced by the GA operators or an external penalty.
 #'
-#' @seealso [fixknotsIC()], [splines::bs()]
+#' @seealso [fixknotsIC()], [splineX()], \code{\link[splines]{bs}}, \code{\link[splines]{ns}}
 #'
 #' @examples
 #' ## Example with 'mcycle' data (MASS)
 #' # y <- mcycle$accel; x <- mcycle$times
 #' # x_unique <- sort(unique(x))
-#' # # chromosome encoding m=4 and four interior indices:
-#' # chrom <- c(4, 25, 40, 52, 77)
-#' # varyknotsIC(chrom, y = y, x = x, x_unique = x_unique, ic_method = "BIC")
+#' # chrom <- c(5, 24, 30, 46, 49, 69, length(x_unique) + 1)
+#' # varyknotsIC(chrom, y=y, x=x, x_unique=x_unique,
+#' #             type="ppolys", degree=3, ic_method="BIC")
 #' @export
 varyknotsIC <- function(knot_bin,
                         plen = 0,
@@ -312,10 +326,14 @@ varyknotsIC <- function(knot_bin,
                         x,
                         x_unique,
                         x_base = NULL,
-                        polydegree = 3L,
+                        degree = 3L,
+                        type = c("ppolys", "ns", "bs"),
+                        intercept = TRUE,
                         ic_method = "BIC") {
 
-  ic_method <- match.arg(ic_method)
+  ic_method <- match.arg(ic_method, c("BIC", "AIC", "AICc"))
+  type      <- match.arg(type)
+
   stopifnot(is.numeric(y), is.numeric(x), length(y) == length(x))
   if (!is.null(x_base)) x_base <- as.matrix(x_base)
 
@@ -324,76 +342,68 @@ varyknotsIC <- function(knot_bin,
   } else {
     x_unique <- sort(unique(x_unique))
   }
-  if (length(x_unique) < 3L) {
-    return(Inf)
-  } # need interior points
+  if (length(x_unique) < 3L) return(Inf)  # need at least one interior candidate
 
-  n <- length(y)
-  m <- as.integer(knot_bin[1L])
-
+  n  <- length(y)
+  m  <- as.integer(knot_bin[1L])
   xr <- range(x, na.rm = TRUE)
+  Nu  <- length(x_unique)
 
-  # Design matrix
-  ones <- rep(1, n)
   if (m == 0L) {
-    X <- cbind(ones, x_base)
+    # no knots: intercept + x_base
+    tail <- as.integer(knot_bin[-1L])
+    if (!any(tail == Nu + 1L)) return(Inf)
+    X <- cbind(rep(1, n), x_base)
   } else {
-    idx <- as.integer(knot_bin[2L:(1L + m)])
-    knotvec <- sort(x_unique[idx])
+    tail    <- as.integer(knot_bin[-1L])
+    end_pos <- match(Nu + 1L, tail)
+    if (is.na(end_pos)) return(Inf)
+    idx     <- tail[seq_len(end_pos - 1L)]
+    idx     <- idx[idx != 0L]
+
+    if (length(idx) != m) return(Inf)
 
     L <- 2L
     U <- length(x_unique) - 1L
-    if (U < L) {
-      return(Inf)
-    }
-    if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) {
-      return(Inf)
-    }
+    if (U < L) return(Inf)
+    if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) return(Inf)
+    if (anyDuplicated(idx)) return(Inf)
 
-    if (length(knotvec) != m) {
-      return(Inf)
-    }
-    if (anyNA(knotvec)) {
-      return(Inf)
-    }
-    if (any(!(knotvec > xr[1] & knotvec < xr[2]))) {
-      return(Inf)
-    }
+    knotvec <- x_unique[idx]
+    if (anyNA(knotvec)) return(Inf)
+    if (any(!(knotvec > xr[1] & knotvec < xr[2]))) return(Inf)
 
-    x_bs <- splines::bs(x,
-                        degree = polydegree,
-                        knots = knotvec,
-                        Boundary.knots = xr
+    x_spline <- splineX(
+      x, knots = sort(knotvec), degree = degree, type = type, intercept=intercept
     )
-    X <- cbind(ones, x_base, x_bs)
+    X <- cbind(x_spline, x_base)
   }
 
-  fit <- stats::.lm.fit(X, y)
+  fit   <- stats::.lm.fit(X, y)
   SSRes <- sum(fit$residuals^2)
-  p <- NCOL(X)
+  p     <- NCOL(X)
 
-  val <- switch(ic_method,
-                BIC  = n * log(SSRes / n) + p * log(n),
-                AIC  = n * log(SSRes / n) + p * 2,
-                AICc = if (n - p - 1 > 0) n * log(SSRes / n) + p * 2 + (2 * p * (p + 1)) / (n - p - 1) else Inf
-  )
-
-  return(val)
+  switch(ic_method,
+         BIC  = n * log(SSRes / n) + p * log(n),
+         AIC  = n * log(SSRes / n) + 2 * p,
+         AICc = if (n - p - 1 > 0)
+           n * log(SSRes / n) + 2 * p + (2 * p * (p + 1)) / (n - p - 1)
+         else Inf)
 }
 
-#' Information criterion for a fixed–knot B-spline regression
+#' Information criterion for a fixed–knot spline regression
 #'
 #' Computes an information criterion (BIC, AIC, or AICc) for a regression of
-#' \code{y} on a B-spline basis of \code{x} when the number of interior knots is
+#' \code{y} on a spline basis of \code{x} when the number of interior knots is
 #' fixed. This is designed to be used as a fitness/objective function inside a
-#' GA search where the chromosome encodes the **indices** of the interior knots.
+#' GA search where the chromosome encodes the indices of the interior knots.
 #'
-#' @param knot_bin Integer vector (chromosome). The first element may be ignored
-#'   in a fixed-\eqn{m} setup; the next \eqn{m} elements are **indices into**
-#'   \code{x_unique} selecting the interior knots:
-#'   \code{knot_bin[2L:(1L + m)]}. Indices must refer to interior candidates
-#'   \code{2:(length(x_unique)-1)}. Non-finite, duplicate, out-of-range, or
-#'   boundary indices cause the function to return \code{Inf}.
+#' @param knot_bin Integer vector (chromosome). Gene 1 stores m, the number of
+#'   interior knots. Genes 2:(1+m) are indices into \code{x_unique} selecting the m
+#'   interior knots, followed by a sentinel equal to \code{length(x_unique)+1}.
+#'   Only genes strictly before the first occurrence of \code{length(x_unique)+1}
+#'   are treated as interior indices; genes after the sentinel are ignored. Interior
+#'   indices must be in \code{2:(length(x_unique)-1)}, finite, and non-duplicated.
 #' @param plen Unused placeholder kept for API compatibility with other
 #'   objective functions. Ignored.
 #' @param y Numeric response vector of length \eqn{n}.
@@ -403,46 +413,38 @@ varyknotsIC <- function(knot_bin,
 #'   If \code{NULL} or missing, it defaults to \code{sort(unique(x))}. Must
 #'   contain at least \eqn{m + 2} values (interior + two boundaries).
 #' @param x_base Optional matrix (or vector) of additional covariates to include
-#'   linearly alongside the spline basis. If supplied, it is coerced to a
-#'   matrix and column-bound to the design.
-#' @param fixedknots Integer \eqn{m}: the number of **interior** knots to use.
+#'   linearly alongside the spline basis. If supplied, it is coerced to a matrix
+#'   and column-bound to the design.
+#' @param fixedknots Integer \eqn{m}: the number of interior knots to use.
 #'   Internally this determines how many indices are read from \code{knot_bin}.
-#' @param polydegree Integer polynomial degree of the B-spline segments
-#'   (default \code{3L}).
+#' @param degree Integer polynomial degree for \code{type="ppolys"} and
+#'   \code{type="bs"} (default \code{3L}). Ignored for \code{type="ns"} (cubic).
+#' @param type One of \code{c("ppolys","ns","bs")}; forwarded to [splineX()].
+#' @param intercept Logical; forwarded to [splineX()]. For \eqn{m>0}, the spline
+#'   block is \code{splineX(..., intercept=intercept)} and no explicit 1-column is
+#'   added here. If you add your own intercept in \code{X}, call
+#'   \code{splineX(..., intercept=FALSE)}.
 #' @param ic_method Character; which information criterion to return:
 #'   \code{"BIC"}, \code{"AIC"}, or \code{"AICc"}.
 #'
 #' @details
-#' The function:
-#' \enumerate{
-#' \item Derives \eqn{m <- as.integer(fixedknots)} and reads indices
-#'   \code{idx <- knot_bin[2L:(1L + m)]}.
-#' \item Validates that \code{idx} are finite, interior, unique, and sorted; the
-#'   corresponding knot locations \code{x_unique[idx]} must lie strictly inside
-#'   \code{range(x)}. Any violation returns \code{Inf} (useful for GA pruning).
-#' \item Builds the design matrix
-#'   \code{cbind(1, x_base, splines::bs(x, degree = polydegree,
-#'   knots = x_unique[idx], Boundary.knots = range(x)))}.
-#' \item Fits OLS via \code{stats::.lm.fit} and computes the selected criterion
-#'   with parameter count \code{p = NCOL(X)} (intercept + \code{x_base} columns
-#'   + spline basis columns).
-#' }
+#' We decode the interior indices up to the sentinel \code{length(x_unique)+1},
+#' validate them (finite, interior, non-duplicated), sort the resulting knot
+#' locations internally, and build the design as
+#' \code{X <- cbind(splineX(..., intercept=intercept), x_base)}.
+#' Invalid chromosomes/inputs return \code{Inf}.
 #'
 #' @return A single numeric value: the requested information criterion. Lower is
 #'   better. Returns \code{Inf} for invalid chromosomes/inputs.
 #'
-#' @note Earlier drafts mistakenly referenced an undefined/global \code{m}.
-#' Always set \code{m <- as.integer(fixedknots)} inside the function to ensure
-#' that exactly \code{fixedknots} interior knots are evaluated.
-#'
-#' @seealso [varyknotsIC()], [splines::bs()]
+#' @seealso [varyknotsIC()], [splineX()], \code{\link[splines]{bs}}, \code{\link[splines]{ns}}
 #'
 #' @examples
 #' library(MASS)
 #' y <- mcycle$accel; x <- mcycle$times
 #' x_unique <- sort(unique(x))
-#' # chromosome encoding 5 interior knot indices:
-#' chrom <- c(5, 24, 30, 46, 49, 69, 95)
+#' # chromosome encoding 5 interior knot indices with sentinel:
+#' chrom <- c(5, 24, 30, 46, 49, 69, length(x_unique) + 1)
 #' fixknotsIC(chrom, y = y, x = x, x_unique = x_unique,
 #'            fixedknots = 5, ic_method = "BIC")
 #' @export
@@ -453,10 +455,14 @@ fixknotsIC <- function(knot_bin,
                        x_unique,
                        x_base=NULL,
                        fixedknots,
-                       polydegree=3L,
+                       degree=3L,
+                       type = c("ppolys", "ns", "bs"),
+                       intercept=TRUE,
                        ic_method = "BIC"){
 
   ic_method <- match.arg(ic_method)
+  type      <- match.arg(type)
+
   stopifnot(is.numeric(y), is.numeric(x), length(y) == length(x))
   if (!is.null(x_base)) x_base <- as.matrix(x_base)
 
@@ -465,38 +471,39 @@ fixknotsIC <- function(knot_bin,
   } else {
     x_unique <- sort(unique(x_unique))
   }
-  if (length(x_unique) < fixedknots) {
-    stop("unique value less than fixed knots")
-  } # need interior points
+  # need m interior points and 2 boundaries
+  if (length(x_unique) < as.integer(fixedknots) + 2L){
+    return(Inf)
+  }
 
-  n <- length(y)
+  n  <- length(y)
+  m  <- as.integer(fixedknots)
   xr <- range(x, na.rm = TRUE)
+  Nu <- length(x_unique)
 
-  # Design matrix
-  idx <- as.integer(knot_bin[2L:(1L + fixedknots)])
-  knotvec <- sort(x_unique[idx])
+  tail    <- as.integer(knot_bin[-1L])
+  end_pos <- match(Nu + 1L, tail)
+  if (is.na(end_pos)) return(Inf)
+
+  cand <- tail[seq_len(end_pos - 1L)]
+  cand <- cand[cand != 0L]
+
+  if (length(cand) < m) return(Inf)
+  idx <- cand[seq_len(m)]
 
   L <- 2L
   U <- length(x_unique) - 1L
-  if (U < L) {
-    return(Inf)
-  }
-  if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) {
-    return(Inf)
-  }
-  if (anyNA(knotvec)) {
-    return(Inf)
-  }
-  if (any(!(knotvec > xr[1] & knotvec < xr[2]))) {
-    return(Inf)
-  }
+  if (U < L) return(Inf)
+  if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) return(Inf)
+  if (anyDuplicated(idx)) return(Inf)
 
-  x_bs <- splines::bs(x,
-                      degree = polydegree,
-                      knots = knotvec,
-                      Boundary.knots = xr
-  )
-  X <- cbind(rep(1, n), x_base, x_bs)
+  knotvec <- x_unique[idx]
+  if (anyNA(knotvec)) return(Inf)
+  if (any(!(knotvec > xr[1] & knotvec < xr[2]))) return(Inf)
+
+  x_spline <- splineX(
+    x, knots=sort(knotvec), degree=degree, type=type, intercept=intercept)
+  X <- cbind(x_spline, x_base)
 
   fit <- stats::.lm.fit(X, y)
   SSRes <- sum(fit$residuals^2)
@@ -897,3 +904,140 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
   crossover = "uniformcrossover",
   mutation = "mutation"
 )
+
+
+
+#' Truncated-power regression spline basis (internal)
+#'
+#' Builds a degree-\eqn{d} truncated-power (piecewise polynomial) basis:
+#' \deqn{[1, x, x^2, \ldots, x^d, (x-k_1)_+^{d}, \ldots, (x-k_L)_+^{d}]}
+#' where \eqn{(u)_+ = \max(u, 0)}.
+#'
+#' Knots are sorted and deduplicated internally. This helper does **not**
+#' clip knots to the data range; use [splineX()] for a safer wrapper that
+#' sanitizes knots.
+#'
+#' @param x Numeric vector of predictor values.
+#' @param knots Numeric vector of interior knots.
+#' @param degree Integer polynomial degree \eqn{d \ge 0}. Default: 3.
+#' @param intercept Logical; include the intercept column \eqn{1}. Default: `TRUE`.
+#'
+#' @return A numeric matrix with \code{(d+1) + L} columns (with intercept),
+#'   where \eqn{L} is the number of unique knots supplied. Columns are named
+#'   \code{"x^0"}, \code{"x^1"}, … and \code{tp(<k>)^d}.
+#'
+#' @keywords internal
+#' @noRd
+tp_basis <- function(x, knots, degree = 3, intercept = TRUE) {
+  x <- as.numeric(x)
+  knots <- sort(unique(knots))
+  d <- as.integer(degree)
+
+  if (is.na(d) || d < 0) stop("`degree` must be a nonnegative integer.")
+
+  # polynomial: 1, x, ..., x^d
+  P <- outer(x, 0:d, `^`)
+  if (!intercept) P <- if (d >= 1) P[, -1, drop = FALSE] else matrix(nrow = length(x), ncol = 0)
+  colnames(P) <- if (intercept) paste0("x^", 0:d) else paste0("x^", 1:d)
+
+  # truncated-power: (x - k)_+^d
+  H <- if (length(knots)) outer(x, knots, function(xx, k) pmax(xx - k, 0)^d) else NULL
+  if (!is.null(H)) colnames(H) <- paste0("tp(", signif(knots, 6), ")^", d)
+
+  as.matrix(cbind(P, H))
+}
+
+
+#' Build spline design matrices (piecewise polynomials, natural cubic, B-spline)
+#'
+#' Unified wrapper to generate spline covariates for three common cases:
+#' \itemize{
+#'   \item \code{type = "ppolys"}: Degree-\eqn{d} regression spline via
+#'         truncated-power **piecewise polynomials** (uses internal \code{tp_basis()}).
+#'   \item \code{type = "ns"}: Degree-3 **natural cubic spline**; enforces
+#'         \eqn{f''(a)=f''(b)=0} at the boundary.
+#'   \item \code{type = "bs"}: Degree-\eqn{d} **B-spline** basis (unconstrained).
+#' }
+#'
+#' Knots are sorted, no-duplicated, and any knots outside \code{range(x)} are
+#' dropped with a warning. For \code{type = "ns"}, \code{degree} is ignored
+#' (natural splines are cubic).
+#'
+#' @param x Numeric vector of predictor values.
+#' @param knots Numeric vector of interior knots.
+#' @param degree Integer polynomial degree for \code{"ppolys"} and \code{"bs"}.
+#'   Ignored for \code{"ns"} (always cubic). Must be provided for
+#'   \code{"ppolys"} and \code{"bs"}.
+#' @param type One of \code{c("ppolys", "ns", "bs")}.
+#' @param intercept Logical; include intercept column where applicable. Default: `TRUE`.
+#'
+#' @return A numeric design matrix. Attributes are attached:
+#'   \itemize{
+#'     \item \code{"knots"} — the interior knots used
+#'     \item \code{"boundary"} — \code{range(x)}
+#'     \item \code{"degree"} — effective degree (i.e., 3 for \code{"ns"})
+#'     \item \code{"type"} — the requested spline type
+#'   }
+#'
+#' @examples
+#' set.seed(1)
+#' x <- sort(rnorm(100))
+#' k <- quantile(x, probs = c(.25, .5, .75))
+#'
+#' # 1) Piecewise polynomials (degree 3)
+#' X_pp <- splineX(x, knots = k, degree = 3, type = "ppolys", intercept = TRUE)
+#' dim(X_pp)  # n x ((3+1) + 3) = n x 7
+#'
+#' # 2) Natural cubic spline (cubic, degree ignored)
+#' X_ns <- splineX(x, knots = k, type = "ns", intercept = TRUE)
+#'
+#' # 3) B-spline basis (degree 3)
+#' X_bs <- splineX(x, knots = k, degree = 3, type = "bs", intercept = TRUE)
+#'
+#' # Fit without a duplicated intercept:
+#' # fit <- lm(y ~ 0 + X_pp)
+#'
+#' @export
+#' @seealso \code{\link[splines]{bs}}, \code{\link[splines]{ns}}
+splineX <- function(x, knots, degree = NULL,
+                    type = c("ppolys", "ns", "bs"),
+                    intercept = TRUE) {
+
+  type <- match.arg(type)
+  x <- as.numeric(x)
+  rangeX <- range(x)
+
+  # sanitize knots: unique, sorted, within [min(x), max(x)]
+  knots <- sort(unique(knots))
+  if (length(knots)) {
+    inside <- knots >= rangeX[1] & knots <= rangeX[2]
+    if (any(!inside)) {
+      warning("Dropping knots outside data range: ",
+              paste(knots[!inside], collapse = ", "))
+      knots <- knots[inside]
+    }
+  }
+
+  if (type %in% c("ppolys", "bs")) {
+    if (is.null(degree)) stop("`degree` must be set for type='", type, "'.")
+    d <- as.integer(degree)
+    if (is.na(d) || d < 0) stop("`degree` must be a nonnegative integer.")
+  } else {
+    d <- NA_integer_
+  }
+
+  res <- switch(
+    type,
+    ppolys = tp_basis(x, knots = knots, degree = d, intercept = intercept),
+    ns     = splines::ns(x, knots = knots, Boundary.knots = rangeX,
+                         intercept = intercept),
+    bs     = splines::bs(x, degree = d, knots = knots, Boundary.knots = rangeX,
+                         intercept = intercept)
+  )
+
+  attr(res, "knots") <- knots
+  attr(res, "boundary") <- rangeX
+  attr(res, "degree") <- if (!is.na(d)) d else 3L
+  attr(res, "type") <- type
+  res
+}

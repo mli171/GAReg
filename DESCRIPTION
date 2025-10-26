@@ -31,6 +31,7 @@ RoxygenNote: 7.3.2
 Depends: R (>= 4.3.0)
 Imports: 
     stats,
+    splines,
     utils,
     methods, 
     changepointGA,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/gareg_knots.R
 \name{gareg_knots}
 \alias{gareg_knots}
-\title{Genetic-Algorithm based Optimal Knots Selection}
+\title{Genetic-Algorithm–based Optimal Knot Selection}
 \usage{
 gareg_knots(
   y,
@@ -10,7 +10,9 @@ gareg_knots(
   ObjFunc = NULL,
   fixedknots = NULL,
   minDist = 3L,
-  polydegree = 3L,
+  degree = 3L,
+  type = c("ppolys", "ns", "bs"),
+  intercept = TRUE,
   gaMethod = "cptga",
   cptgactrl = NULL,
   monitoring = FALSE,
@@ -21,28 +23,39 @@ gareg_knots(
 \arguments{
 \item{y}{Numeric vector of responses (length \code{N}).}
 
-\item{x}{Optional index or time vector aligned with \code{y}. Currently
-kept for API symmetry; not directly used by the backend.}
+\item{x}{Optional index/time vector aligned with \code{y}. If missing, it
+defaults to \code{seq_along(y)}. Used to derive \code{x_unique} (candidate
+knot positions) and passed to the objective function; the GA backend itself
+does not use \code{x} directly.}
 
 \item{ObjFunc}{Objective function or its name. If \code{NULL}, a default
 is chosen:
 \itemize{
-  \item \code{fixknotsBIC} when \code{fixedknots} is supplied;
-  \item \code{varyknotsBIC} otherwise.
+  \item \code{fixknotsIC} when \code{fixedknots} is supplied;
+  \item \code{varyknotsIC} otherwise.
 }
 A custom function must accept the chromosome and needed data via
-named arguments (see the defaults for a template).}
+named arguments (see the defaults for a template function).}
 
-\item{fixedknots}{\code{NULL} (varying-knots search) or an integer vector
-of fixed changepoint locations. If non-\code{NULL}, the method is
-\code{"fixknots"} and specialized operators are injected unless
+\item{fixedknots}{\code{NULL} (varying-knots search) or an integer giving the
+number of interior knots for a fixed-\eqn{m} search. If non-\code{NULL}, the
+method is \code{"fixknots"} and specialized operators are injected unless
 overridden in \code{cptgactrl}.}
 
 \item{minDist}{Integer minimum distance between adjacent changepoints.
 If omitted (\code{missing()} or \code{NULL}), the value in \code{cptgactrl}
 is used. If supplied here, it overrides the control value.}
 
-\item{polydegree}{Spline degree for the default BIC objectives.}
+\item{degree}{Integer polynomial degree for \code{"ppolys"} and \code{"bs"}.
+Ignored for \code{"ns"} (always cubic). Must be provided for \code{"ppolys"}
+and \code{"bs"}.}
+
+\item{type}{One of \code{c("ppolys", "ns", "bs")}:
+piecewise polynomials, natural cubic, or B-spline. See \code{\link{splineX}}.
+The first option of `ppolys` is taken by default.}
+
+\item{intercept}{Logical; include intercept column where applicable.
+Default: \code{TRUE}.}
 
 \item{gaMethod}{GA backend to call: function or name. Supports
 \code{"cptga"} (single population) and \code{"cptgaisl"} (islands).}
@@ -62,13 +75,12 @@ does not accept \code{...}, unknown arguments are silently dropped
 (the call is filtered against the backend formals).}
 }
 \value{
-An object of class \code{"gareg"} with (key slots):
+An object of class \code{"gareg"} with key slots:
 \itemize{
-  \item \code{call}, \code{method} (\code{"varyknots"} or \code{"fixknots"}),
-        \code{regMethod}, \code{N}.
-  \item \code{objFunc}, \code{gaMethod}, \code{gaFit} (the GA result of
-        class \code{"cptga"} or \code{"cptgaisl"}), \code{ctrl}.
-  \item \code{fixedknots}, \code{minDist}, \code{polydegree}.
+  \item \code{call}, \code{method} (\code{"varyknots"} or \code{"fixknots"}), \code{N}.
+  \item \code{objFunc}, \code{gaMethod}, \code{gaFit} (class \code{"cptga"} or \code{"cptgaisl"}), \code{ctrl}.
+  \item \code{fixedknots}, \code{minDist}, \code{polydegree}, \code{type}, \code{intercept}.
+  \item \code{bestFitness}, \code{bestChrom}, \code{bestnumbsol}, \code{bestsol}.
 }
 Use \code{summary(g)} to print GA settings and the best solution (extracted
 from \code{g@gaFit}); \code{show(g)} prints a compact header.
@@ -95,8 +107,15 @@ Top-level \code{monitoring}, \code{seed}, and \code{minDist} given to
 \strong{Fix-knots operators.}
 When \code{fixedknots} is provided and the control does not already
 override them, the following operators are injected:
-\code{Popinitial_fixknots}, \code{crossover_fixknots},
-\code{mutation_fixknots}.
+\code{Popinitial_fixknots}, \code{crossover_fixknots}, \code{mutation_fixknots}.
+
+\strong{Spline basis options.}
+To build spline design matrices (via \code{\link{splineX}}):
+\itemize{
+  \item \code{type = "ppolys"}: Degree-\eqn{d} regression spline via truncated-power piecewise polynomials.
+  \item \code{type = "ns"}: Degree-3 natural cubic spline with zero second-derivative at boundaries.
+  \item \code{type = "bs"}: Degree-\eqn{d} B-spline basis (unconstrained).
+}
 }
 \section{Argument precedence}{
 
@@ -145,6 +164,5 @@ summary(g3)
 }
 \seealso{
 \code{\link{cptgaControl}}, \code{changepointGA::cptga},
-  \code{changepointGA::cptgaisl}, \code{\link{fixknotsIC}},
-  \code{\link{varyknotsIC}}
+  \code{changepointGA::cptgaisl}, \code{\link{fixknotsIC}}, \code{\link{varyknotsIC}}
 }
