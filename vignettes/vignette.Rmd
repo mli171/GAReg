@@ -112,6 +112,46 @@ res$tpr
 
 ## Changepoint detection
 
+```{r}
+BIC.cpt = function(chromosome, Xt){
+  
+  m   = chromosome[1]
+  tau = chromosome[2:(2 + m - 1)]
+  N   = length(Xt)
+  
+  if(m==0){
+    mu.hat = mean(Xt)
+    sigma.hatsq = sum( (Xt-mu.hat)^2 )/N
+    BIC.obj = 0.5*N*log(sigma.hatsq)+ 2*log(N)
+  }
+  else{
+    tau.ext = c(1, tau, N+1)
+    seg.len = diff(tau.ext)
+    ff = rep(0:m, times=seg.len)
+    Xseg = split(Xt, ff)
+    mu.seg = unlist(lapply(Xseg,mean), use.names=F)
+    mu.hat = rep(mu.seg, seg.len)
+    sigma.hatsq = sum( (Xt-mu.hat)^2 )/N
+    BIC.obj = 0.5*N*log(sigma.hatsq) + (2*m + 2)*log(N)
+  }
+  return(BIC.obj)
+}
+
+# IID data
+set.seed(1234)
+n = 200
+et = rnorm(n)
+Xt = et + rep(c(0,2,0,2), each=n/4)
+
+library(changepointGA)
+GA.res <- cptga(
+  ObjFunc = BIC.cpt, N = n, popSize = 500, 
+  pcrossover = 0.95, pmutation = 0.3, pchangepoint = 10/n,
+  Xt = Xt
+)
+summary(GA.res)
+```
+
 ## Optimal spline knot selection
 
 ### Example data set
