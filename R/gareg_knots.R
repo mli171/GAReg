@@ -38,7 +38,8 @@
 #' @param cptgactrl Control list built with \code{\link{cptgaControl}()}
 #'   (or a named list of overrides). When \code{gaMethod = "cptgaisl"},
 #'   island-specific knobs like \code{numIslands} and \code{maxMig} are
-#'   recognized.
+#'   recognized. Other genetic algorithm parameters can be found in \link[changepointGA:cptga]{cptga} and
+#'         \link[changepointGA:cptgaisl]{cptgaisl}.
 #' @param monitoring Logical; print short progress messages (also forwarded
 #'   into the backend control).
 #' @param seed Optional RNG seed; also stored into the backend control.
