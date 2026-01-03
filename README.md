@@ -256,15 +256,15 @@ legend("bottomright",
 
 2. Spline options: piecewise polynomials, natural cubic, and B-splines
 
-This section illustrates how to build spline design matrices via \code{splineX()} 
+This section illustrates how to build spline design matrices via `splineX()` 
 for three common options:
 
-- \code{type="ppolys"}: degree-$d$ truncated power piecewise polynomials;
-- \code{type="ns"}: degree-3 natural cubic spline (degree will be ignored);
-- \code{type="bs"}: degree-$d$ B-spline basis;
+- `type="ppolys"`: degree-d truncated power piecewise polynomials;
+- `type="ns"`: degree-3 natural cubic spline (degree will be ignored);
+- `type="bs"`: degree-d B-spline basis;
 
-We’ll use the motorcycle acceleration data \code{MASS::mcycle}, create interior 
-knots at quantiles of \code{times}, and compare how different spline types/degrees 
+We’ll use the motorcycle acceleration data `MASS::mcycle`, create interior 
+knots at quantiles of `times`, and compare how different spline types/degrees 
 behave. Here, we only illustrate through `Varying number and locations of knots` 
 set-up (Let GA choose both **how many** knots and **where** they go). 
 
