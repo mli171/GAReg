@@ -63,54 +63,61 @@
 #' \dontrun{
 #' if (requireNamespace("GA", quietly = TRUE)) {
 #'   set.seed(1)
-#'   n <- 100; p <- 12
-#'   X <- matrix(rnorm(n*p), n, p)
-#'   y <- 1 + X[,1] - 0.7*X[,4] + rnorm(n, sd = 0.5)
+#'   n <- 100
+#'   p <- 12
+#'   X <- matrix(rnorm(n * p), n, p)
+#'   y <- 1 + X[, 1] - 0.7 * X[, 4] + rnorm(n, sd = 0.5)
 #'
 #'   # Default: subsetBIC (Gaussian – negative BIC), engine = GA::ga
-#'   fit1 <- gareg_subset(y, X, gaMethod = "ga",
-#'                        gacontrol = list(popSize = 60, maxiter = 80, run = 40))
+#'   fit1 <- gareg_subset(y, X,
+#'     gaMethod = "ga",
+#'     gacontrol = list(popSize = 60, maxiter = 80, run = 40)
+#'   )
 #'   summary(fit1)
 #'
 #'   # Island model: GA::gaisl
-#'   fit2 <- gareg_subset(y, X, gaMethod = "gaisl",
-#'                        gacontrol = list(popSize = 40, maxiter = 60, islands = 4))
+#'   fit2 <- gareg_subset(y, X,
+#'     gaMethod = "gaisl",
+#'     gacontrol = list(popSize = 40, maxiter = 60, islands = 4)
+#'   )
 #'   summary(fit2)
 #'
 #'   # Logistic objective (subsetBIC handles GLM via ...):
-#'   ybin <- rbinom(n, 1, plogis(0.3 + X[,1] - 0.5*X[,2]))
-#'   fit3 <- gareg_subset(ybin, X, gaMethod = "ga",
-#'                        family = stats::binomial(),           # <- passed to subsetBIC via ...
-#'                        gacontrol = list(popSize = 60, maxiter = 80))
+#'   ybin <- rbinom(n, 1, plogis(0.3 + X[, 1] - 0.5 * X[, 2]))
+#'   fit3 <- gareg_subset(ybin, X,
+#'     gaMethod = "ga",
+#'     family = stats::binomial(), # <- passed to subsetBIC via ...
+#'     gacontrol = list(popSize = 60, maxiter = 80)
+#'   )
 #'   summary(fit3)
 #' }
 #' }
 #'
 #' @export
-gareg_subset = function(y,
-                        X,
-                        ObjFunc = NULL,
-                        gaMethod = "ga",
-                        gacontrol = NULL,
-                        monitoring = FALSE,
-                        seed = NULL,
-                        ...){
-
-  if (!requireNamespace("GA", quietly = TRUE))
+gareg_subset <- function(y,
+                         X,
+                         ObjFunc = NULL,
+                         gaMethod = "ga",
+                         gacontrol = NULL,
+                         monitoring = FALSE,
+                         seed = NULL,
+                         ...) {
+  if (!requireNamespace("GA", quietly = TRUE)) {
     stop("Package 'GA' is required: install.packages('GA')")
+  }
 
   call <- match.call()
-  X    <- as.matrix(X)
+  X <- as.matrix(X)
   nobs <- NROW(X)
-  p    <- NCOL(X)
+  p <- NCOL(X)
 
   ga_fun <- if (is.function(gaMethod)) {
     gaMethod
   } else {
     switch(tolower(as.character(gaMethod)),
-           "ga"    = GA::ga,
-           "gaisl" = GA::gaisl,
-           stop("gaMethod must be 'ga' or 'gaisl' (from the GA package), or a GA-compatible function.")
+      "ga"    = GA::ga,
+      "gaisl" = GA::gaisl,
+      stop("gaMethod must be 'ga' or 'gaisl' (from the GA package), or a GA-compatible function.")
     )
   }
   ga_name <- if (identical(ga_fun, GA::gaisl)) "gaisl" else "ga"
@@ -129,22 +136,26 @@ gareg_subset = function(y,
   if (isTRUE(monitoring)) message("Running best subset via GA (engine = ", ga_name, ")")
 
   base_args <- list(
-    fitness = ObjFunc,   # your subsetBIC; expects first arg = chromosome (0/1 mask)
+    fitness = ObjFunc, # your subsetBIC; expects first arg = chromosome (0/1 mask)
     type    = "binary",
     nBits   = p,
     monitor = monitoring
   )
 
-  GA.res <- do.call(ga_fun,
-                    c(base_args,
-                      engine_args,
-                      list(y = y, X = X),
-                      list(...)))
+  GA.res <- do.call(
+    ga_fun,
+    c(
+      base_args,
+      engine_args,
+      list(y = y, X = X),
+      list(...)
+    )
+  )
 
   sol <- GA.res@solution
   if (is.matrix(sol)) sol <- sol[1L, ]
-  idx      <- which(sol != 0)
-  mhat     <- length(idx)
+  idx <- which(sol != 0)
+  mhat <- length(idx)
   bestChrom <- c(mhat, idx)
 
   `%||%` <- function(a, b) if (!is.null(a)) a else b
@@ -152,21 +163,20 @@ gareg_subset = function(y,
 
   # Build gareg S4 (gaFit kept NULL unless your class accepts GA objects)
   object <- methods::new("gareg",
-                         call         = call,
-                         method       = "subset",
-                         N            = nobs,
-                         objFunc      = ObjFunc,
-                         gaMethod     = ga_name,
-                         gaFit        = GA.res,
-                         featureNames = feat_names,
-                         bestFitness  = as.numeric(GA.res@fitnessValue),
-                         bestChrom    = as.numeric(bestChrom),
-                         bestnumbsol  = as.numeric(mhat),
-                         bestsol      = as.numeric(idx)
+    call         = call,
+    method       = "subset",
+    N            = nobs,
+    objFunc      = ObjFunc,
+    gaMethod     = ga_name,
+    gaFit        = GA.res,
+    featureNames = feat_names,
+    bestFitness  = as.numeric(GA.res@fitnessValue),
+    bestChrom    = as.numeric(bestChrom),
+    bestnumbsol  = as.numeric(mhat),
+    bestsol      = as.numeric(idx)
   )
 
   return(object)
-
 }
 
 #' Unified BIC-style Objective for Subset Selection (GLM & Gaussian)
@@ -213,19 +223,20 @@ subsetBIC <- function(subset_bin,
                       X,
                       family = stats::gaussian(),
                       weights = NULL,
-                      offset  = NULL,
+                      offset = NULL,
                       control = stats::glm.control()) {
+  n <- as.integer(length(y))
+  X <- as.matrix(X)
 
-  n   <- as.integer(length(y))
-  X   <- as.matrix(X)
-
-  idX <- which(as.integer(abs(subset_bin) !=0 ) == 1L)
-  m   <- length(idX)
+  idX <- which(as.integer(abs(subset_bin) != 0) == 1L)
+  m <- length(idX)
 
   ## Construct the Design Matrix
   if (m == 0L) {
-    Xmat <- matrix(1, nrow = n, ncol = 1L,
-                   dimnames = list(NULL, "(Intercept)"))
+    Xmat <- matrix(1,
+      nrow = n, ncol = 1L,
+      dimnames = list(NULL, "(Intercept)")
+    )
   } else {
     Xsel <- X[, idX, drop = FALSE]
     Xmat <- cbind(`(Intercept)` = 1, Xsel)
@@ -239,13 +250,15 @@ subsetBIC <- function(subset_bin,
     fit <- stats::.lm.fit(Xmat, y)
     if (!is.null(fit$rank) && fit$rank < k_eff) BIC_val <- Inf
     rss_like <- sum(fit$residuals^2)
-  }else{
+  } else {
     ## GLM: use deviance
-    fit <- stats::glm.fit(x = Xmat, y = y,
-                          family  = family,
-                          weights = weights,
-                          offset  = offset,
-                          control = control)
+    fit <- stats::glm.fit(
+      x = Xmat, y = y,
+      family = family,
+      weights = weights,
+      offset = offset,
+      control = control
+    )
     if (!is.null(fit$rank) && fit$rank < k_eff) BIC_val <- Inf
     rss_like <- fit$deviance
     if (!is.finite(rss_like) || rss_like <= 0) {
@@ -257,7 +270,6 @@ subsetBIC <- function(subset_bin,
   BIC_val <- n * log(rss_like / n) + k_eff * log(n)
 
   return(-BIC_val) # GA::ga or GA::gaisl maximizing
-
 }
 
 
@@ -307,7 +319,7 @@ subsetBIC <- function(subset_bin,
 #' # Simple example
 #' N <- 10
 #' true <- c(2, 4, 7)
-#' pred <- c(4, 5, 7, 7)  # duplicates are ignored
+#' pred <- c(4, 5, 7, 7) # duplicates are ignored
 #' FDRCalc(true, pred, N)
 #'
 #' # Empty predictions
@@ -317,8 +329,7 @@ subsetBIC <- function(subset_bin,
 #' FDRCalc(true, true, N)
 #'
 #' @export
-FDRCalc <- function(truelabel, predlabel, N){
-
+FDRCalc <- function(truelabel, predlabel, N) {
   truelabel <- unique(as.integer(truelabel))
   predlabel <- unique(as.integer(predlabel))
 
@@ -326,10 +337,10 @@ FDRCalc <- function(truelabel, predlabel, N){
   fp <- length(setdiff(predlabel, truelabel))
   fn <- length(setdiff(truelabel, predlabel))
 
-  if (any(truelabel < 1L) | any(predlabel < 1L)){
+  if (any(truelabel < 1L) | any(predlabel < 1L)) {
     warning("Labels are expected to be positive indices (>= 1).")
   }
-  if (any(truelabel > N) | any(predlabel > N)){
+  if (any(truelabel > N) | any(predlabel > N)) {
     stop("Found labels greater than N. Increase N or correct labels.")
   }
 
@@ -337,9 +348,8 @@ FDRCalc <- function(truelabel, predlabel, N){
   tn <- N - tp - fp - fn
   if (tn < 0) warning("Computed TN < 0; check that N reflects the full universe.")
 
-  fdr <- fp/(fp+tp)
-  tpr <- tp/(tp+fn)
+  fdr <- fp / (fp + tp)
+  tpr <- tp / (tp + fn)
 
-  return(list(fdr=fdr, tpr=tpr, fp = fp, fn = fn, tp = tp, tn = tn))
-
+  return(list(fdr = fdr, tpr = tpr, fp = fp, fn = fn, tp = tp, tn = tn))
 }

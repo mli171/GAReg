@@ -122,28 +122,29 @@
 #'   y, x,
 #'   gaMethod = "cptgaisl",
 #'   minDist = 6,
-#'   cptgactrl = cptgaControl(engine = "cptgaisl",
-#'                            numIslands = 8, maxMig = 250,
-#'                            popSize = 120, pcrossover = 0.9)
+#'   cptgactrl = cptgaControl(
+#'     engine = "cptgaisl",
+#'     numIslands = 8, maxMig = 250,
+#'     popSize = 120, pcrossover = 0.9
+#'   )
 #' )
 #' summary(g3)
 #' }
 #'
 #' @export
-gareg_knots = function(y,
-                       x,
-                       ObjFunc=NULL,
-                       fixedknots=NULL,
-                       minDist=3L,
-                       degree=3L,
-                       type = c("ppolys", "ns", "bs"),
-                       intercept=TRUE,
-                       gaMethod="cptga",
-                       cptgactrl=NULL,
-                       monitoring=FALSE,
-                       seed=NULL,
-                       ...) {
-
+gareg_knots <- function(y,
+                        x,
+                        ObjFunc = NULL,
+                        fixedknots = NULL,
+                        minDist = 3L,
+                        degree = 3L,
+                        type = c("ppolys", "ns", "bs"),
+                        intercept = TRUE,
+                        gaMethod = "cptga",
+                        cptgactrl = NULL,
+                        monitoring = FALSE,
+                        seed = NULL,
+                        ...) {
   call <- match.call()
   type <- match.arg(type)
   dots <- list(...)
@@ -154,8 +155,8 @@ gareg_knots = function(y,
 
   gareg_method <- if (is.null(fixedknots)) "varyknots" else "fixknots"
   ga_name <- if (is.function(gaMethod)) deparse(substitute(gaMethod)) else as.character(gaMethod)
-  ga_fun  <- if (is.function(gaMethod)) gaMethod else get(gaMethod, mode = "function")
-  engine  <- if (tolower(ga_name) == "cptgaisl") "cptgaisl" else "cptga"
+  ga_fun <- if (is.function(gaMethod)) gaMethod else get(gaMethod, mode = "function")
+  engine <- if (tolower(ga_name) == "cptgaisl") "cptgaisl" else "cptga"
 
   cptgactrl <- if (is.null(cptgactrl)) {
     cptgaControl(engine = engine)
@@ -168,7 +169,7 @@ gareg_knots = function(y,
   }
 
   if (!missing(monitoring) && !is.null(monitoring)) cptgactrl$monitoring <- monitoring
-  if (!missing(seed)       && !is.null(seed))       cptgactrl$seed       <- seed
+  if (!missing(seed) && !is.null(seed)) cptgactrl$seed <- seed
 
   if (missing(minDist) || is.null(minDist)) {
     if (!is.null(cptgactrl$minDist)) minDist <- cptgactrl$minDist
@@ -192,12 +193,15 @@ gareg_knots = function(y,
   }
 
   if (!is.null(fixedknots)) {
-    if (is.null(cptgactrl$popInitialize) || identical(cptgactrl$popInitialize, .cptga.default$popInitialize))
+    if (is.null(cptgactrl$popInitialize) || identical(cptgactrl$popInitialize, .cptga.default$popInitialize)) {
       cptgactrl$popInitialize <- "Popinitial_fixknots"
-    if (is.null(cptgactrl$crossover) || identical(cptgactrl$crossover, .cptga.default$crossover))
+    }
+    if (is.null(cptgactrl$crossover) || identical(cptgactrl$crossover, .cptga.default$crossover)) {
       cptgactrl$crossover <- "crossover_fixknots"
-    if (is.null(cptgactrl$mutation) || identical(cptgactrl$mutation, .cptga.default$mutation))
+    }
+    if (is.null(cptgactrl$mutation) || identical(cptgactrl$mutation, .cptga.default$mutation)) {
       cptgactrl$mutation <- "mutation_fixknots"
+    }
   }
 
   core_args <- list(
@@ -216,9 +220,9 @@ gareg_knots = function(y,
   ga_args <- utils::modifyList(cptgactrl, core_args, keep.null = TRUE)
   if (length(dots)) ga_args <- utils::modifyList(ga_args, dots, keep.null = TRUE)
 
-  ga_formals  <- try(names(formals(ga_fun)),  silent = TRUE);
-  if (inherits(ga_formals,  "try-error") || is.null(ga_formals))  ga_formals  <- character(0)
-  obj_formals <- try(names(formals(ObjFunc)), silent = TRUE);
+  ga_formals <- try(names(formals(ga_fun)), silent = TRUE)
+  if (inherits(ga_formals, "try-error") || is.null(ga_formals)) ga_formals <- character(0)
+  obj_formals <- try(names(formals(ObjFunc)), silent = TRUE)
   if (inherits(obj_formals, "try-error") || is.null(obj_formals)) obj_formals <- character(0)
 
   if ("..." %in% ga_formals) {
@@ -232,25 +236,26 @@ gareg_knots = function(y,
   GA.res <- do.call(ga_fun, ga_args)
 
   object <- new("gareg",
-                call        = call,
-                method      = gareg_method,
-                N           = n,
-                objFunc     = ObjFunc,
-                gaMethod    = ga_name,
-                gaFit       = GA.res,
-                fixedknots  = fixedknots,
-                minDist     = minDist,
-                polydegree  = degree,
-                type        = type,
-                intercept   = intercept,
-                bestFitness = GA.res@overbestfit,
-                bestChrom   = GA.res@overbestchrom)
+    call        = call,
+    method      = gareg_method,
+    N           = n,
+    objFunc     = ObjFunc,
+    gaMethod    = ga_name,
+    gaFit       = GA.res,
+    fixedknots  = fixedknots,
+    minDist     = minDist,
+    polydegree  = degree,
+    type        = type,
+    intercept   = intercept,
+    bestFitness = GA.res@overbestfit,
+    bestChrom   = GA.res@overbestchrom
+  )
 
   mhat <- object@bestnumbsol <- object@bestChrom[1]
-  if(mhat == 0){
+  if (mhat == 0) {
     object@bestsol <- NULL
-  }else{
-    object@bestsol <- object@bestChrom[2:(1+mhat)]
+  } else {
+    object@bestsol <- object@bestChrom[2:(1 + mhat)]
   }
 
   return(object)
@@ -331,9 +336,8 @@ varyknotsIC <- function(knot_bin,
                         type = c("ppolys", "ns", "bs"),
                         intercept = TRUE,
                         ic_method = "BIC") {
-
   ic_method <- match.arg(ic_method, c("BIC", "AIC", "AICc"))
-  type      <- match.arg(type)
+  type <- match.arg(type)
 
   stopifnot(is.numeric(y), is.numeric(x), length(y) == length(x))
   if (!is.null(x_base)) x_base <- as.matrix(x_base)
@@ -343,53 +347,75 @@ varyknotsIC <- function(knot_bin,
   } else {
     x_unique <- sort(unique(x_unique))
   }
-  if (length(x_unique) < 3L) return(Inf)  # need at least one interior candidate
+  if (length(x_unique) < 3L) {
+    return(Inf)
+  } # need at least one interior candidate
 
-  n  <- length(y)
-  m  <- as.integer(knot_bin[1L])
+  n <- length(y)
+  m <- as.integer(knot_bin[1L])
   xr <- range(x, na.rm = TRUE)
-  Nu  <- length(x_unique)
+  Nu <- length(x_unique)
 
   if (m == 0L) {
     # no knots: intercept + x_base
     tail <- as.integer(knot_bin[-1L])
-    if (!any(tail == Nu + 1L)) return(Inf)
+    if (!any(tail == Nu + 1L)) {
+      return(Inf)
+    }
     X <- cbind(rep(1, n), x_base)
   } else {
-    tail    <- as.integer(knot_bin[-1L])
+    tail <- as.integer(knot_bin[-1L])
     end_pos <- match(Nu + 1L, tail)
-    if (is.na(end_pos)) return(Inf)
-    idx     <- tail[seq_len(end_pos - 1L)]
-    idx     <- idx[idx != 0L]
+    if (is.na(end_pos)) {
+      return(Inf)
+    }
+    idx <- tail[seq_len(end_pos - 1L)]
+    idx <- idx[idx != 0L]
 
-    if (length(idx) != m) return(Inf)
+    if (length(idx) != m) {
+      return(Inf)
+    }
 
     L <- 2L
     U <- length(x_unique) - 1L
-    if (U < L) return(Inf)
-    if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) return(Inf)
-    if (anyDuplicated(idx)) return(Inf)
+    if (U < L) {
+      return(Inf)
+    }
+    if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) {
+      return(Inf)
+    }
+    if (anyDuplicated(idx)) {
+      return(Inf)
+    }
 
     knotvec <- x_unique[idx]
-    if (anyNA(knotvec)) return(Inf)
-    if (any(!(knotvec > xr[1] & knotvec < xr[2]))) return(Inf)
+    if (anyNA(knotvec)) {
+      return(Inf)
+    }
+    if (any(!(knotvec > xr[1] & knotvec < xr[2]))) {
+      return(Inf)
+    }
 
     x_spline <- splineX(
-      x, knots = sort(knotvec), degree = degree, type = type, intercept=intercept
+      x,
+      knots = sort(knotvec), degree = degree, type = type, intercept = intercept
     )
     X <- cbind(x_spline, x_base)
   }
 
-  fit   <- stats::.lm.fit(X, y)
+  fit <- stats::.lm.fit(X, y)
   SSRes <- sum(fit$residuals^2)
-  p     <- NCOL(X)
+  p <- NCOL(X)
 
   switch(ic_method,
-         BIC  = n * log(SSRes / n) + p * log(n),
-         AIC  = n * log(SSRes / n) + 2 * p,
-         AICc = if (n - p - 1 > 0)
-           n * log(SSRes / n) + 2 * p + (2 * p * (p + 1)) / (n - p - 1)
-         else Inf)
+    BIC = n * log(SSRes / n) + p * log(n),
+    AIC = n * log(SSRes / n) + 2 * p,
+    AICc = if (n - p - 1 > 0) {
+      n * log(SSRes / n) + 2 * p + (2 * p * (p + 1)) / (n - p - 1)
+    } else {
+      Inf
+    }
+  )
 }
 
 #' Information criterion for a fixed–knot spline regression
@@ -442,27 +468,29 @@ varyknotsIC <- function(knot_bin,
 #'
 #' @examples
 #' library(MASS)
-#' y <- mcycle$accel; x <- mcycle$times
+#' y <- mcycle$accel
+#' x <- mcycle$times
 #' x_unique <- sort(unique(x))
 #' # chromosome encoding 5 interior knot indices with sentinel:
 #' chrom <- c(5, 24, 30, 46, 49, 69, length(x_unique) + 1)
-#' fixknotsIC(chrom, y = y, x = x, x_unique = x_unique,
-#'            fixedknots = 5, ic_method = "BIC")
+#' fixknotsIC(chrom,
+#'   y = y, x = x, x_unique = x_unique,
+#'   fixedknots = 5, ic_method = "BIC"
+#' )
 #' @export
 fixknotsIC <- function(knot_bin,
-                       plen=0,
+                       plen = 0,
                        y,
                        x,
                        x_unique,
-                       x_base=NULL,
+                       x_base = NULL,
                        fixedknots,
-                       degree=3L,
+                       degree = 3L,
                        type = c("ppolys", "ns", "bs"),
-                       intercept=TRUE,
-                       ic_method = "BIC"){
-
+                       intercept = TRUE,
+                       ic_method = "BIC") {
   ic_method <- match.arg(ic_method)
-  type      <- match.arg(type)
+  type <- match.arg(type)
 
   stopifnot(is.numeric(y), is.numeric(x), length(y) == length(x))
   if (!is.null(x_base)) x_base <- as.matrix(x_base)
@@ -473,37 +501,53 @@ fixknotsIC <- function(knot_bin,
     x_unique <- sort(unique(x_unique))
   }
   # need m interior points and 2 boundaries
-  if (length(x_unique) < as.integer(fixedknots) + 2L){
+  if (length(x_unique) < as.integer(fixedknots) + 2L) {
     return(Inf)
   }
 
-  n  <- length(y)
-  m  <- as.integer(fixedknots)
+  n <- length(y)
+  m <- as.integer(fixedknots)
   xr <- range(x, na.rm = TRUE)
   Nu <- length(x_unique)
 
-  tail    <- as.integer(knot_bin[-1L])
+  tail <- as.integer(knot_bin[-1L])
   end_pos <- match(Nu + 1L, tail)
-  if (is.na(end_pos)) return(Inf)
+  if (is.na(end_pos)) {
+    return(Inf)
+  }
 
   cand <- tail[seq_len(end_pos - 1L)]
   cand <- cand[cand != 0L]
 
-  if (length(cand) < m) return(Inf)
+  if (length(cand) < m) {
+    return(Inf)
+  }
   idx <- cand[seq_len(m)]
 
   L <- 2L
   U <- length(x_unique) - 1L
-  if (U < L) return(Inf)
-  if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) return(Inf)
-  if (anyDuplicated(idx)) return(Inf)
+  if (U < L) {
+    return(Inf)
+  }
+  if (any(!is.finite(idx)) || any(idx < L) || any(idx > U)) {
+    return(Inf)
+  }
+  if (anyDuplicated(idx)) {
+    return(Inf)
+  }
 
   knotvec <- x_unique[idx]
-  if (anyNA(knotvec)) return(Inf)
-  if (any(!(knotvec > xr[1] & knotvec < xr[2]))) return(Inf)
+  if (anyNA(knotvec)) {
+    return(Inf)
+  }
+  if (any(!(knotvec > xr[1] & knotvec < xr[2]))) {
+    return(Inf)
+  }
 
   x_spline <- splineX(
-    x, knots=sort(knotvec), degree=degree, type=type, intercept=intercept)
+    x,
+    knots = sort(knotvec), degree = degree, type = type, intercept = intercept
+  )
   X <- cbind(x_spline, x_base)
 
   fit <- stats::.lm.fit(X, y)
@@ -511,9 +555,9 @@ fixknotsIC <- function(knot_bin,
   p <- NCOL(X)
 
   val <- switch(ic_method,
-                BIC  = n * log(SSRes / n) + p * log(n),
-                AIC  = n * log(SSRes / n) + p * 2,
-                AICc = if (n - p - 1 > 0) n * log(SSRes / n) + p * 2 + (2 * p * (p + 1)) / (n - p - 1) else Inf
+    BIC  = n * log(SSRes / n) + p * log(n),
+    AIC  = n * log(SSRes / n) + p * 2,
+    AICc = if (n - p - 1 > 0) n * log(SSRes / n) + p * 2 + (2 * p * (p + 1)) / (n - p - 1) else Inf
   )
 
   return(val)
@@ -521,34 +565,37 @@ fixknotsIC <- function(knot_bin,
 
 
 .is_scalar <- function(x) is.atomic(x) && length(x) == 1L
-.is_intish <- function(x) is.numeric(x) && length(x)==1L && is.finite(x) && abs(x - round(x)) < 1e-9
-.chk_prob  <- function(x, nm) if(!(is.numeric(x)&&length(x)==1L&&is.finite(x)&&x>=0&&x<=1))
-  stop(sprintf("`%s` must be a single number in [0,1].", nm), call.=FALSE)
+.is_intish <- function(x) is.numeric(x) && length(x) == 1L && is.finite(x) && abs(x - round(x)) < 1e-9
+.chk_prob <- function(x, nm) {
+  if (!(is.numeric(x) && length(x) == 1L && is.finite(x) && x >= 0 && x <= 1)) {
+    stop(sprintf("`%s` must be a single number in [0,1].", nm), call. = FALSE)
+  }
+}
 
-.validate_ctrl <- function(x, engine = c("cptga","cptgaisl")) {
+.validate_ctrl <- function(x, engine = c("cptga", "cptgaisl")) {
   engine <- match.arg(engine)
-  if(!.is_intish(x$popSize) || x$popSize < 1) stop("`popSize` must be integer >= 1.")
+  if (!.is_intish(x$popSize) || x$popSize < 1) stop("`popSize` must be integer >= 1.")
   .chk_prob(x$pcrossover, "pcrossover")
-  .chk_prob(x$pmutation,  "pmutation")
+  .chk_prob(x$pmutation, "pmutation")
   .chk_prob(x$pchangepoint, "pchangepoint")
-  if(!.is_intish(x$minDist) || x$minDist < 0) stop("`minDist` must be integer >= 0.")
-  if(!is.null(x$mmax)  && (!.is_intish(x$mmax)  || x$mmax  < 0)) stop("`mmax` must be NULL or integer >= 0.")
-  if(!is.null(x$lmax)  && (!.is_intish(x$lmax)  || x$lmax  < 0)) stop("`lmax` must be NULL or integer >= 0.")
-  if(!.is_intish(x$maxgen)  || x$maxgen  < 1)  stop("`maxgen` must be integer >= 1.")
-  if(!.is_intish(x$maxconv) || x$maxconv < 1)  stop("`maxconv` must be integer >= 1.")
-  if(!(x$option %in% c("cp","both"))) stop("`option` must be 'cp' or 'both'.")
-  if(!is.logical(x$monitoring) || length(x$monitoring)!=1L) stop("`monitoring` must be logical(1).")
-  if(!is.logical(x$parallel)   || length(x$parallel)!=1L)   stop("`parallel` must be logical(1).")
-  if(!is.null(x$nCore) && (!.is_intish(x$nCore) || x$nCore < 1)) stop("`nCore` must be NULL or integer >= 1.")
-  if(!(is.numeric(x$tol) && length(x$tol)==1L && is.finite(x$tol) && x$tol > 0)) stop("`tol` must be > 0.")
-  if(!is.null(x$seed) && !.is_intish(x$seed)) stop("`seed` must be NULL or an integer.")
-  if(!(is.character(x$popInitialize) || is.function(x$popInitialize))) stop("`popInitialize` must be name or function.")
-  if(!(is.character(x$selection)     || is.function(x$selection)))     stop("`selection` must be name or function.")
-  if(!(is.character(x$crossover)     || is.function(x$crossover)))     stop("`crossover` must be name or function.")
-  if(!(is.character(x$mutation)      || is.function(x$mutation)))      stop("`mutation` must be name or function.")
+  if (!.is_intish(x$minDist) || x$minDist < 0) stop("`minDist` must be integer >= 0.")
+  if (!is.null(x$mmax) && (!.is_intish(x$mmax) || x$mmax < 0)) stop("`mmax` must be NULL or integer >= 0.")
+  if (!is.null(x$lmax) && (!.is_intish(x$lmax) || x$lmax < 0)) stop("`lmax` must be NULL or integer >= 0.")
+  if (!.is_intish(x$maxgen) || x$maxgen < 1) stop("`maxgen` must be integer >= 1.")
+  if (!.is_intish(x$maxconv) || x$maxconv < 1) stop("`maxconv` must be integer >= 1.")
+  if (!(x$option %in% c("cp", "both"))) stop("`option` must be 'cp' or 'both'.")
+  if (!is.logical(x$monitoring) || length(x$monitoring) != 1L) stop("`monitoring` must be logical(1).")
+  if (!is.logical(x$parallel) || length(x$parallel) != 1L) stop("`parallel` must be logical(1).")
+  if (!is.null(x$nCore) && (!.is_intish(x$nCore) || x$nCore < 1)) stop("`nCore` must be NULL or integer >= 1.")
+  if (!(is.numeric(x$tol) && length(x$tol) == 1L && is.finite(x$tol) && x$tol > 0)) stop("`tol` must be > 0.")
+  if (!is.null(x$seed) && !.is_intish(x$seed)) stop("`seed` must be NULL or an integer.")
+  if (!(is.character(x$popInitialize) || is.function(x$popInitialize))) stop("`popInitialize` must be name or function.")
+  if (!(is.character(x$selection) || is.function(x$selection))) stop("`selection` must be name or function.")
+  if (!(is.character(x$crossover) || is.function(x$crossover))) stop("`crossover` must be name or function.")
+  if (!(is.character(x$mutation) || is.function(x$mutation))) stop("`mutation` must be name or function.")
   if (engine == "cptgaisl") {
-    if(!.is_intish(x$numIslands) || x$numIslands < 1) stop("`numIslands` must be integer >= 1.")
-    if(!.is_intish(x$maxMig)     || x$maxMig < 0)     stop("`maxMig` must be integer >= 0.")
+    if (!.is_intish(x$numIslands) || x$numIslands < 1) stop("`numIslands` must be integer >= 1.")
+    if (!.is_intish(x$maxMig) || x$maxMig < 0) stop("`maxMig` must be integer >= 0.")
   }
   x
 }
@@ -582,35 +629,40 @@ fixknotsIC <- function(knot_bin,
 cptgaControl <- function(..., .list = NULL, .persist = FALSE,
                          .env = asNamespace("GAReg"), .validate = TRUE,
                          engine = NULL) {
-
   overrides <- list(...)
   if (!is.null(.list)) {
     if (!is.list(.list)) stop("`.list` must be a named list.")
     overrides <- c(overrides, list(.list))
   }
-  if (length(overrides) == 1L && is.list(overrides[[1]]) && !length(names(overrides)))
+  if (length(overrides) == 1L && is.list(overrides[[1]]) && !length(names(overrides))) {
     overrides <- overrides[[1]]
+  }
 
   if (!is.null(engine)) {
-    engine <- match.arg(engine, c("cptga","cptgaisl"))
+    engine <- match.arg(engine, c("cptga", "cptgaisl"))
   } else {
     nm <- names(overrides)
-    engine <- if (length(nm) && any(c("numIslands","maxMig") %in% nm)) "cptgaisl" else "cptga"
+    engine <- if (length(nm) && any(c("numIslands", "maxMig") %in% nm)) "cptgaisl" else "cptga"
   }
 
   defaults_name <- if (engine == "cptga") ".cptga.default" else ".cptgaisl.default"
-  if (!exists(defaults_name, envir = .env, inherits = TRUE))
+  if (!exists(defaults_name, envir = .env, inherits = TRUE)) {
     stop(sprintf("`%s` not found in target environment.", defaults_name))
+  }
   current <- get(defaults_name, envir = .env, inherits = TRUE)
 
-  if (!length(overrides)) return(structure(current, class = c("cptgaControl","list")))
+  if (!length(overrides)) {
+    return(structure(current, class = c("cptgaControl", "list")))
+  }
 
-  if (is.null(names(overrides)) || any(names(overrides) == ""))
+  if (is.null(names(overrides)) || any(names(overrides) == "")) {
     stop("All control overrides must be *named*.")
+  }
 
   unknown <- setdiff(names(overrides), names(current))
-  if (length(unknown))
+  if (length(unknown)) {
     stop("Unknown control parameter(s): ", paste(unknown, collapse = ", "))
+  }
 
   updated <- current
   updated[names(overrides)] <- overrides
@@ -618,9 +670,9 @@ cptgaControl <- function(..., .list = NULL, .persist = FALSE,
 
   if (.persist) {
     assign(defaults_name, updated, envir = .env)
-    invisible(structure(updated, class = c("cptgaControl","list")))
+    invisible(structure(updated, class = c("cptgaControl", "list")))
   } else {
-    structure(updated, class = c("cptgaControl","list"))
+    structure(updated, class = c("cptgaControl", "list"))
   }
 }
 
@@ -643,12 +695,11 @@ cptgaControl <- function(..., .list = NULL, .persist = FALSE,
 #'
 #' @seealso \link{selectTau_uniform_exact}, \link{gareg_knots}
 #' @export
-Popinitial_fixknots <- function(popSize, prange=NULL, N, minDist, Pb, mmax, lmax, fixedknots){
+Popinitial_fixknots <- function(popSize, prange = NULL, N, minDist, Pb, mmax, lmax, fixedknots) {
+  pop <- matrix(0, nrow = lmax, ncol = popSize)
 
-  pop <- matrix(0, nrow=lmax, ncol=popSize)
-
-  for(j in 1:popSize){
-    pop[,j] = selectTau_uniform_exact(N, fixedknots, minDist, lmax)
+  for (j in 1:popSize) {
+    pop[, j] <- selectTau_uniform_exact(N, fixedknots, minDist, lmax)
   }
 
   return(pop)
@@ -701,17 +752,20 @@ Popinitial_fixknots <- function(popSize, prange=NULL, N, minDist, Pb, mmax, lmax
 #'
 #' @examples
 #' \dontrun{
-#' N <- 120; lmax <- 30; minDist <- 5
+#' N <- 120
+#' lmax <- 30
+#' minDist <- 5
 #' m <- 3
-#' mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m)); mom[m+2] <- N + 1
-#' dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m)); dad[m+2] <- N + 1
+#' mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m))
+#' mom[m + 2] <- N + 1
+#' dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m))
+#' dad[m + 2] <- N + 1
 #' child <- crossover_fixknots(mom, dad, minDist = minDist, lmax = lmax, N = N)
 #' child
 #' }
 #'
 #' @export
-crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
-
+crossover_fixknots <- function(mom, dad, prange = NULL, minDist, lmax, N) {
   up_tol <- 30L
   max_restarts <- 50L
 
@@ -720,13 +774,13 @@ crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
   m_child <- as.integer(dad[1L])
   child <- rep.int(NA_integer_, m_child)
 
-  if (all(mom[2:(m_child+1)] == dad[2:(m_child+1)])) {
+  if (all(mom[2:(m_child + 1)] == dad[2:(m_child + 1)])) {
     mom <- selectTau_uniform_exact(N, m_child, minDist, lmax)
   }
 
   mom_tau <- as.integer(mom[2L:(m_child + 1L)])
   dad_tau <- as.integer(dad[2L:(m_child + 1L)])
-  co_tab  <- as.integer(as.vector(rbind(mom_tau, dad_tau)))
+  co_tab <- as.integer(as.vector(rbind(mom_tau, dad_tau)))
 
   i <- 1L
   ii <- 0L
@@ -735,7 +789,7 @@ crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
   while (i <= m_child) {
     if (i == 1L) {
       # first pick random from first pair of mom and dad
-      tmppick   <- sample(co_tab[1:2], size = 1L)
+      tmppick <- sample(co_tab[1:2], size = 1L)
       child[1L] <- tmppick
       i <- i + 1L
     } else {
@@ -749,7 +803,9 @@ crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
         if (i == m_child) {
           if (all(child == dad_tau) || all(child == mom_tau)) {
             if (ii > up_tol) break
-            i <- 1L; child[] <- NA_integer_; restarts <- restarts + 1L
+            i <- 1L
+            child[] <- NA_integer_
+            restarts <- restarts + 1L
           } else {
             i <- i + 1L
           }
@@ -757,7 +813,9 @@ crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
           i <- i + 1L
         }
       } else {
-        i <- 1L; child[] <- NA_integer_; restarts <- restarts + 1L
+        i <- 1L
+        child[] <- NA_integer_
+        restarts <- restarts + 1L
       }
     }
 
@@ -770,8 +828,8 @@ crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
   }
 
   output[1] <- m_child
-  output[2:(m_child+1)] <- child
-  output[m_child+2] <- N+1
+  output[2:(m_child + 1)] <- child
+  output[m_child + 2] <- N + 1
 
   return(output)
 }
@@ -793,21 +851,24 @@ crossover_fixknots <- function(mom, dad, prange=NULL, minDist, lmax, N){
 #'
 #' @seealso \link{Popinitial_fixknots}, \link{mutation_fixknots}
 #' @export
-selectTau_uniform_exact <- function(N, m, minDist, lmax){
-
+selectTau_uniform_exact <- function(N, m, minDist, lmax) {
   output <- rep(0, lmax)
 
-  if (N < (m + 1L) * minDist + 2L){stop("Infeasible: need N >= (m+1)*minDist + 2.")}
+  if (N < (m + 1L) * minDist + 2L) {
+    stop("Infeasible: need N >= (m+1)*minDist + 2.")
+  }
   L0 <- 1L + minDist # 6
   U0 <- N - m * minDist - 1L # (N - minDist - 1) - (m-1)*minDist
-  S  <- (U0 - L0 + 1L) + m - 1L
-  if (S < m){stop("Infeasible (S < m).")}
+  S <- (U0 - L0 + 1L) + m - 1L
+  if (S < m) {
+    stop("Infeasible (S < m).")
+  }
   picks <- sort(sample.int(S, m, replace = FALSE))
   h <- (L0 - 1L) + picks - (seq_len(m) - 1L)
   i <- h + (seq_len(m) - 1L) * minDist
   output[1] <- m
-  output[2:(m+1)] <- i
-  output[m+2] <- N+1
+  output[2:(m + 1)] <- i
+  output[m + 2] <- N + 1
 
   return(output)
 }
@@ -829,7 +890,6 @@ selectTau_uniform_exact <- function(N, m, minDist, lmax){
 #' @seealso \link{crossover_fixknots}
 #' @export
 mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N) {
-
   m <- child[1]
   childMut <- selectTau_uniform_exact(N, m, minDist, lmax)
 
@@ -868,7 +928,8 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
   suggestions = NULL,
   selection = "selection_linearrank",
   crossover = "uniformcrossover",
-  mutation = "mutation")
+  mutation = "mutation"
+)
 
 #' Default Controls for \code{cptgaisl} (Island GA)
 #'
@@ -885,7 +946,7 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
   popSize = 200,
   numIslands = 5,
   pcrossover = 0.95,
-  pmutation  = 0.3,
+  pmutation = 0.3,
   pchangepoint = 0.01,
   minDist = 1,
   mmax = NULL,
@@ -987,7 +1048,7 @@ tp_basis <- function(x, knots, degree = 3, intercept = TRUE) {
 #'
 #' # 1) Piecewise polynomials (degree 3)
 #' X_pp <- splineX(x, knots = k, degree = 3, type = "ppolys", intercept = TRUE)
-#' dim(X_pp)  # n x ((3+1) + 3) = n x 7
+#' dim(X_pp) # n x ((3+1) + 3) = n x 7
 #'
 #' # 2) Natural cubic spline (cubic, degree ignored)
 #' X_ns <- splineX(x, knots = k, type = "ns", intercept = TRUE)
@@ -1003,7 +1064,6 @@ tp_basis <- function(x, knots, degree = 3, intercept = TRUE) {
 splineX <- function(x, knots, degree = NULL,
                     type = c("ppolys", "ns", "bs"),
                     intercept = TRUE) {
-
   type <- match.arg(type)
   x <- as.numeric(x)
   rangeX <- range(x)
@@ -1013,8 +1073,10 @@ splineX <- function(x, knots, degree = NULL,
   if (length(knots)) {
     inside <- knots >= rangeX[1] & knots <= rangeX[2]
     if (any(!inside)) {
-      warning("Dropping knots outside data range: ",
-              paste(knots[!inside], collapse = ", "))
+      warning(
+        "Dropping knots outside data range: ",
+        paste(knots[!inside], collapse = ", ")
+      )
       knots <- knots[inside]
     }
   }
@@ -1027,13 +1089,16 @@ splineX <- function(x, knots, degree = NULL,
     d <- NA_integer_
   }
 
-  res <- switch(
-    type,
+  res <- switch(type,
     ppolys = tp_basis(x, knots = knots, degree = d, intercept = intercept),
-    ns     = splines::ns(x, knots = knots, Boundary.knots = rangeX,
-                         intercept = intercept),
-    bs     = splines::bs(x, degree = d, knots = knots, Boundary.knots = rangeX,
-                         intercept = intercept)
+    ns = splines::ns(x,
+      knots = knots, Boundary.knots = rangeX,
+      intercept = intercept
+    ),
+    bs = splines::bs(x,
+      degree = d, knots = knots, Boundary.knots = rangeX,
+      intercept = intercept
+    )
   )
 
   attr(res, "knots") <- knots

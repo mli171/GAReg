@@ -24,16 +24,7 @@ Authors@R: c(
     role = "aut", 
     email = "shixueheng@gmail.com")
   )
-Description: GAReg is a unified genetic algorithm framework for regression 
-problems that require discrete optimization over model spaces with unknown or 
-variable dimension, where gradient-based methods and exhaustive search are 
-impractical. It provides a compact chromosome representation for tasks such 
-as optimal spline knot placement, best-subset variable selection, and multiple 
-changepoint detection, along with exact uniform initialization, 
-constraint-preserving crossover and mutation, steady-state replacement, 
-and optional island-model parallelization. In challenging high-dimensional 
-settings, GAReg enables efficient search and delivers near-optimal solutions 
-when alternative algorithms are not well-justified.
+Description: GAReg is a unified genetic algorithm framework for regression problems that require discrete optimization over model spaces with unknown or variable dimension, where gradient-based methods and exhaustive search are impractical. It provides a compact chromosome representation for tasks such as optimal spline knot placement, best-subset variable selection, and multiple changepoint detection, along with exact uniform initialization, constraint-preserving crossover and mutation, steady-state replacement, and optional island-model parallelization. In challenging high-dimensional settings, GAReg enables efficient search and delivers near-optimal solutions when alternative algorithms are not well-justified.
 License: file LICENSE
 RoxygenNote: 7.3.2
 Depends: R (>= 4.3.0)
