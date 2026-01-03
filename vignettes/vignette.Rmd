@@ -112,6 +112,11 @@ res$tpr
 
 ## Changepoint detection
 
+The multiple changepoint detection can be conducted through `changepointGA` 
+package (Li and Lu, 2024). The BIC penalized function is provided below for IID data. The related 
+math details can be found in (Li et al., 2026).
+
+
 ```{r}
 BIC.cpt = function(chromosome, Xt){
   
@@ -156,7 +161,7 @@ summary(GA.res)
 
 ### Example data set
 
-This section will illustrate optimal spline knot placement on the classic motocycle impact dataset from Package \code{MASS}.\code{MASS::mcycle} contains 133 observations from a simulated motorcycle crash test, recording head acceleration (in g) of a helmeted test subject over time (milliseconds). The series is non-linear with sharp transients and heteroskedastic noise, which makes it a canonical benchmark for smoothing and spline-based regression. We use function \code{gareg_knots} choose interior spline knots subject to a minimum separation in indices to avoid clustering. Here the `truncated-power piecewise polynomials` with polynomial degree of 3 is the used default.
+This section will illustrate optimal spline knot placement on the classic motocycle impact dataset from Package \code{MASS} (Venables & Ripley, 2002).\code{MASS::mcycle} contains 133 observations from a simulated motorcycle crash test, recording head acceleration (in g) of a helmeted test subject over time (milliseconds). The series is non-linear with sharp transients and heteroskedastic noise, which makes it a canonical benchmark for smoothing and spline-based regression. We use function \code{gareg_knots} choose interior spline knots subject to a minimum separation in indices to avoid clustering. Here the `truncated-power piecewise polynomials` with polynomial degree of 3 is the used default.
 
 
 ```{r}
@@ -313,3 +318,9 @@ sessionInfo()
 ```
 
 ## References
+
+Li, M., & Lu, Q. (2024). changepointGA: An R package for Fast Changepoint Detection via Genetic Algorithm. arXiv preprint arXiv:2410.15571.
+
+Mo Li, QiQi Lu, Robert Lund, & Xueheng Shi. (2026). Genetic Algorithms in Regression. arXiv preprint arXiv:.
+
+Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0.
