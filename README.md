@@ -1,6 +1,6 @@
 # GAReg
 
-## Genetic Algorithms in Regression
+## Genetic Algorithms in Regression.
 
 Authors: Mo Li (mo.li@louisiana.edu), QiQi Lu (qlu2@vcu.edu), Robert Lund (rolund@ucsc.edu), Xueheng Shi (xshi11@unl.edu)
 
