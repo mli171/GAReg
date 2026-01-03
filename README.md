@@ -1,7 +1,21 @@
 # GAReg
-Genetic Algorithm Applications in Regression
+
+## Genetic Algorithms in Regression
+
+Authors: Mo Li (mo.li@louisiana.edu), QiQi Lu (qlu2@vcu.edu), Robert Lund (rolund@ucsc.edu), Xueheng Shi (xshi11@unl.edu)
 
 ## Overview
+
+GAReg is a unified genetic algorithm framework for regression 
+problems that require discrete optimization over model spaces with unknown or 
+variable dimension, where gradient-based methods and exhaustive search are 
+impractical. It provides a compact chromosome representation for tasks such 
+as optimal spline knot placement, best-subset variable selection, and multiple 
+changepoint detection, along with exact uniform initialization, 
+constraint-preserving crossover and mutation, steady-state replacement, 
+and optional island-model parallelization. In challenging high-dimensional 
+settings, GAReg enables efficient search and delivers near-optimal solutions 
+when alternative algorithms are not well-justified.
 
 ## Package download and installation
 
