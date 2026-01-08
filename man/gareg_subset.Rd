@@ -82,25 +82,32 @@ objective arguments.
 \dontrun{
 if (requireNamespace("GA", quietly = TRUE)) {
   set.seed(1)
-  n <- 100; p <- 12
-  X <- matrix(rnorm(n*p), n, p)
-  y <- 1 + X[,1] - 0.7*X[,4] + rnorm(n, sd = 0.5)
+  n <- 100
+  p <- 12
+  X <- matrix(rnorm(n * p), n, p)
+  y <- 1 + X[, 1] - 0.7 * X[, 4] + rnorm(n, sd = 0.5)
 
   # Default: subsetBIC (Gaussian – negative BIC), engine = GA::ga
-  fit1 <- gareg_subset(y, X, gaMethod = "ga",
-                       gacontrol = list(popSize = 60, maxiter = 80, run = 40))
+  fit1 <- gareg_subset(y, X,
+    gaMethod = "ga",
+    gacontrol = list(popSize = 60, maxiter = 80, run = 40)
+  )
   summary(fit1)
 
   # Island model: GA::gaisl
-  fit2 <- gareg_subset(y, X, gaMethod = "gaisl",
-                       gacontrol = list(popSize = 40, maxiter = 60, islands = 4))
+  fit2 <- gareg_subset(y, X,
+    gaMethod = "gaisl",
+    gacontrol = list(popSize = 40, maxiter = 60, islands = 4)
+  )
   summary(fit2)
 
   # Logistic objective (subsetBIC handles GLM via ...):
-  ybin <- rbinom(n, 1, plogis(0.3 + X[,1] - 0.5*X[,2]))
-  fit3 <- gareg_subset(ybin, X, gaMethod = "ga",
-                       family = stats::binomial(),           # <- passed to subsetBIC via ...
-                       gacontrol = list(popSize = 60, maxiter = 80))
+  ybin <- rbinom(n, 1, plogis(0.3 + X[, 1] - 0.5 * X[, 2]))
+  fit3 <- gareg_subset(ybin, X,
+    gaMethod = "ga",
+    family = stats::binomial(), # <- passed to subsetBIC via ...
+    gacontrol = list(popSize = 60, maxiter = 80)
+  )
   summary(fit3)
 }
 }

@@ -55,7 +55,7 @@ and \code{fdr} is 1.
 # Simple example
 N <- 10
 true <- c(2, 4, 7)
-pred <- c(4, 5, 7, 7)  # duplicates are ignored
+pred <- c(4, 5, 7, 7) # duplicates are ignored
 FDRCalc(true, pred, N)
 
 # Empty predictions

@@ -51,10 +51,14 @@ The result is written back as a full-length chromosome with the sentinel
 }
 \examples{
 \dontrun{
-N <- 120; lmax <- 30; minDist <- 5
+N <- 120
+lmax <- 30
+minDist <- 5
 m <- 3
-mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m)); mom[m+2] <- N + 1
-dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m)); dad[m+2] <- N + 1
+mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m))
+mom[m + 2] <- N + 1
+dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m))
+dad[m + 2] <- N + 1
 child <- crossover_fixknots(mom, dad, minDist = minDist, lmax = lmax, N = N)
 child
 }

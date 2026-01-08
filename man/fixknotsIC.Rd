@@ -77,12 +77,15 @@ Invalid chromosomes/inputs return \code{Inf}.
 }
 \examples{
 library(MASS)
-y <- mcycle$accel; x <- mcycle$times
+y <- mcycle$accel
+x <- mcycle$times
 x_unique <- sort(unique(x))
 # chromosome encoding 5 interior knot indices with sentinel:
 chrom <- c(5, 24, 30, 46, 49, 69, length(x_unique) + 1)
-fixknotsIC(chrom, y = y, x = x, x_unique = x_unique,
-           fixedknots = 5, ic_method = "BIC")
+fixknotsIC(chrom,
+  y = y, x = x, x_unique = x_unique,
+  fixedknots = 5, ic_method = "BIC"
+)
 }
 \seealso{
 [varyknotsIC()], [splineX()], \code{\link[splines]{bs}}, \code{\link[splines]{ns}}

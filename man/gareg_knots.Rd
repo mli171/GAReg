@@ -155,9 +155,11 @@ g3 <- gareg_knots(
   y, x,
   gaMethod = "cptgaisl",
   minDist = 6,
-  cptgactrl = cptgaControl(engine = "cptgaisl",
-                           numIslands = 8, maxMig = 250,
-                           popSize = 120, pcrossover = 0.9)
+  cptgactrl = cptgaControl(
+    engine = "cptgaisl",
+    numIslands = 8, maxMig = 250,
+    popSize = 120, pcrossover = 0.9
+  )
 )
 summary(g3)
 }

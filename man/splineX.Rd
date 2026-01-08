@@ -56,7 +56,7 @@ k <- quantile(x, probs = c(.25, .5, .75))
 
 # 1) Piecewise polynomials (degree 3)
 X_pp <- splineX(x, knots = k, degree = 3, type = "ppolys", intercept = TRUE)
-dim(X_pp)  # n x ((3+1) + 3) = n x 7
+dim(X_pp) # n x ((3+1) + 3) = n x 7
 
 # 2) Natural cubic spline (cubic, degree ignored)
 X_ns <- splineX(x, knots = k, type = "ns", intercept = TRUE)
