@@ -857,7 +857,7 @@ selectTau_uniform_exact <- function(N, m, minDist, lmax) {
   if (N < (m + 1L) * minDist + 2L) {
     stop("Infeasible: need N >= (m+1)*minDist + 2.")
   }
-  L0 <- 1L + minDist # 6
+  L0 <- 1L + minDist
   U0 <- N - m * minDist - 1L # (N - minDist - 1) - (m-1)*minDist
   S <- (U0 - L0 + 1L) + m - 1L
   if (S < m) {
@@ -997,12 +997,12 @@ tp_basis <- function(x, knots, degree = 3, intercept = TRUE) {
 
   if (is.na(d) || d < 0) stop("`degree` must be a nonnegative integer.")
 
-  # polynomial: 1, x, ..., x^d
+  # polynomial
   P <- outer(x, 0:d, `^`)
   if (!intercept) P <- if (d >= 1) P[, -1, drop = FALSE] else matrix(nrow = length(x), ncol = 0)
   colnames(P) <- if (intercept) paste0("x^", 0:d) else paste0("x^", 1:d)
 
-  # truncated-power: (x - k)_+^d
+  # truncated-power
   H <- if (length(knots)) outer(x, knots, function(xx, k) pmax(xx - k, 0)^d) else NULL
   if (!is.null(H)) colnames(H) <- paste0("tp(", signif(knots, 6), ")^", d)
 
@@ -1068,7 +1068,7 @@ splineX <- function(x, knots, degree = NULL,
   x <- as.numeric(x)
   rangeX <- range(x)
 
-  # sanitize knots: unique, sorted, within [min(x), max(x)]
+  # knots need to be unique, sorted, within [min(x), max(x)]
   knots <- sort(unique(knots))
   if (length(knots)) {
     inside <- knots >= rangeX[1] & knots <= rangeX[2]

@@ -93,9 +93,6 @@ setClass(
   if (nm %in% methods::slotNames(x)) methods::slot(x, nm) else default
 }
 
-# -------------------------------
-# show() and summary() methods
-# -------------------------------
 
 #' @export
 setMethod("show", "gareg", function(object) {
@@ -138,7 +135,7 @@ print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5
   cat(hdr, "\n", sep = "")
   cat("##########################################################\n")
 
-  # --- Settings (best we can, across engines) ---
+  # --- GA hyperparameters ---
   cat("   Settings: \n")
   cat("   Population size         = ", .s(gf, "popSize", "NA"), "\n", sep = "")
   cat("   Number of generations   = ", .s(gf, "count", "NA"), "\n", sep = "")
@@ -168,9 +165,9 @@ print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5
   bs <- x@bestsol
 
   if (length(bs) == 0L || all(is.na(bs))) {
-    # try to decode from the raw chromosome if available (sentinel-aware)
     chrom <- x@bestChrom
     if (length(chrom)) {
+      # decode from chromosome
       m_int <- as.integer(chrom[1L])
       Nu <- as.integer(x@N)
       tail <- as.integer(chrom[-1L])
@@ -199,7 +196,7 @@ print_summary_gareg <- function(x, digits = getOption("digits"), max_display = 5
     cat("   indices   = ", if (length(tau)) paste(tau, collapse = " ") else "<none>", "\n", sep = "")
     cat("   sentinel  = N+1 = ", as.integer(x@N) + 1L, "\n", sep = "")
   } else if (identical(x@method, "subset")) {
-    ## Subset-style: bestsol is either a 0/1 mask, indices, or names
+    ## Subset-GA style: bestsol is either a 0/1 mask, indices, or names
     fn <- x@featureNames
 
     if (is.numeric(bs) && length(fn) > 0L && length(bs) == length(fn) && all(bs %in% c(0, 1))) {

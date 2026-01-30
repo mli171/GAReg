@@ -136,7 +136,7 @@ gareg_subset <- function(y,
   if (isTRUE(monitoring)) message("Running best subset via GA (engine = ", ga_name, ")")
 
   base_args <- list(
-    fitness = ObjFunc, # your subsetBIC; expects first arg = chromosome (0/1 mask)
+    fitness = ObjFunc, # default as subsetBIC; expect chromosome with 0/1 mask
     type    = "binary",
     nBits   = p,
     monitor = monitoring
@@ -161,7 +161,7 @@ gareg_subset <- function(y,
   `%||%` <- function(a, b) if (!is.null(a)) a else b
   feat_names <- colnames(X) %||% character(p)
 
-  # Build gareg S4 (gaFit kept NULL unless your class accepts GA objects)
+  # Build gareg S4
   object <- methods::new("gareg",
     call         = call,
     method       = "subset",
@@ -262,7 +262,7 @@ subsetBIC <- function(subset_bin,
     if (!is.null(fit$rank) && fit$rank < k_eff) BIC_val <- Inf
     rss_like <- fit$deviance
     if (!is.finite(rss_like) || rss_like <= 0) {
-      # fall back to a small positive value to avoid -Inf BIC
+      # avoid -Inf BIC
       rss_like <- .Machine$double.eps
     }
   }
