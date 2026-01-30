@@ -28,18 +28,17 @@ Description: Provides a unified genetic algorithm framework for regression probl
 License: Apache License (== 2.0)
 RoxygenNote: 7.3.2
 Depends: R (>= 4.3.0)
-Imports: 
-    stats,
-    splines,
-    utils,
-    methods, 
-    changepointGA,
-    GA
+Imports: stats, splines, utils, methods, changepointGA, GA
 URL: https://github.com/mli171/GAReg
 BugReports: https://github.com/mli171/GAReg/issues
-Suggests: 
-    MASS,
-    knitr,
-    rmarkdown
+Suggests: MASS, knitr, rmarkdown
 Encoding: UTF-8
 VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2026-01-30 17:57:21 UTC; mli171
+Author: Mo Li [aut, cre],
+  QiQi Lu [aut],
+  Robert Lund [aut],
+  Xueheng Shi [aut]
+Maintainer: Mo Li <mo.li@louisiana.edu>
+Built: R 4.5.0; ; 2026-01-30 17:57:54 UTC; unix

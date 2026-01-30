@@ -1,0 +1,22 @@
+FDRCalc                 False Discovery Rate (FDR) and True Positive
+                        Rate (TPR) from index labels
+Popinitial_fixknots     Fixed-Knots Population Initializer
+cptgaControl            Build Control List for 'cptga'/'cptgaisl'
+crossover_fixknots      Crossover Operator (Fixed-m) with
+                        Feasibility-First Restarts
+fixknotsIC              Information criterion for a fixed–knot spline
+                        regression
+gareg-class             S4 Class Definition for 'gareg'
+gareg-methods           Show and summary methods for 'gareg'
+gareg_knots             Genetic-Algorithm–based Optimal Knot Selection
+gareg_subset            Genetic-Algorithm Best Subset Selection (GA /
+                        GAISL)
+mutation_fixknots       Mutation Operator (Fixed-Knots)
+selectTau_uniform_exact
+                        Exact Uniform Sampler of Feasible Changepoints
+splineX                 Build spline design matrices (piecewise
+                        polynomials, natural cubic, B-spline)
+subsetBIC               Unified BIC-style Objective for Subset
+                        Selection (GLM & Gaussian)
+varyknotsIC             Information criterion for spline regression
+                        with a variable number of knots
