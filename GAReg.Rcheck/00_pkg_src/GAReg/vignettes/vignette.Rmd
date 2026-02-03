@@ -330,8 +330,8 @@ sessionInfo()
 
 ## References
 
-Li, M., & Lu, Q. (2024). changepointGA: An R package for Fast Changepoint Detection via Genetic Algorithm. arXiv preprint arXiv:2410.15571.
+Li, M., & Lu, Q. (2025). changepointGA: An R package for Fast Changepoint Detection via Genetic Algorithm. arXiv preprint arXiv:2410.15571.
 
-Mo Li, QiQi Lu, Robert Lund, & Xueheng Shi. (2026). Genetic Algorithms in Regression. arXiv preprint arXiv:.
+Mo Li, QiQi Lu, Robert Lund, & Xueheng Shi. (2026). Genetic Algorithms in Regression. In preparation.
 
 Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0.

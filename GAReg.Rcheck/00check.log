@@ -11,7 +11,7 @@
 * checking extension type ... Package
 * this is package ‘GAReg’ version ‘0.1.0’
 * package encoding: UTF-8
-* checking CRAN incoming feasibility ... [2s/20s] NOTE
+* checking CRAN incoming feasibility ... [3s/16s] NOTE
 Maintainer: ‘Mo Li <mo.li@louisiana.edu>’
 
 New submission

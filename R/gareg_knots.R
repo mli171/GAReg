@@ -94,7 +94,7 @@
 #'   \code{changepointGA::cptgaisl}, \code{\link{fixknotsIC}}, \code{\link{varyknotsIC}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(1)
 #' N <- 120
 #' y <- c(rnorm(40, 0), rnorm(40, 3), rnorm(40, 0))
@@ -751,7 +751,7 @@ Popinitial_fixknots <- function(popSize, prange = NULL, N, minDist, Pb, mmax, lm
 #' \link{gareg_knots}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' N <- 120
 #' lmax <- 30
 #' minDist <- 5

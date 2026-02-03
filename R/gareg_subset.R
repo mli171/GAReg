@@ -60,7 +60,7 @@
 #' \code{\link[GA]{gaisl}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' if (requireNamespace("GA", quietly = TRUE)) {
 #'   set.seed(1)
 #'   n <- 100

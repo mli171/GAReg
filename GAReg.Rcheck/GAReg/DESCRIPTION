@@ -24,7 +24,7 @@ Authors@R: c(
     role = "aut", 
     email = "shixueheng@gmail.com")
   )
-Description: Provides a unified genetic algorithm framework for regression problems that require discrete optimization over model spaces with unknown or variable dimension, where gradient-based methods and exhaustive search are impractical. It provides a compact chromosome representation for tasks such as optimal spline knot placement, best-subset variable selection, and multiple changepoint detection, along with exact uniform initialization, constraint-preserving crossover and mutation, steady-state replacement, and optional island-model parallelization. In challenging high-dimensional settings, GAReg enables efficient search and delivers near-optimal solutions when alternative algorithms are not well-justified.
+Description: Provides a genetic algorithm framework for regression problems requiring discrete optimization over model spaces with unknown or varying dimension, where gradient-based methods and exhaustive enumeration are impractical. Uses a compact chromosome representation for tasks including spline knot placement and best-subset variable selection, with constraint-preserving crossover and mutation, exact uniform initialization under spacing constraints, steady-state replacement, and optional island-model parallelization from Lu, Lund, and Lee (2010, <doi:10.1214/09-AOAS289>). The computation is built on the 'GA' engine of Scrucca (2017, <doi:10.32614/RJ-2017-008>) and 'changepointGA' engine from Li and Lu (2024, <doi:10.48550/arXiv.2410.15571>). In challenging high-dimensional settings, 'GAReg' enables efficient search and delivers near-optimal solutions when alternative algorithms are not well-justified.
 License: Apache License (== 2.0)
 RoxygenNote: 7.3.2
 Depends: R (>= 4.3.0)
@@ -35,10 +35,10 @@ Suggests: MASS, knitr, rmarkdown
 Encoding: UTF-8
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2026-01-30 17:57:21 UTC; mli171
+Packaged: 2026-02-03 15:39:15 UTC; mli171
 Author: Mo Li [aut, cre],
   QiQi Lu [aut],
   Robert Lund [aut],
   Xueheng Shi [aut]
 Maintainer: Mo Li <mo.li@louisiana.edu>
-Built: R 4.5.0; ; 2026-01-30 17:57:54 UTC; unix
+Built: R 4.5.0; ; 2026-02-03 15:40:31 UTC; unix
