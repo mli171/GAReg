@@ -127,7 +127,7 @@ Values are combined as \emph{control < core < \code{...}}. That is,
 }
 
 \examples{
-\dontrun{
+\donttest{
 set.seed(1)
 N <- 120
 y <- c(rnorm(40, 0), rnorm(40, 3), rnorm(40, 0))

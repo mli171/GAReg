@@ -1,7 +1,9 @@
 * installing *source* package ‘GAReg’ ...
-** this is package ‘GAReg’ version ‘0.1.0’
+** this is package ‘GAReg’ version ‘0.1.1’
 ** using staged installation
 ** R
+** data
+*** moving datasets to lazyload DB
 ** inst
 ** byte-compile and prepare package for lazy loading
 ** help

@@ -61,18 +61,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: 
-##D N <- 120
-##D lmax <- 30
-##D minDist <- 5
-##D m <- 3
-##D mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m))
-##D mom[m + 2] <- N + 1
-##D dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m))
-##D dad[m + 2] <- N + 1
-##D child <- crossover_fixknots(mom, dad, minDist = minDist, lmax = lmax, N = N)
-##D child
-## End(Not run)
+## No test: 
+N <- 120
+lmax <- 30
+minDist <- 5
+m <- 3
+mom <- c(m, c(20, 50, 90), rep(0, lmax - 1 - m))
+mom[m + 2] <- N + 1
+dad <- c(m, c(18, 55, 85), rep(0, lmax - 1 - m))
+dad[m + 2] <- N + 1
+child <- crossover_fixknots(mom, dad, minDist = minDist, lmax = lmax, N = N)
+child
+## End(No test)
 
 
 
@@ -120,42 +120,42 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: 
-##D set.seed(1)
-##D N <- 120
-##D y <- c(rnorm(40, 0), rnorm(40, 3), rnorm(40, 0))
-##D x <- seq_len(N)
-##D 
-##D # 1) Varying-knots with single-pop GA
-##D g1 <- gareg_knots(
-##D   y, x,
-##D   minDist = 5,
-##D   gaMethod = "cptga",
-##D   cptgactrl = cptgaControl(popSize = 150, pcrossover = 0.9, maxgen = 500)
-##D )
-##D summary(g1)
-##D 
-##D # 2) Fixed knots (operators auto-injected unless overridden)
-##D g2 <- gareg_knots(
-##D   y, x,
-##D   fixedknots = 5,
-##D   minDist = 5
-##D )
-##D summary(g2)
-##D 
-##D # 3) Island GA with island-specific controls
-##D g3 <- gareg_knots(
-##D   y, x,
-##D   gaMethod = "cptgaisl",
-##D   minDist = 6,
-##D   cptgactrl = cptgaControl(
-##D     engine = "cptgaisl",
-##D     numIslands = 8, maxMig = 250,
-##D     popSize = 120, pcrossover = 0.9
-##D   )
-##D )
-##D summary(g3)
-## End(Not run)
+## No test: 
+set.seed(1)
+N <- 120
+y <- c(rnorm(40, 0), rnorm(40, 3), rnorm(40, 0))
+x <- seq_len(N)
+
+# 1) Varying-knots with single-pop GA
+g1 <- gareg_knots(
+  y, x,
+  minDist = 5,
+  gaMethod = "cptga",
+  cptgactrl = cptgaControl(popSize = 150, pcrossover = 0.9, maxgen = 500)
+)
+summary(g1)
+
+# 2) Fixed knots (operators auto-injected unless overridden)
+g2 <- gareg_knots(
+  y, x,
+  fixedknots = 5,
+  minDist = 5
+)
+summary(g2)
+
+# 3) Island GA with island-specific controls
+g3 <- gareg_knots(
+  y, x,
+  gaMethod = "cptgaisl",
+  minDist = 6,
+  cptgactrl = cptgaControl(
+    engine = "cptgaisl",
+    numIslands = 8, maxMig = 250,
+    popSize = 120, pcrossover = 0.9
+  )
+)
+summary(g3)
+## End(No test)
 
 
 
@@ -175,38 +175,38 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: 
-##D if (requireNamespace("GA", quietly = TRUE)) {
-##D   set.seed(1)
-##D   n <- 100
-##D   p <- 12
-##D   X <- matrix(rnorm(n * p), n, p)
-##D   y <- 1 + X[, 1] - 0.7 * X[, 4] + rnorm(n, sd = 0.5)
-##D 
-##D   # Default: subsetBIC (Gaussian – negative BIC), engine = GA::ga
-##D   fit1 <- gareg_subset(y, X,
-##D     gaMethod = "ga",
-##D     gacontrol = list(popSize = 60, maxiter = 80, run = 40)
-##D   )
-##D   summary(fit1)
-##D 
-##D   # Island model: GA::gaisl
-##D   fit2 <- gareg_subset(y, X,
-##D     gaMethod = "gaisl",
-##D     gacontrol = list(popSize = 40, maxiter = 60, islands = 4)
-##D   )
-##D   summary(fit2)
-##D 
-##D   # Logistic objective (subsetBIC handles GLM via ...):
-##D   ybin <- rbinom(n, 1, plogis(0.3 + X[, 1] - 0.5 * X[, 2]))
-##D   fit3 <- gareg_subset(ybin, X,
-##D     gaMethod = "ga",
-##D     family = stats::binomial(), # <- passed to subsetBIC via ...
-##D     gacontrol = list(popSize = 60, maxiter = 80)
-##D   )
-##D   summary(fit3)
-##D }
-## End(Not run)
+## No test: 
+if (requireNamespace("GA", quietly = TRUE)) {
+  set.seed(1)
+  n <- 100
+  p <- 12
+  X <- matrix(rnorm(n * p), n, p)
+  y <- 1 + X[, 1] - 0.7 * X[, 4] + rnorm(n, sd = 0.5)
+
+  # Default: subsetBIC (Gaussian – negative BIC), engine = GA::ga
+  fit1 <- gareg_subset(y, X,
+    gaMethod = "ga",
+    gacontrol = list(popSize = 60, maxiter = 80, run = 40, parallel = FALSE)
+  )
+  summary(fit1)
+
+  # Island model: GA::gaisl
+  fit2 <- gareg_subset(y, X,
+    gaMethod = "gaisl",
+    gacontrol = list(popSize = 40, maxiter = 60, numIslands = 4, parallel = FALSE)
+  )
+  summary(fit2)
+
+  # Logistic objective (subsetBIC handles GLM via ...):
+  ybin <- rbinom(n, 1, plogis(0.3 + X[, 1] - 0.5 * X[, 2]))
+  fit3 <- gareg_subset(ybin, X,
+    gaMethod = "ga",
+    family = stats::binomial(), # <- passed to subsetBIC via ...
+    gacontrol = list(popSize = 60, maxiter = 80, parallel = FALSE)
+  )
+  summary(fit3)
+}
+## End(No test)
 
 
 

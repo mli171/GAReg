@@ -50,7 +50,7 @@ The result is written back as a full-length chromosome with the sentinel
 \code{N+1} in position \code{m+2}, and zeros elsewhere.
 }
 \examples{
-\dontrun{
+\donttest{
 N <- 120
 lmax <- 30
 minDist <- 5

@@ -12,6 +12,7 @@ gareg_knots             Genetic-Algorithm–based Optimal Knot Selection
 gareg_subset            Genetic-Algorithm Best Subset Selection (GA /
                         GAISL)
 mutation_fixknots       Mutation Operator (Fixed-Knots)
+nhtr2005                Northern Hemisphere temperature reconstruction
 selectTau_uniform_exact
                         Exact Uniform Sampler of Feasible Changepoints
 splineX                 Build spline design matrices (piecewise

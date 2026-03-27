@@ -926,8 +926,8 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
   seed = NULL,
   popInitialize = "random_population",
   suggestions = NULL,
-  selection = "selection_linearrank",
-  crossover = "uniformcrossover",
+  selection = "selection_linear_rank",
+  crossover = "uniform_crossover",
   mutation = "mutation"
 )
 
@@ -962,8 +962,8 @@ mutation_fixknots <- function(child, p.range = NULL, minDist, Pb, lmax, mmax, N)
   seed = NULL,
   popInitialize = "random_population",
   suggestions = NULL,
-  selection = "selection_linearrank",
-  crossover = "uniformcrossover",
+  selection = "selection_linear_rank",
+  crossover = "uniform_crossover",
   mutation = "mutation"
 )
 

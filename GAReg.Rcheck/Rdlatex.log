@@ -20,11 +20,11 @@ No file Rd2.aux.
 No file Rd2.toc.
 
 [1{/Users/mli171/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/mli171/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/mli171/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
-Overfull \hbox (78.99843pt too wide) in paragraph at lines 87--91
+Overfull \hbox (78.99843pt too wide) in paragraph at lines 88--92
 []\T1/ptm/m/n/10 Convenience con-struc-tor for GA con-trol pa-ram-e-ters used by []\T1/zi4/m/n/10 changepointGA::cptga []\T1/ptm/m/n/10 and []\T1/zi4/m/n/10 changepointGA::cptgaisl[]\T1/ptm/m/n/10 .
 
 [2]
-Overfull \hbox (30.6797pt too wide) in paragraph at lines 108--110
+Overfull \hbox (30.6797pt too wide) in paragraph at lines 109--111
 []\T1/ptm/m/n/10 Named over-rides for con-trol fields (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 minDist[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 numIslands[]\T1/ptm/m/n/10 ). 
 
 [3]
@@ -58,14 +58,14 @@ Overfull \hbox (2.74097pt too wide) in paragraph at lines 656--658
 
 [11]
 [12]
-Overfull \hbox (24.2386pt too wide) in paragraph at lines 741--744
+Overfull \hbox (24.2386pt too wide) in paragraph at lines 740--743
 []\T1/ptm/m/n/10 Optional named list of GA en-gine con-trols (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 maxiter[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 run[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 ,
 
-Overfull \hbox (13.75844pt too wide) in paragraph at lines 750--753
+Overfull \hbox (13.75844pt too wide) in paragraph at lines 749--752
 []\T1/ptm/m/n/10 Additional ar-gu-ments for-warded to []\T1/zi4/m/n/10 ObjFunc []\T1/ptm/m/n/10 (not to the GA en-gine). For [][][]\T1/zi4/m/n/10 subsetBIC[][][]
 
 [13]
-Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
+Overfull \hbox (2.7773pt too wide) in paragraph at lines 836--838
 []\T1/ptm/m/n/10 Replaces a child with a fresh fea-si-ble sam-ple hav-ing the same $\OML/cmm/m/it/10 m$\T1/ptm/m/n/10 , drawn by [][]se-lect-Tau_uniform_exact[][][]. 
 
 [14]
@@ -73,13 +73,14 @@ Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
 [16]
 [17]
 [18]
-Overfull \hbox (41.11815pt too wide) in paragraph at lines 1136--1142
+[19]
+Overfull \hbox (41.11815pt too wide) in paragraph at lines 1175--1181
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
 
-[19]
+[20]
 No file Rd2.ind.
 
-[20] (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux)
+[21] (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -114,12 +115,12 @@ pdfTeX warning (dest): name{Rfn.ns} has been referenced but does not exist, repl
 pdfTeX warning (dest): name{Rfn.bs} has been referenced but does not exist, replaced by a fixed one
 
 </Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (20 pages, 176072 bytes).
+Output written on Rd2.pdf (21 pages, 179369 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.17 [TeX Live 2024] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (74 entries accepted, 0 rejected).
-Sorting entries....done (492 comparisons).
-Generating output file Rd2.ind....done (81 lines written, 3 warnings).
+Scanning input file Rd2.idx....done (76 entries accepted, 0 rejected).
+Sorting entries....done (482 comparisons).
+Generating output file Rd2.ind....done (85 lines written, 3 warnings).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
@@ -134,22 +135,22 @@ Document Class: book 2024/06/29 v1.4n Standard LaTeX document class
 For additional information on amsmath, use the `?' option.
 (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/mathrsfs.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
 Writing index file Rd2.idx
-(/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.out) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/ursfs.fd) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.toc
+(/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/ursfs.fd) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.toc
 [1{/Users/mli171/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/mli171/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/mli171/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
 [2]
-Overfull \hbox (78.99843pt too wide) in paragraph at lines 87--91
+Overfull \hbox (78.99843pt too wide) in paragraph at lines 88--92
 []\T1/ptm/m/n/10 Convenience con-struc-tor for GA con-trol pa-ram-e-ters used by []\T1/zi4/m/n/10 changepointGA::cptga []\T1/ptm/m/n/10 and []\T1/zi4/m/n/10 changepointGA::cptgaisl[]\T1/ptm/m/n/10 .
 
-Overfull \hbox (30.6797pt too wide) in paragraph at lines 108--110
+Overfull \hbox (30.6797pt too wide) in paragraph at lines 109--111
 []\T1/ptm/m/n/10 Named over-rides for con-trol fields (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 minDist[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 numIslands[]\T1/ptm/m/n/10 ). 
 
 [3]
 [4]
 [5]
+[6]
 Overfull \hbox (41.11815pt too wide) in paragraph at lines 331--337
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
 
-[6]
 [7]
 Overfull \hbox (5.71858pt too wide) in paragraph at lines 435--436
 []\T1/ptm/m/n/10 numericOrNULL. Fixed num-ber of in-te-rior knots (`m`) for fixed-knots mode, or NULL. 
@@ -174,14 +175,14 @@ Overfull \hbox (2.74097pt too wide) in paragraph at lines 656--658
 
 [11]
 [12]
-Overfull \hbox (24.2386pt too wide) in paragraph at lines 741--744
+Overfull \hbox (24.2386pt too wide) in paragraph at lines 740--743
 []\T1/ptm/m/n/10 Optional named list of GA en-gine con-trols (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 maxiter[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 run[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 ,
 
-Overfull \hbox (13.75844pt too wide) in paragraph at lines 750--753
+Overfull \hbox (13.75844pt too wide) in paragraph at lines 749--752
 []\T1/ptm/m/n/10 Additional ar-gu-ments for-warded to []\T1/zi4/m/n/10 ObjFunc []\T1/ptm/m/n/10 (not to the GA en-gine). For [][][]\T1/zi4/m/n/10 subsetBIC[][][]
 
 [13]
-Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
+Overfull \hbox (2.7773pt too wide) in paragraph at lines 836--838
 []\T1/ptm/m/n/10 Replaces a child with a fresh fea-si-ble sam-ple hav-ing the same $\OML/cmm/m/it/10 m$\T1/ptm/m/n/10 , drawn by [][]se-lect-Tau_uniform_exact[][][]. 
 
 [14]
@@ -189,18 +190,19 @@ Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
 [16]
 [17]
 [18]
-Overfull \hbox (41.11815pt too wide) in paragraph at lines 1136--1142
+[19]
+Overfull \hbox (41.11815pt too wide) in paragraph at lines 1175--1181
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
 
-[19] (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.ind
-[20]
+[20] (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.ind
+[21]
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 67.
+(Font)              using `T1/zi4/m/n' instead on input line 71.
 
 
 
-[21]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux)
+[22]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -238,12 +240,12 @@ pdfTeX warning (dest): name{Rfn.ns} has been referenced but does not exist, repl
 pdfTeX warning (dest): name{Rfn.bs} has been referenced but does not exist, replaced by a fixed one
 
 </Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (21 pages, 182502 bytes).
+Output written on Rd2.pdf (22 pages, 185762 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.17 [TeX Live 2024] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (74 entries accepted, 0 rejected).
-Sorting entries....done (496 comparisons).
-Generating output file Rd2.ind....done (81 lines written, 3 warnings).
+Scanning input file Rd2.idx....done (76 entries accepted, 0 rejected).
+Sorting entries....done (488 comparisons).
+Generating output file Rd2.ind....done (86 lines written, 2 warnings).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
@@ -258,22 +260,22 @@ Document Class: book 2024/06/29 v1.4n Standard LaTeX document class
 For additional information on amsmath, use the `?' option.
 (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/mathrsfs.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/mli171/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
 Writing index file Rd2.idx
-(/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.out) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/ursfs.fd) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.toc
+(/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/ursfs.fd) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.toc
 [1{/Users/mli171/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/mli171/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/mli171/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
 [2]
-Overfull \hbox (78.99843pt too wide) in paragraph at lines 87--91
+Overfull \hbox (78.99843pt too wide) in paragraph at lines 88--92
 []\T1/ptm/m/n/10 Convenience con-struc-tor for GA con-trol pa-ram-e-ters used by []\T1/zi4/m/n/10 changepointGA::cptga []\T1/ptm/m/n/10 and []\T1/zi4/m/n/10 changepointGA::cptgaisl[]\T1/ptm/m/n/10 .
 
-Overfull \hbox (30.6797pt too wide) in paragraph at lines 108--110
+Overfull \hbox (30.6797pt too wide) in paragraph at lines 109--111
 []\T1/ptm/m/n/10 Named over-rides for con-trol fields (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 minDist[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 numIslands[]\T1/ptm/m/n/10 ). 
 
 [3]
 [4]
 [5]
+[6]
 Overfull \hbox (41.11815pt too wide) in paragraph at lines 331--337
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
 
-[6]
 [7]
 Overfull \hbox (5.71858pt too wide) in paragraph at lines 435--436
 []\T1/ptm/m/n/10 numericOrNULL. Fixed num-ber of in-te-rior knots (`m`) for fixed-knots mode, or NULL. 
@@ -298,14 +300,14 @@ Overfull \hbox (2.74097pt too wide) in paragraph at lines 656--658
 
 [11]
 [12]
-Overfull \hbox (24.2386pt too wide) in paragraph at lines 741--744
+Overfull \hbox (24.2386pt too wide) in paragraph at lines 740--743
 []\T1/ptm/m/n/10 Optional named list of GA en-gine con-trols (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 maxiter[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 run[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 ,
 
-Overfull \hbox (13.75844pt too wide) in paragraph at lines 750--753
+Overfull \hbox (13.75844pt too wide) in paragraph at lines 749--752
 []\T1/ptm/m/n/10 Additional ar-gu-ments for-warded to []\T1/zi4/m/n/10 ObjFunc []\T1/ptm/m/n/10 (not to the GA en-gine). For [][][]\T1/zi4/m/n/10 subsetBIC[][][]
 
 [13]
-Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
+Overfull \hbox (2.7773pt too wide) in paragraph at lines 836--838
 []\T1/ptm/m/n/10 Replaces a child with a fresh fea-si-ble sam-ple hav-ing the same $\OML/cmm/m/it/10 m$\T1/ptm/m/n/10 , drawn by [][]se-lect-Tau_uniform_exact[][][]. 
 
 [14]
@@ -313,18 +315,19 @@ Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
 [16]
 [17]
 [18]
-Overfull \hbox (41.11815pt too wide) in paragraph at lines 1136--1142
+[19]
+Overfull \hbox (41.11815pt too wide) in paragraph at lines 1175--1181
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
 
-[19] (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.ind
-[20]
+[20] (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.ind
+[21]
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 67.
+(Font)              using `T1/zi4/m/n' instead on input line 72.
 
 
 
-[21]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux)
+[22]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -357,8 +360,8 @@ pdfTeX warning (dest): name{Rfn.ns} has been referenced but does not exist, repl
 pdfTeX warning (dest): name{Rfn.bs} has been referenced but does not exist, replaced by a fixed one
 
 </Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (21 pages, 182892 bytes).
+Output written on Rd2.pdf (22 pages, 186077 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘GAReg-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T//RtmpkKq5Ew/Rd2pdf15e861efb53bc'
+You may want to clean up by 'rm -Rf /var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T//RtmpqYGQ60/Rd2pdf7ec34b1a0c13'

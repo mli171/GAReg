@@ -4,17 +4,14 @@
 * R was compiled by
     Apple clang version 14.0.0 (clang-1400.0.29.202)
     GNU Fortran (GCC) 14.2.0
-* running under: macOS Sequoia 15.7.3
+* running under: macOS 26.3.1
 * using session charset: UTF-8
 * using option ‘--as-cran’
 * checking for file ‘GAReg/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘GAReg’ version ‘0.1.0’
+* this is package ‘GAReg’ version ‘0.1.1’
 * package encoding: UTF-8
-* checking CRAN incoming feasibility ... [3s/16s] NOTE
-Maintainer: ‘Mo Li <mo.li@louisiana.edu>’
-
-New submission
+* checking CRAN incoming feasibility ... [3s/19s] OK
 * checking package namespace information ... OK
 * checking package dependencies ... OK
 * checking if this is a source package ... OK
@@ -56,12 +53,17 @@ New submission
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
 * checking installed files from ‘inst/doc’ ... OK
 * checking files in ‘vignettes’ ... OK
 * checking examples ... OK
+* checking examples with --run-donttest ... OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes ... OK
-* checking re-building of vignette outputs ... [57s/57s] OK
+* checking re-building of vignette outputs ... [63s/63s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... NOTE
 Skipping checking HTML validation: 'tidy' doesn't look like recent enough HTML Tidy.
@@ -70,4 +72,4 @@ release or compiling the source code from <https://www.html-tidy.org/>.
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 2 NOTEs
+Status: 1 NOTE

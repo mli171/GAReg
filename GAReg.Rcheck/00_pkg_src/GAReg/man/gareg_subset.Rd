@@ -79,7 +79,7 @@ This separation prevents accidental name collisions between GA engine parameters
 objective arguments.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("GA", quietly = TRUE)) {
   set.seed(1)
   n <- 100
@@ -90,14 +90,14 @@ if (requireNamespace("GA", quietly = TRUE)) {
   # Default: subsetBIC (Gaussian – negative BIC), engine = GA::ga
   fit1 <- gareg_subset(y, X,
     gaMethod = "ga",
-    gacontrol = list(popSize = 60, maxiter = 80, run = 40)
+    gacontrol = list(popSize = 60, maxiter = 80, run = 40, parallel = FALSE)
   )
   summary(fit1)
 
   # Island model: GA::gaisl
   fit2 <- gareg_subset(y, X,
     gaMethod = "gaisl",
-    gacontrol = list(popSize = 40, maxiter = 60, islands = 4)
+    gacontrol = list(popSize = 40, maxiter = 60, numIslands = 4, parallel = FALSE)
   )
   summary(fit2)
 
@@ -106,7 +106,7 @@ if (requireNamespace("GA", quietly = TRUE)) {
   fit3 <- gareg_subset(ybin, X,
     gaMethod = "ga",
     family = stats::binomial(), # <- passed to subsetBIC via ...
-    gacontrol = list(popSize = 60, maxiter = 80)
+    gacontrol = list(popSize = 60, maxiter = 80, parallel = FALSE)
   )
   summary(fit3)
 }

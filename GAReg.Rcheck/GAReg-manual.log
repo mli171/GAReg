@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.16)  3 FEB 2026 09:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.16)  27 MAR 2026 18:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -288,7 +288,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count302
 \l__pdf_internal_box=\box59
-) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux)
+) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -310,7 +310,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.out)
+ (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -335,7 +335,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 LaTeX Font Info:    Trying to load font information for U+rsfs on input line 26.
  (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.toc
+) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.toc
 
 [1
 
@@ -347,32 +347,32 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 
 [2]
-Overfull \hbox (78.99843pt too wide) in paragraph at lines 87--91
+Overfull \hbox (78.99843pt too wide) in paragraph at lines 88--92
 []\T1/ptm/m/n/10 Convenience con-struc-tor for GA con-trol pa-ram-e-ters used by []\T1/zi4/m/n/10 changepointGA::cptga []\T1/ptm/m/n/10 and []\T1/zi4/m/n/10 changepointGA::cptgaisl[]\T1/ptm/m/n/10 .
  []
 
 
-Overfull \hbox (30.6797pt too wide) in paragraph at lines 108--110
+Overfull \hbox (30.6797pt too wide) in paragraph at lines 109--111
 []\T1/ptm/m/n/10 Named over-rides for con-trol fields (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 minDist[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 numIslands[]\T1/ptm/m/n/10 ). 
  []
 
 
 
 [3]
-LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 204.
-
 
 [4]
+LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
+(Font)              scaled to size 9.0pt on input line 205.
+
 
 [5]
+
+[6]
 Overfull \hbox (41.11815pt too wide) in paragraph at lines 331--337
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
  []
 
 
-
-[6]
 
 [7]
 Overfull \hbox (5.71858pt too wide) in paragraph at lines 435--436
@@ -422,19 +422,19 @@ Overfull \hbox (2.74097pt too wide) in paragraph at lines 656--658
 [11]
 
 [12]
-Overfull \hbox (24.2386pt too wide) in paragraph at lines 741--744
+Overfull \hbox (24.2386pt too wide) in paragraph at lines 740--743
 []\T1/ptm/m/n/10 Optional named list of GA en-gine con-trols (e.g., []\T1/zi4/m/n/10 popSize[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 maxiter[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 run[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 pcrossover[]\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (13.75844pt too wide) in paragraph at lines 750--753
+Overfull \hbox (13.75844pt too wide) in paragraph at lines 749--752
 []\T1/ptm/m/n/10 Additional ar-gu-ments for-warded to []\T1/zi4/m/n/10 ObjFunc []\T1/ptm/m/n/10 (not to the GA en-gine). For [][][]\T1/zi4/m/n/10 subsetBIC[][][]
  []
 
 
 
 [13]
-Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
+Overfull \hbox (2.7773pt too wide) in paragraph at lines 836--838
 []\T1/ptm/m/n/10 Replaces a child with a fresh fea-si-ble sam-ple hav-ing the same $\OML/cmm/m/it/10 m$\T1/ptm/m/n/10 , drawn by [][]se-lect-Tau_uniform_exact[][][]. 
  []
 
@@ -449,32 +449,34 @@ Overfull \hbox (2.7773pt too wide) in paragraph at lines 838--840
 [17]
 
 [18]
-Overfull \hbox (41.11815pt too wide) in paragraph at lines 1136--1142
+
+[19]
+Overfull \hbox (41.11815pt too wide) in paragraph at lines 1175--1181
 \T1/ptm/m/n/10 genes af-ter the sen-tinel are ig-nored. In-te-rior in-dices must be in []\T1/zi4/m/n/10 2:(length(x_unique)-1)[]\T1/ptm/m/n/10 ,
  []
 
 
 
-[19]
-LaTeX Font Info:    Font shape `TS1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 1205.
- (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.ind
-
 [20]
+LaTeX Font Info:    Font shape `TS1/zi4/m/n' will be
+(Font)              scaled to size 9.0pt on input line 1244.
+ (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.ind
+
+[21]
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 67.
+(Font)              using `T1/zi4/m/n' instead on input line 72.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 10.0pt on input line 73.
+(Font)              scaled to size 10.0pt on input line 78.
 
 
 
 
-[21
+[22
 
 
-]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpkKq5Ew/Rd2pdf15e861efb53bc/Rd2.aux)
+]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
  ***********
 LaTeX2e <2024-11-01>
 L3 programming layer <2024-11-02>
@@ -484,13 +486,13 @@ L3 programming layer <2024-11-02>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `Rd2.out' has not changed.
-(rerunfilecheck)             Checksum: 551572194FEBA334C9E432D220C92A72;2041.
+(rerunfilecheck)             Checksum: C15780407DFEAECF23C6CECF6F0D490A;2130.
  ) 
 Here is how much of TeX's memory you used:
- 10544 strings out of 475261
- 161447 string characters out of 5767415
- 551294 words of memory out of 5000000
- 33069 multiletter control sequences out of 15000+600000
+ 10557 strings out of 475261
+ 161661 string characters out of 5767415
+ 550294 words of memory out of 5000000
+ 33074 multiletter control sequences out of 15000+600000
  595802 words of font info for 83 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  92i,6n,95p,1222b,735s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -522,10 +524,10 @@ pdfTeX warning (dest): name{Rfn.ns} has been referenced but does not exist, repl
 pdfTeX warning (dest): name{Rfn.bs} has been referenced but does not exist, replaced by a fixed one
 
 </Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/mli171/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (21 pages, 182892 bytes).
+Output written on Rd2.pdf (22 pages, 186077 bytes).
 PDF statistics:
- 521 PDF objects out of 1000 (max. 8388607)
- 474 compressed objects within 5 object streams
- 167 named destinations out of 1000 (max. 500000)
- 137 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 542 PDF objects out of 1000 (max. 8388607)
+ 494 compressed objects within 5 object streams
+ 175 named destinations out of 1000 (max. 500000)
+ 145 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -9,6 +9,7 @@ gareg-methods	gareg-methods
 gareg_knots	gareg_knots
 gareg_subset	gareg_subset
 mutation_fixknots	mutation_fixknots
+nhtr2005	nhtr2005
 Popinitial_fixknots	Popinitial_fixknots
 selectTau_uniform_exact	selectTau_uniform_exact
 show,gareg-method	gareg-methods
