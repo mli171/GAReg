@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.16)  27 MAR 2026 18:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.16)  27 MAR 2026 20:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -288,7 +288,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count302
 \l__pdf_internal_box=\box59
-) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
+) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/Rtmp5BxKeI/Rd2pdf93d73b9e9ace/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -310,7 +310,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.out)
+ (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/Rtmp5BxKeI/Rd2pdf93d73b9e9ace/Rd2.out) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/Rtmp5BxKeI/Rd2pdf93d73b9e9ace/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -335,7 +335,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 LaTeX Font Info:    Trying to load font information for U+rsfs on input line 26.
  (/Users/mli171/Library/TinyTeX/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.toc
+) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/Rtmp5BxKeI/Rd2pdf93d73b9e9ace/Rd2.toc
 
 [1
 
@@ -460,7 +460,7 @@ Overfull \hbox (41.11815pt too wide) in paragraph at lines 1175--1181
 [20]
 LaTeX Font Info:    Font shape `TS1/zi4/m/n' will be
 (Font)              scaled to size 9.0pt on input line 1244.
- (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.ind
+ (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/Rtmp5BxKeI/Rd2pdf93d73b9e9ace/Rd2.ind
 
 [21]
 
@@ -476,7 +476,7 @@ LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
 [22
 
 
-]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/RtmpqYGQ60/Rd2pdf7ec34b1a0c13/Rd2.aux)
+]) (/private/var/folders/xy/ccg9zpjj4sq_l6d6fypc_5740000gn/T/Rtmp5BxKeI/Rd2pdf93d73b9e9ace/Rd2.aux)
  ***********
 LaTeX2e <2024-11-01>
 L3 programming layer <2024-11-02>
